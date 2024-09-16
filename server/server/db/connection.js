@@ -1,26 +1,25 @@
+
 const mongoose = require("mongoose");
 
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, TEST_DB_HOST } =
+const { MONGODB_USER, MONGODB_PASSWORD, MONGODB_DATABASE} =
   process.env;
 
-const DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${
-  process.env.NODE_ENV === "test" ? TEST_DB_HOST : DB_HOST
-}:${DB_PORT}/${DB_NAME}?authSource=admin`;
+const mongoAtlas = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_DATABASE}.voiyh.mongodb.net/?retryWrites=true&w=majority&appName=${MONGODB_DATABASE}`;
+const url = mongoAtlas;
 
-const url = DB_URI;
-
-const connectToMongo = () => {
-  mongoose.connect(url, { useNewUrlParser: true });
-
-  db = mongoose.connection;
-
-  db.once("open", () => {
-    console.log("Database connected: ", url);
-  });
-
-  db.on("error", (err) => {
-    console.error("Database connection error: ", err);
-  });
+const connectToDb = (cb) => {
+  mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(client => {
+      
+      console.log('Successfully connected to MongoDB Atlas');
+      return cb();
+    })
+    .catch(err => {
+      console.error('Error connecting to MongoDB Atlas', err);
+      return cb(err);
+    });
 };
 
-module.exports = connectToMongo;
+const getDb = () => dbConnection;
+
+module.exports = { connectToDb, getDb };
