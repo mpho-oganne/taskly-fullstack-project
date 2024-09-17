@@ -23,11 +23,6 @@ const categorySchema = new mongoose.Schema({
     },
 });
 
-categorySchema.pre('sava', function(next) {
-    this.updated_at = Date.now();
-    next();
-});
-
 const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;
