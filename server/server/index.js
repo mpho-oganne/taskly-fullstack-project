@@ -27,6 +27,7 @@ app.use(session({
 }));
 
 // app.use("/user", routes);
+app.use('/user', routes);
 
 connectToDb((err) => {
   if (err) {
