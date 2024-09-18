@@ -1,0 +1,10 @@
+import { signup } from '../controllers/user';
+
+const handler = async (req, res) => {
+  if (req.method == 'POST') {
+    await signup(req, res);
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} not allowed`)
+  }
+}
