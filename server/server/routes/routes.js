@@ -7,3 +7,5 @@ const { signup } = require('../controllers/user');
 
 // Signup route
 router.post('/signup', validateSignUp, signup);
+
+module.exports = router;
