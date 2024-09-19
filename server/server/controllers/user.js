@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-
 const  User = require('../models/user');
 
 //Add code to sign up the user
@@ -44,7 +43,6 @@ const signin = async (req, res) => {
         res.status(500).send({ error: 'Error signing in' });
     }
 };
-
 
 // Sign out the user by destroying the session
 const signout = (req, res) => {
