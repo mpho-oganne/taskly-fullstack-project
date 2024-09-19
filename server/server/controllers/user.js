@@ -1,11 +1,10 @@
-import User from '../models/user';
-import bcrypt from 'bcryptjs/dist/bcrypt';
-import dbConnect from '../db/connection';
+const bcrypt = require('bcryptjs');
+
+const  User = require('../models/user');
 
 //Add code to sign up the user
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
     try{
-        await dbConnect();
         const { name, email, password } = req.body;
 
         const userExists = await User.findOne({ email });
@@ -15,8 +14,7 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new User({ name, email, hashedPassword });
-
+        const newUser = new User({ name, email, password: hashedPassword });
         await newUser.save();
 
         return res.status(200).json({ message: 'User created successfully' });
