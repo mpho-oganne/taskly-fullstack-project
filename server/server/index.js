@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 require("dotenv").config();
+const router = express.Router();
 
 const cookieParser = require("cookie-parser");
 const { connectToDb } = require("./db/connection");
@@ -27,6 +28,7 @@ app.use(session({
 }));
 
 // app.use("/user", routes);
+app.use('/user', routes);
 
 connectToDb((err) => {
   if (err) {
