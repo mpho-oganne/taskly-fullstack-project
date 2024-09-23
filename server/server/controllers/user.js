@@ -54,17 +54,32 @@ const signin = async (req, res) => {
 // Sign out the user by destroying the session
 const signout = (req, res) => {
     req.session.destroy(err => {
-        if (err) {
-            console.error('Error signing out:', err);
-            return res.status(500).send({ error: 'Error signing out' });
-        }
-
-        res.redirect('/signup'); 
+      if (err) {
+        console.error('Error signing out:', err);
+        return res.status(500).send({ error: 'Error signing out' });
+      }
+  
+      res.status(200).send({ message: 'Signed out successfully' });
     });
-};
+  };
 
 // Get signed in user data/profile using their id
 const getUser = async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        if (!userId) {
+          return res.status(401).send({ error: 'Unauthorized' });
+        }
+    
+        const user = await User.findById(userId).select('name email profilePicture');
+        if (!user) {
+          return res.status(404).send({ error: 'User not found' });
+        }
+    
+        res.send({ user });
+      } catch (error) {
+        res.status(500).send({ error: 'Error getting user info' });
+      }
 };
 
 // Update signed in user data/profile
