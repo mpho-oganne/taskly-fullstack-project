@@ -62,6 +62,30 @@ const getUser = async (req, res) => {
 
 // Update signed in user data/profile
 const updateUser = async (req, res) => {
+    const { name, password } = req.body;
+    try {
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).send({ error: 'User not authenticated' });
+        }
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ error: 'User not found' });
+        }
+        if (name) {
+            user.name = name;
+        }
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user.password = hashedPassword;
+        }
+        await user.save();
+
+        return res.status(200).json({ message: 'User updated successfully', user});
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ error: 'Server error' });
+    }
 };
 
 // Generate report based off user's tasks
