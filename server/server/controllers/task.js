@@ -103,7 +103,7 @@ const setReminder = async (req, res) => {
 
         const job = cron.schedule(parsedReminderTime, async () => {
             try {
-                console.log(Sending reminder for task ${taskId});
+                console.log(`Sending reminder for task ${taskId}`);
                 await Reminder.findByIdAndUpdate(newReminder._id, { isSent: true });
                 job.stop();
             } catch (error) {
@@ -118,7 +118,30 @@ const setReminder = async (req, res) => {
     }
 };
 
+// Filter tasks
+const filterTasks = async (req, res) => {
+  const { dueDate, priorityLevel, status, categoryId } = req.query;
+  const userId = req.session.userId;
 
+  const filterCriteria = { userId };
+
+  if (dueDate) filterCriteria.dueDate = dueDate;
+  if (priorityLevel) filterCriteria.priorityLevel = priorityLevel;
+  if (status) filterCriteria.status = status;
+  if (categoryId) filterCriteria.categoryId = categoryId;
+
+  try {
+    const tasks = await Task.find(filterCriteria);
+
+    if (tasks.length === 0) {
+      return res.status(404).send({ message: 'No tasks found matching your filter criteria' });
+    }
+
+    res.status(200).send(tasks);
+  } catch (error) {
+    res.status(500).send({ message: 'Error filtering tasks' });
+  }
+};
 
 module.exports = {
     createTask,
@@ -126,5 +149,6 @@ module.exports = {
     getTaskById,
     getAllTasks,
     deleteTask,
-    setReminder
+    setReminder,
+    filterTasks
 };
