@@ -1,130 +1,152 @@
-const Task = require('../models/task'); 
+const Task = require('../models/task');
+const Category = require('../models/category');
 
-const createTask = async (req, res) => {
-    try {
-        const { title, description, dueDate, priorityLevel, status, categoryId } = req.body;
-        const task =  new Task({
-        title,
-        description,
-        dueDate,
-        priorityLevel,
-        status,
-        categoryId,
-        userId: req.session.userId });
+// Create a new task
+const createTask = async (req, res) => 
+  {
+  try {
+    const userId = req.session.userId; // Get userId from session 
 
-      await task.save();
-      res.status(201).send(task);
-    } catch (error) {
-      res.status(400).send(error);
+    if (!userId) 
+      {
+      return res.status(401).send({ error: 'Unauthorized, no user with that namee or password' });
     }
-  };
-  
-  // Update a task
-  const updateTask = async (req, res) => {
-    try {
-      const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-      if (!task) {
-        return res.status(404).send({ message: "Task not found" });
-      }
-      res.status(200).send(task);
-    } catch (error) {
-      res.status(400).send(error);
+
+    const { title, description, dueDate, priorityLevel, categoryId } = req.body; // defining my req.body
+
+    // check category using categoryid 
+    const category = await Category.findById(categoryId);
+    if (!category) 
+      {
+      return res.status(404).send({ error: 'Category not found' });
     }
-  };
-  
-  // Get a task by its ID
-  const getTaskById = async (req, res) => {
-    try {
-      const task = await Task.findById(req.params.id);
-      if (!task) {
-        return res.status(404).send({ message: "Task not found" });
-      }
-      res.status(200).send(task);
-    } catch (error) {
-      res.status(500).send({ message: "Opssie can't seem to get the task"});
-    }
-  };
-  
-  // Get tasks by userId
-  const getAllTasks = async (req, res) => {
-    try {
-      const userId = req.params.userId;  // Extract userId from URL parameters
-      const tasks = await Task.find({ userId }); // Find tasks by userId
-      if (tasks.length === 0) {
-        return res.status(404).send({ message: "No tasks found for this user" });
-      }
-      res.status(200).send(tasks);
-    } catch (error) {
-      res.status(500).send({ message: "Opssie can't seem to get the list of tasks"});
-    }
-  };
-  
-  // Delete a task
-  const deleteTask = async (req, res) => {
-    try {
-      const task = await Task.findByIdAndDelete(req.params.id);
-      if (!task) {
-        return res.status(404).send({ message: "Task not found" });
-      }
-      res.status(200).send({ message: "Task deleted successfully" });
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  };
 
-//Optionally set a reminder
+    // Create the task with userId included
+    const task = new Task
+    ({
+      title,
+      description,
+      dueDate,
+      priorityLevel,
+      categoryId,
+      userId 
+    });
 
-const setReminder = async (req, res) => {
-    const { taskId, reminderTime } = req.body;
-
-    try {
-        const task = await Task.findById(taskId);
-        if (!task) {
-            return res.status(404).send({ error: 'Task not found' });
-        }
-
-        const parsedReminderTime = new Date(reminderTime);
-
-        const existingReminder = task.reminders.find(
-            (reminder) => reminder.reminderTime.getTime() === parsedReminderTime.getTime()
-        );
-
-        if (existingReminder) {
-            return res.status(400).send({ error: 'Reminder already exists for this time' });
-        }
-
-        const newReminder = new Reminder({
-            reminderTime: parsedReminderTime,
-            isSent: false,
-        });
-
-        task.reminders.push(newReminder);
-        await task.save();
-
-        const job = cron.schedule(parsedReminderTime, async () => {
-            try {
-                console.log(Sending reminder for task ${taskId});
-                await Reminder.findByIdAndUpdate(newReminder._id, { isSent: true });
-                job.stop();
-            } catch (error) {
-                console.error('Error sending reminder:', error);
-            }
-        });
-
-        res.status(200).send({ message: 'Reminder set successfully', task });
-    } catch (error) {
-        console.error('Error setting reminder:', error);
-        res.status(500).send({ error: 'Error setting reminder' });
-    }
+    await task.save();
+    res.status(201).send(task);
+  } catch (error) 
+  {
+    res.status(400).send({ error: 'Error creating task', details: error });
+  }
 };
 
+// Update a task by its ID
+const updateTask = async (req, res) => {
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, 
+      { new: true, runValidators: true });
+    if (!task) 
+      {
+      return res.status(404).send({ message: "Task not found" });
+    }
+    res.status(200).send(task);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
 
+// Get a task by its ID
+const getTaskById = async (req, res) => 
+  {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+      return res.status(404).send({ message: "Task not found" });
+    }
+    res.status(200).send(task);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+// Get tasks for the logged-in user
+const getTasks = async (req, res) =>
+   {
+  try {
+    const userId = req.session.userId; // Get userId from session
+
+    if (!userId) 
+      {
+      return res.status(401).send({ error: 'Unauthorized, no user session found' });
+    }
+
+    // Fetch tasks for the logged-in user using their userID obviously 
+    const tasks = await Task.find({ userId });
+
+    res.status(200).send(tasks);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+// Delete a task by its ID
+const deleteTask = async (req, res) => 
+  {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id);
+    if (!task) {
+      return res.status(404).send({ message: "Task not found" });
+    }
+    res.status(200).send({ message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+// Optionally set a reminder for a task
+const setReminder = async (req, res) => {
+  const { taskId, reminderTime } = req.body;
+
+  try {
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).send({ error: 'Task not found' });
+    }
+
+    const parsedReminderTime = new Date(reminderTime);
+
+    // Check if a reminder already exists for this time
+    const existingReminder = task.reminders.find(
+      (reminder) => reminder.reminderTime.getTime() === parsedReminderTime.getTime()
+    );
+
+    if (existingReminder) {
+      return res.status(400).send({ error: 'Reminder already exists for this time' });
+    }
+
+    // Add the new reminder
+    const newReminder = {
+      reminderTime: parsedReminderTime,
+      isSent: false,
+    };
+
+    task.reminders.push(newReminder);
+    await task.save();
+
+    // Handle reminder notification logic here, if applicable
+
+    res.status(200).send({ message: 'Reminder set successfully', task });
+  } catch (error) {
+    console.error('Error setting reminder:', error);
+    res.status(500).send({ error: 'Error setting reminder' });
+  }
+};
 
 module.exports = {
-    createTask,
-    updateTask,
-    getTaskById,
-    getAllTasks,
-    deleteTask,
-    setReminder
+  createTask,
+  updateTask,
+  getTaskById,
+  getTasks,
+  deleteTask,
+  setReminder,
 };
