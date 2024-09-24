@@ -1,28 +1,76 @@
 const Task = require('../models/task'); 
 
-const cron = require('node-cron');
-
-//create a task
 const createTask = async (req, res) => {
-};
+    try {
+        const { title, description, dueDate, priorityLevel, status, categoryId } = req.body;
+        const task =  new Task({
+        title,
+        description,
+        dueDate,
+        priorityLevel,
+        status,
+        categoryId,
+        userId: req.session.userId });
 
-//update a task
-const updateTask = async (req, res) => {
-};
-
-//get task by id 
-
-const getTaskById = async (req, res) => {
-
-};
-
-//get all tasks
-const getTasks = async (req, res) => {
-};
-
-//delete a task
-const deleteTask = async (req, res) => {
-};
+      await task.save();
+      res.status(201).send(task);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  };
+  
+  // Update a task
+  const updateTask = async (req, res) => {
+    try {
+      const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+      if (!task) {
+        return res.status(404).send({ message: "Task not found" });
+      }
+      res.status(200).send(task);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  };
+  
+  // Get a task by its ID
+  const getTaskById = async (req, res) => {
+    try {
+      const task = await Task.findById(req.params.id);
+      if (!task) {
+        return res.status(404).send({ message: "Task not found" });
+      }
+      res.status(200).send(task);
+    } catch (error) {
+      res.status(500).send({ message: "Opssie can't seem to get the task"});
+    }
+  };
+  
+  // Get tasks by userId
+  const getAllTasks = async (req, res) => {
+    try {
+      const userId = req.params.userId;  // Extract userId from URL parameters
+      const tasks = await Task.find({ userId }); // Find tasks by userId
+      if (tasks.length === 0) {
+        return res.status(404).send({ message: "No tasks found for this user" });
+      }
+      res.status(200).send(tasks);
+    } catch (error) {
+      res.status(500).send({ message: "Opssie can't seem to get the list of tasks"});
+    }
+  };
+  
+  // Delete a task
+  const deleteTask = async (req, res) => {
+    try {
+      const task = await Task.findByIdAndDelete(req.params.id);
+      if (!task) {
+        return res.status(404).send({ message: "Task not found" });
+      }
+      res.status(200).send({ message: "Task deleted successfully" });
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  };
 
 //Optionally set a reminder
 
@@ -55,7 +103,7 @@ const setReminder = async (req, res) => {
 
         const job = cron.schedule(parsedReminderTime, async () => {
             try {
-                console.log(`Sending reminder for task ${taskId}`);
+                console.log(Sending reminder for task ${taskId});
                 await Reminder.findByIdAndUpdate(newReminder._id, { isSent: true });
                 job.stop();
             } catch (error) {
@@ -76,7 +124,7 @@ module.exports = {
     createTask,
     updateTask,
     getTaskById,
-    getTasks,
+    getAllTasks,
     deleteTask,
     setReminder
 };
