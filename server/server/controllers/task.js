@@ -143,6 +143,32 @@ const filterTasks = async (req, res) => {
   }
 };
 
+// Search filter
+
+// Search tasks
+const searchTasks = async (req, res) => {
+  const { keyword } = req.query;
+  const userId = req.session.userId;
+
+  try {
+    const tasks = await Task.find({
+      userId,
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+      ],
+    });
+
+    if (tasks.length === 0) {
+      return res.status(404).send({ message: 'No tasks found matching your search criteria' });
+    }
+
+    res.status(200).send(tasks);
+  } catch (error) {
+    res.status(500).send({ message: 'Error searching for tasks' });
+  }
+};
+
 module.exports = {
     createTask,
     updateTask,
