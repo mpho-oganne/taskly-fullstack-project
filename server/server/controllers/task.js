@@ -176,5 +176,6 @@ module.exports = {
     getAllTasks,
     deleteTask,
     setReminder,
-    filterTasks
+    filterTasks,
+    searchTasks
 };
