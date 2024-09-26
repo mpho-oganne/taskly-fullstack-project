@@ -1,16 +1,17 @@
 const express = require('express');
-
+const auth = require('../middleware/auth');
 const { validateSignUp } = require('../validation/signup');
 
 const router = express.Router();
 const {
     createTask,
     updateTask,
-    getTasks,
+    getAllTasks,
     deleteTask,
     setReminder,
     filterTasks,
-    searchTasks
+    searchTasks,
+    getTaskById
 
   } = require('../controllers/task');
 const { signup, signin, getUser, updateUser, signout } = require('../controllers/user');
@@ -18,19 +19,19 @@ const { signup, signin, getUser, updateUser, signout } = require('../controllers
 // Signup route
 router.post('/signup', validateSignUp, signup);
 router.post('/signin', signin);
-router.post('/signout', signout);
-router.get('/', getUser);
-router.put('/update', updateUser);
+router.post('/signout', auth, signout);
+router.get('/', auth, getUser);
+router.put('/update', auth, updateUser);
 
 // Task routes
-router.post('/create', createTask);
-router.put('/update/:id', updateTask);
-router.get('/:id')
-router.get('/tasks', getTasks);
-router.delete('/delete/:id', deleteTask)
-router.post('/setReminder', setReminder);
-router.get('/filter', filterTasks); 
-router.get('/search', searchTasks); 
+router.post('/create', auth, createTask);
+router.put('/update/:id', auth, updateTask);
+router.get('/:id', auth, getTaskById);
+router.get('/tasks', getAllTasks);
+router.delete('/delete/:id', auth, deleteTask)
+router.post('/setReminder', auth, setReminder);
+router.get('/filter', auth, filterTasks); 
+router.get('/search', auth, searchTasks); 
 
 // 
 
