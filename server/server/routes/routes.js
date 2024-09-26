@@ -22,8 +22,8 @@ router.put('/update', updateUser);
 // Task routes
 router.post('/create', createTask);
 router.put('/update/:id', updateTask);
-router.get('/:id')
-router.get('/', getTasks);
+router.get('/:id') // please fix this route Konie ( /:id, getTaskById) this route is the one that worked when I was testing on postman
+router.get('/', getTasks); 
 router.delete('/delete/:id', deleteTask)
 router.post('/setReminder', setReminder);
 
