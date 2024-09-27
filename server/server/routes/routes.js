@@ -9,9 +9,7 @@ const {
     getTasks,
     deleteTask,
     setReminder,
-    filterTasks,
-    searchTasks
-
+    getTaskById
   } = require('../controllers/task');
 const { signup, signin, getUser, updateUser, signout } = require('../controllers/user');
 
@@ -25,14 +23,12 @@ router.put('/update', updateUser);
 // Task routes
 router.post('/create', createTask);
 router.put('/update/:id', updateTask);
-router.get('/:id')
-router.get('/tasks', getTasks);
+router.get('/:id', getTaskById) 
+router.get('/', getTasks); 
 router.delete('/delete/:id', deleteTask)
 router.post('/setReminder', setReminder);
-router.get('/filter', filterTasks); 
-router.get('/search', searchTasks); 
 
-// 
+
 
 
 module.exports = router;
