@@ -132,7 +132,6 @@ const setReminder = async (req, res) => {
   }
 };
 
-// Error handling function
 const handleServerError = (error, res) => {
   console.error('Error setting reminder:', error);
   res.status(500).send({ error: 'Error setting reminder' });
