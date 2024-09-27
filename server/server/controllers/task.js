@@ -1,4 +1,8 @@
 const Task = require('../models/task'); 
+const validator = require('validator'); 
+const cron = require('node-cron');
+
+
 
 const createTask = async (req, res) => {
     try {
@@ -73,49 +77,91 @@ const createTask = async (req, res) => {
   };
 
 //Optionally set a reminder
-
 const setReminder = async (req, res) => {
-    const { taskId, reminderTime } = req.body;
+  const { taskId, reminderTime } = req.body;
 
-    try {
-        const task = await Task.findById(taskId);
-        if (!task) {
-            return res.status(404).send({ error: 'Task not found' });
-        }
-
-        const parsedReminderTime = new Date(reminderTime);
-
-        const existingReminder = task.reminders.find(
-            (reminder) => reminder.reminderTime.getTime() === parsedReminderTime.getTime()
-        );
-
-        if (existingReminder) {
-            return res.status(400).send({ error: 'Reminder already exists for this time' });
-        }
-
-        const newReminder = new Reminder({
-            reminderTime: parsedReminderTime,
-            isSent: false,
-        });
-
-        task.reminders.push(newReminder);
-        await task.save();
-
-        const job = cron.schedule(parsedReminderTime, async () => {
-            try {
-                console.log(`Sending reminder for task ${taskId}`);
-                await Reminder.findByIdAndUpdate(newReminder._id, { isSent: true });
-                job.stop();
-            } catch (error) {
-                console.error('Error sending reminder:', error);
-            }
-        });
-
-        res.status(200).send({ message: 'Reminder set successfully', task });
-    } catch (error) {
-        console.error('Error setting reminder:', error);
-        res.status(500).send({ error: 'Error setting reminder' });
+  try {
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).send({ error: 'Task not found' });
     }
+
+    // Reminder time validation
+    const parsedReminderTime = new Date(reminderTime);
+    if (isNaN(parsedReminderTime.getTime())) {
+      return res.status(400).send({ error: 'Invalid reminder time format' });
+    }
+    if (parsedReminderTime < new Date()) {
+      return res.status(400).send({ error: 'Reminder time cannot be in the past' });
+    }
+
+    // Check for existing reminder
+    const existingReminder = task.reminders.find(
+      (reminder) => reminder.reminderTime && reminder.reminderTime.getTime() === parsedReminderTime.getTime()
+    );
+    if (existingReminder) {
+      return res.status(400).send({ error: 'Reminder already exists for this time' });
+    }
+
+    // Create new reminder matching the schema
+    const newReminder = {
+      id: mongoose.Types.ObjectId(), 
+      reminderTime: parsedReminderTime,
+      isSent: false,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+
+    task.reminders.push(newReminder);
+    await task.save();
+
+    // Schedule cron job
+    const job = cron.schedule(parsedReminderTime, async () => {
+      try {
+        await sendReminder(taskId, newReminder);
+      } catch (error) {
+        handleReminderError(error, `Error sending reminder for task ${taskId}`);
+      }
+    }, { scheduled: false });
+
+    job.run();
+
+    res.status(200).send({ message: 'Reminder set successfully', task });
+  } catch (error) {
+    handleServerError(error, res);
+  }
+};
+
+// Error handling function
+const handleServerError = (error, res) => {
+  console.error('Error setting reminder:', error);
+  res.status(500).send({ error: 'Error setting reminder' });
+};
+
+const handleReminderError = (error, message) => {
+  console.error(message, error);
+};
+
+// Function to send reminder
+const sendReminder = async (taskId, newReminder) => {
+  console.log(`Sending reminder for reminder at ${newReminder.reminderTime}`);
+  
+  const task = await Task.findOneAndUpdate(
+    { _id: taskId, "reminders.id": newReminder.id },
+    { 
+      $set: { 
+        "reminders.$.isSent": true,
+        "reminders.$.updatedAt": Date.now() 
+      } 
+    },
+    { new: true }
+  );
+
+  if (!task) {
+    console.error(`Task or reminder not found for reminder at ${newReminder.reminderTime}`);
+  } else {
+    console.log(`Reminder for task ${taskId} marked as sent`);
+  }
 };
 
 // Filter tasks
