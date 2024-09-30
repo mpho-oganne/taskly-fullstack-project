@@ -12,11 +12,10 @@ const {
     filterTasks,
     searchTasks,
     getTaskById
-
-  } = require('../controllers/task');
+} = require('../controllers/task');
 const { signup, signin, getUser, updateUser, signout } = require('../controllers/user');
 
-// Signup route
+// Signup routes
 router.post('/signup', validateSignUp, signup);
 router.post('/signin', signin);
 router.post('/signout', auth, signout);
@@ -30,10 +29,7 @@ router.get('/:id', auth, getTaskById);
 router.get('/tasks', auth, getAllTasks);
 router.delete('/delete/:id', auth, deleteTask)
 router.post('/setReminder', auth, setReminder);
-router.get('/filter', auth, filterTasks); 
-router.get('/search', auth, searchTasks); 
-
-// 
-
+router.get('/filter', auth, filterTasks);
+router.get('/search', auth, searchTasks);
 
 module.exports = router;
