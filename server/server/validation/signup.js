@@ -17,4 +17,4 @@ const validateSignUp = async (req, res, next) => {
     await next();
 };
 
-module.exports = {validateSignUp};
+module.exports = { validateSignUp };
