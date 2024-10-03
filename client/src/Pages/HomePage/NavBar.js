@@ -7,12 +7,8 @@ export default function NavBar() {
       <div className="flex items-center space-x-2">
         <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg"></div>
         <Link to="/" className="text-xl font-bold text-gray-800">Taskly</Link>
-        <span className="text-sm text-gray-600 hidden sm:inline-block">Your personal task manager</span>
       </div>
       <nav className="flex items-center space-x-4">
-        <Link to="/" className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
-          Home
-        </Link>
         <Link to="/signin" className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium">
           Log in
         </Link>
