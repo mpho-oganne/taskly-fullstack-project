@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Home() {
+
+export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] bg-gray-50 text-center px-4">
       <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
@@ -24,3 +25,5 @@ export default function Home() {
     </div>
   )
 }
+
+
