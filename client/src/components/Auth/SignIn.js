@@ -16,7 +16,7 @@ const SignIn = () => {
 
     try {
       // Make a POST request to  backend for sign-in
-      const response = await axios.post('http://localhost:3001/signin', { email, password });
+      const response = await axios.post('http://localhost:3001/user/signin', { email, password }); // fixed route from 3001/signin to 3001/user/signin
       
       // Handle successful sign-in by storing the token in localStorage
       localStorage.setItem('token', response.data.token);
