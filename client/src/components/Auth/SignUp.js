@@ -16,7 +16,7 @@ const SignUp = () => {
 
     try {
       // Make the signup request
-      const response = await axios.post('/api/signup', { name, email, password });
+      const response = await axios.post('http://localhost:3001/user/signup', { name, email, password });
       if (response.data.success) {
         // Navigate to dashboard if signup is successful
         navigate('/dashboard');
