@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function Navbar() {
@@ -6,11 +7,7 @@ function Navbar() {
     <nav className="bg-gray-800 h-screen w-64 p-6 flex flex-col items-center">
       {/* Profile Section */}
       <div className="mb-4 flex flex-col items-center text-center">
-        <img
-          src="https://via.placeholder.com/80" 
-          alt="User Avatar" 
-          className="w-20 h-20 rounded-full mb-2"
-        />
+      <div className="w-32 h-32 bg-gray-300 rounded-full mb-4"></div>
         <h2 className="text-white text-lg">Name Surname</h2>
         <p className="text-gray-400 text-sm">email.address@example.com</p>
       </div>
@@ -50,7 +47,7 @@ function Navbar() {
         <li className="w-full">
           <a href="#profile" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
             <i className="fas fa-user text-xl"></i>
-            <span>Profile</span>
+            <Link to="/profile">Profile</Link>
           </a>
         </li>
       </ul>
