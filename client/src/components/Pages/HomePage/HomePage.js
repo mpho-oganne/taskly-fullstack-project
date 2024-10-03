@@ -1,9 +1,9 @@
 import React from 'react';
 
 const HomePage = () => {
-  return (
+  return 
     
-  );
+  ;
 };
 
 export default HomePage;
