@@ -1,5 +1,4 @@
 const Task = require('../models/task');
-const validator = require('validator');
 const cron = require('node-cron');
 const mongoose = require('mongoose');
 
