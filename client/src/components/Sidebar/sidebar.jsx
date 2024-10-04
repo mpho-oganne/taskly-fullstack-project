@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-function Navbar() {
+function Sidebar() {
   return (
     <nav className="bg-gray-800 h-screen w-64 p-6 flex flex-col items-center">
       
@@ -47,4 +47,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Sidebar;
