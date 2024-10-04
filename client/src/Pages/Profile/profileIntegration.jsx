@@ -10,7 +10,7 @@ function ProfileInter() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch('/user/profile', {
+        const response = await fetch('http://localhost:3001/user/profile', {
           method: 'GET',
           credentials: 'include',
         });
@@ -21,6 +21,7 @@ function ProfileInter() {
         
         const data = await response.json();
         setName(data.name);
+        console.log(data.name);
       } catch (error) {
         console.error('Error fetching profile data:', error);
       }
