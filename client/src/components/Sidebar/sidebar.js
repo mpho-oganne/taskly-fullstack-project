@@ -19,11 +19,11 @@ function Sidebar() {
           </a>
         </li>
         <li className="w-full">
-          <a href="#task-list" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-            <i className="fas fa-tasks text-xl"></i>
-            <span>Tasks</span>
-          </a>
-        </li>
+          <Link to="/update-task/:taskId" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+            <i className="fas fa-user text-xl"></i>
+            <span>Manage Tasks</span>
+          </Link>
+          </li>
         <li className="w-full">
           <a href="#calendar" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
             <i className="fas fa-calendar-alt text-xl"></i>

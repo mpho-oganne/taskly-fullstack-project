@@ -7,6 +7,7 @@ import Layout from './pagesLayout';
 import SignIn from './Components/Auth/SignIn';
 import SignUp from './Components/Auth/SignUp';
 import Footer from './Pages/HomePage/Footer';
+import UpdateTaskPage from './Pages/Task/updatetaskpage';
 
 const App = () => {
   return (
@@ -20,7 +21,7 @@ const App = () => {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/dashboard" element={<Layout />} /> {/*The other sections need to be added here */}
             <Route path="/profile" element={<Profile />} /> {/* This needs to be wrapped with the navbar so that it doesn't show on its own*/}
-          
+            <Route path="/update-task/:taskId" element={<UpdateTaskPage />} />
           </Routes>
         </main>
         <Footer /> {/*The footer, navbar and homepage need to be wrapped together */}
