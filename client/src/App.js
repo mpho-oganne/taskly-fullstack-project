@@ -7,6 +7,7 @@ import Layout from './pagesLayout';
 import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
 import Footer from './Pages/HomePage/Footer';
+import UpdateTaskPage from './Pages/Task/updatetaskpage';
 
 const App = () => {
   return (
@@ -18,10 +19,9 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/dashboard" element={<Layout />} />{" "}
-            {/*The other sections need to be added here */}
-            <Route path="/profile" element={<Profile />} />{" "}
-            {/* This needs to be wrapped with the navbar so that it doesn't show on its own*/}
+            <Route path="/dashboard" element={<Layout />} /> {/*The other sections need to be added here */}
+            <Route path="/profile" element={<Profile />} /> {/* This needs to be wrapped with the navbar so that it doesn't show on its own*/}
+            <Route path="/update-task/:taskId" element={<UpdateTaskPage />} />
           </Routes>
         </main>
         <Footer />{" "}

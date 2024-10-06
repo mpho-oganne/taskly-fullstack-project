@@ -1,6 +1,7 @@
 import React from 'react';
-import Sidebar from './components/Sidebar/sidebar';
-import Profile from './Pages/Profile/profile';  
+import Sidebar from './Components/Sidebar/sidebar';
+//import Profile from './Pages/Profile/profile';
+ 
 
 function Layout() {
   return (
@@ -10,11 +11,10 @@ function Layout() {
 
       {/* pages */}
       <div className="flex-grow">
-        <Profile />
+        
       </div>
     </div>
   );
 }
 
 export default Layout;
-
