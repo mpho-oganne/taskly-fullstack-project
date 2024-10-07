@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+// code looks good, suggestion made
 export default function UpdateTaskForm({ taskId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,6 +21,7 @@ export default function UpdateTaskForm({ taskId }) {
           throw new Error('Failed to fetch task data');
         }
         const data = await response.json();
+        // I suggest destructuring this part to make code look better
         setFormData({
           title: data.title || '',
           description: data.description || '',
