@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from './Components/Sidebar/sidebar';
+import Sidebar from './components/Sidebar/sidebar';
 import Profile from './Pages/Profile/profile';  
 
 function Layout() {

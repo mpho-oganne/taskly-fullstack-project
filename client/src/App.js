@@ -4,8 +4,8 @@ import HomePage from './Pages/HomePage/HomePage';
 import Navbar from './Pages/HomePage/NavBar';
 import Profile from './Pages/Profile/profile';
 import Layout from './pagesLayout';
-import SignIn from './Components/Auth/SignIn';
-import SignUp from './Components/Auth/SignUp';
+import SignIn from './components/Auth/SignIn';
+import SignUp from './components/Auth/SignUp';
 import Footer from './Pages/HomePage/Footer';
 
 const App = () => {

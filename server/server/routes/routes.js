@@ -25,7 +25,7 @@ router.put('/update', auth, updateUser);
 // Task routes
 router.post('/create', auth, createTask);
 router.put('/update/:id', auth, updateTask);
-router.get('/:id', auth, getTaskById);
+router.get('/getTask/:id', auth, getTaskById);
 router.get('/tasks', auth, getAllTasks);
 router.delete('/delete/:id', auth, deleteTask)
 router.post('/setReminder', auth, setReminder);
