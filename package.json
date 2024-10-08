@@ -2,6 +2,10 @@
   "dependencies": {
     "express": "^4.21.0",
     "mongoose": "^8.6.3",
+    "node-cron": "^3.0.3",
     "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

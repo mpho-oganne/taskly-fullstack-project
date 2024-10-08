@@ -1,6 +1,6 @@
-import React from "react";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Profile from "./Pages/Profile/profile";
+import React from 'react';
+import Sidebar from './components/Sidebar/sidebar';
+import Profile from './Pages/Profile/profile';  
 
 function Layout() {
   return (
