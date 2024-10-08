@@ -25,11 +25,22 @@ const createTask = async (req, res) => {
 // Update a task
 const updateTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    if (!task) {
-      return res.status(404).send({ message: "Task not found" });
+    const userId = req.session.userId;
+    if (!userId) {
+      return res.status(401).send({ message: "User not logged in" });
     }
-    res.status(200).send(task);
+
+    // Find the task by ID and ensure it belongs to the logged-in user
+    const task = await Task.findOne({ _id: req.params.id, userId });
+    
+    if (!task) {
+      return res.status(404).send({ message: "Task not found or you do not have permission to update it" });
+    }
+
+    // Update the task
+    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    
+    res.status(200).send(updatedTask);
   } catch (error) {
     res.status(400).send(error);
   }
