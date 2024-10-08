@@ -11,7 +11,6 @@ function Layout() {
       {/* pages */}
       <div className="flex-grow">
         <Profile />
-
       </div>
     </div>
   );
