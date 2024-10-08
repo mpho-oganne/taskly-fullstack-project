@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// code looks good, suggestion made
 export default function CreateTaskForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,7 +38,7 @@ export default function CreateTaskForm() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create task');
+        throw new Error('Failed to create task'); // generic error message, helpful to parse through response and see actual error
       }
 
       setSuccess(true);
