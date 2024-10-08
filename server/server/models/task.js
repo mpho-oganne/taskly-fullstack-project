@@ -34,12 +34,7 @@ const taskSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", // Referencing the User model
-    required: true,
-  },
-  categoryId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category", // Referencing the Category model
-    required: true,
+    required: false,
   },
   title: {
     type: String,
@@ -62,7 +57,7 @@ const taskSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["pending", "completed", "overdue"],
+    enum: ["pending", "in-progress", "completed", "overdue"],
   },
   reminders: [reminderSchema], // Embedding the Reminder schema
   createdAt: {
