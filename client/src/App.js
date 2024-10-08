@@ -4,10 +4,9 @@ import HomePage from './Pages/HomePage/HomePage';
 import Navbar from './Pages/HomePage/NavBar';
 import Profile from './Pages/Profile/profile';
 import Layout from './pagesLayout';
-import SignIn from './Components/Auth/SignIn';
-import SignUp from './Components/Auth/SignUp';
+import SignIn from './components/Auth/SignIn';
+import SignUp from './components/Auth/SignUp';
 import Footer from './Pages/HomePage/Footer';
-import UpdateTaskPage from './Pages/Task/updatetaskpage';
 
 const App = () => {
   return (
@@ -19,12 +18,14 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/dashboard" element={<Layout />} /> {/*The other sections need to be added here */}
-            <Route path="/profile" element={<Profile />} /> {/* This needs to be wrapped with the navbar so that it doesn't show on its own*/}
-            <Route path="/update-task/:taskId" element={<UpdateTaskPage />} />
+            <Route path="/dashboard" element={<Layout />} />{" "}
+            {/*The other sections need to be added here */}
+            <Route path="/profile" element={<Profile />} />{" "}
+            {/* This needs to be wrapped with the navbar so that it doesn't show on its own*/}
           </Routes>
         </main>
-        <Footer /> {/*The footer, navbar and homepage need to be wrapped together */}
+        <Footer />{" "}
+        {/*The footer, navbar and homepage need to be wrapped together */}
       </div>
     </Router>
   );
