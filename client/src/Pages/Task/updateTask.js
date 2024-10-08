@@ -21,12 +21,14 @@ export default function UpdateTaskForm({ taskId }) {
           throw new Error('Failed to fetch task data');
         }
         const data = await response.json();
+        const { title = '', description = '', dueDate, priorityLevel = 'medium', status = 'pending' } = data;
+
         setFormData({
-          title: data.title || '',
-          description: data.description || '',
-          dueDate: data.dueDate ? data.dueDate.split('T')[0] : '',
-          priorityLevel: data.priorityLevel || 'medium',
-          status: data.status || 'pending'
+          title,
+          description,
+          dueDate: dueDate ? dueDate.split('T')[0] : '',
+          priorityLevel,
+          status,
         });
       } catch (err) {
         setError(err.message);
