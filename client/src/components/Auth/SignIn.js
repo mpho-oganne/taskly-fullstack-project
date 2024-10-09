@@ -1,100 +1,74 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../UserContext";
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const { setUser, setIsAuthenticated } = useContext(UserContext);
 
-  // Handle form submission
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();  // Prevents default form submission behavior
-    setLoading(true);  // Set loading state to true while processing
-    setError('');  // Clear previous error messages
-
+    e.preventDefault();
     try {
-      // Make POST request to the server for sign-in
-      const response = await axios.post('http://localhost:3001/user/signin', { email, password });
-      
-      // Store the token in localStorage
-      localStorage.setItem('token', response.data.token);
-      
-      // Redirect user to the dashboard
-      navigate('/dashboard');
-    } catch (err) {
-      // Set error message if authentication fails
-      setError('Invalid email or password');
-    } finally {
-      setLoading(false);  // Stop loading state
+      const response = await axios.post(
+        "http://localhost:3001/user/signin",
+        formData,
+        { withCredentials: true }
+      );
+
+      if (response && response.data) {
+        setMessage(response.data.message);
+        console.log("User signed in successfully:", response.data.user);
+
+        // Store user details in state
+        setUser(response.data.user);
+
+        // Mark user as authenticated
+        setIsAuthenticated(true);
+
+        // Redirect to dashboard
+        navigate("/dashboard");
+      } else {
+        setMessage("Unexpected response format from the server.");
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        setMessage(error.response.data.error || "Error signing in");
+      } else {
+        setMessage("An unexpected error occurred.");
+      }
+      console.error("Error signing in:", error);
     }
   };
 
-  // Navigate to the sign-up page
-  const goToSignUp = () => {
-    navigate('/signup');
-  };
-
   return (
-    <div className="flex h-screen items-center justify-center bg-[#e9ecf5]"> 
-      <div className="flex bg-[#f2f6ff] p-10 rounded-lg shadow-lg space-x-8"> 
-        
-        {/* Login Section */}
-        <div className="w-96 bg-[#f2f6ff] p-8"> 
-          <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <form onSubmit={handleSubmit} className="space-y-6"> 
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full p-3 rounded-lg bg-white"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full p-3 rounded-lg bg-white"
-              />
-            </div>
-            {error && <p className="text-red-600">{error}</p>}
-            
-            <div className="text-right mb-4"> 
-              <a
-                href="#"
-                className="text-gray-500 text-sm border border-gray-300 bg-gray-100 px-3 py-2 rounded-md hover:bg-gray-200"
-              >
-                Forgot Password
-              </a>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-400 to-pink-400 text-white py-3 rounded-lg"
-              disabled={loading}
-            >
-              {loading ? 'Signing in...' : 'Login'}
-            </button>
-          </form>
-        </div>
-
-        <div className="w-48 bg-gray-100 flex items-center justify-center rounded-r-lg">
-          <button
-            className="bg-gradient-to-r from-blue-400 to-pink-400 text-white py-3 px-6 rounded-lg"
-            onClick={goToSignUp}
-          >
-            Sign Up
-          </button>
-        </div>
-      </div>
+    <div>
+      <h2>Sign In</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">Sign In</button>
+      </form>
+      {message && <p>{message}</p>}
     </div>
   );
 };
