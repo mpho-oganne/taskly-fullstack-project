@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser, setIsAuthenticated } = useContext(UserContext);
 
@@ -16,6 +16,9 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage(""); // Clear previous error messages
+
     try {
       const response = await axios.post(
         "http://localhost:3001/user/signin",
@@ -40,35 +43,92 @@ const SignIn = () => {
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        setMessage(error.response.data.error || "Error signing in");
+        // Handle specific error messages from the server
+        const errorMessage = error.response.data.error;
+        if (errorMessage === "Invalid login credentials") {
+          setMessage("Incorrect email or password. Please try again.");
+        } else {
+          setMessage(errorMessage || "There was an issue signing in.");
+        }
       } else {
-        setMessage("An unexpected error occurred.");
+        setMessage("An unexpected error occurred. Please try again later.");
       }
-      console.error("Error signing in:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Sign In</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div
+      className="flex h-screen items-center justify-center"
+      style={{ backgroundColor: "#F3F4F6" }}
+    >
+      {/* Main container */}
+      <div className="flex w-3/4 max-w-2xl shadow-lg rounded-lg overflow-hidden">
+        {/* Left side - Login form */}
+        <div className="w-2/3 bg-white p-10">
+          <h2 className="text-3xl font-bold mb-6">Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              />
+            </div>
+            {message && <p className="text-red-500 mb-4">{message}</p>}
+            <button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-blue-400 to-purple-600 text-white font-semibold rounded-lg hover:bg-gradient-to-l transition duration-300"
+              disabled={loading}
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+
+          {/* Forgot Password Link - Positioned directly below and to the right of the login button */}
+          <div className="mt-4 text-right">
+            <Link
+              to="/forgot-password"
+              className="py-2 px-4 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition duration-300"
+            >
+              Forgot Password
+            </Link>
+          </div>
+        </div>
+
+        {/* Right side - Sign Up button in a subtler grey box */}
+        <div className="w-1/3 bg-gray-200 flex items-center justify-center p-4">
+          <div className="w-full text-center">
+            <Link to="/signup">
+              <button className="py-3 px-8 bg-gradient-to-r from-blue-400 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-gradient-to-l transition duration-300">
+                Sign Up
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
