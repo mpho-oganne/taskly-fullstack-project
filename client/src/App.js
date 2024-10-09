@@ -50,8 +50,17 @@ const App = () => {
                   <RequireAuth>
                     <Profile />
                   </RequireAuth>
-                }
+                }  
               />
+
+               <Route
+                  path="overview"
+                  element={
+                    <RequireAuth>
+                      <Overview />
+                    </RequireAuth>
+                  }
+                />
             </Routes>
           </main>
           <Footer />
