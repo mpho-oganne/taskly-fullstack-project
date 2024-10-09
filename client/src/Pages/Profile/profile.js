@@ -112,6 +112,14 @@ const Profile = () => {
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Profile</h2>
@@ -121,7 +129,7 @@ const Profile = () => {
       <div className="mb-4">
         <img
           src={
-            user.profilePicture
+            user?.profilePicture
               ? `http://localhost:3001/uploads/${user.profilePicture}`
               : "default-profile.png"
           }
@@ -129,10 +137,10 @@ const Profile = () => {
           className="w-24 h-24 rounded-full mb-4"
         />
         <p>
-          <strong>Name:</strong> {user.name}
+          <strong>Name:</strong> {user?.name || "Name not available"}
         </p>
         <p>
-          <strong>Email:</strong> {user.email}
+          <strong>Email:</strong> {user?.email || "Email not available"}
         </p>
       </div>
 
@@ -142,10 +150,10 @@ const Profile = () => {
           onClick={() => {
             setIsEditing(true);
             setUpdatedUser({
-              name: user.name,
-              email: user.email,
+              name: user?.name || "",
+              email: user?.email || "",
               password: "",
-              profilePicture: user.profilePicture,
+              profilePicture: user?.profilePicture || null,
             });
           }}
         >
