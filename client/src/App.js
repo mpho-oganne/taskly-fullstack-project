@@ -12,6 +12,9 @@ import Layout from "./pagesLayout";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import Footer from "./Pages/HomePage/Footer";
+import ManageTasks from './Pages/Task/manageTasks';
+import CreateTaskForm from './Pages/Task/createTask';
+
 import UserProvider, { UserContext } from "./UserContext"; // Import UserProvider as default and UserContext as named
 
 // RequireAuth component
@@ -36,6 +39,9 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/signin" element={<SignIn />} />
+              <Route path="/new-task" element={<CreateTaskForm />} />
+              <Route path="/dashboard" element={<Layout />} />
+              <Route path="/tasks" element={<ManageTasks />} />
               <Route
                 path="/dashboard"
                 element={
