@@ -1,91 +1,250 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { UserContext } from "../../UserContext";
 
-function Profile() {
-  const [name, setName] = useState('Name Surname');
-  const [password, setPassword] = useState('');
-  const [isEditingName, setIsEditingName] = useState(false);
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
+const Profile = () => {
+  const { user, setUser } = useContext(UserContext);
+  const [updatedUser, setUpdatedUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    profilePicture: null,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/user", {
+          withCredentials: true,
+        });
+        const userData = response.data.user;
+
+        setUser(userData);
+        setUpdatedUser({
+          name: userData.name,
+          email: userData.email,
+          password: "",
+          profilePicture: userData.profilePicture,
+        });
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to load user data");
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [setUser]);
+
+  const handleChange = (e) => {
+    setUpdatedUser({
+      ...updatedUser,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    setUpdatedUser({
+      ...updatedUser,
+      profilePicture: e.target.files[0],
+    });
+  };
+
+  const handleRemoveProfilePicture = async () => {
+    try {
+      const response = await axios.put(
+        "http://localhost:3001/user/remove-profile-picture",
+        null,
+        {
+          withCredentials: true,
+        }
+      );
+      setMessage(response.data.message);
+      setUser(response.data.user);
+      setUpdatedUser({
+        name: user.name,
+        email: user.email,
+        password: "",
+        profilePicture: null,
+      });
+    } catch (error) {
+      setMessage(error.response.data.error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", updatedUser.name);
+    formData.append("email", updatedUser.email);
+    formData.append("password", updatedUser.password);
+    if (updatedUser.profilePicture) {
+      formData.append("profilePicture", updatedUser.profilePicture);
+    }
+
+    try {
+      const response = await axios.put(
+        "http://localhost:3001/user/update",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setMessage(response.data.message);
+      setUser(response.data.user);
+      setIsEditing(false);
+      setUpdatedUser({
+        name: "",
+        email: "",
+        password: "",
+        profilePicture: null,
+      });
+    } catch (error) {
+      setMessage(error.response.data.error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Profile</h2>
 
-      <div className="w-3/4 md:w-1/2 lg:w-2/3 bg-white p-8 rounded-lg shadow-lg grid gap-6"
-           style={{ gridTemplateRows: 'auto 1fr', gridTemplateColumns: '1fr', gridTemplateAreas: `"header" "body"` }}>
-        
-        <div className="p-4 bg-gray-500 text-white rounded-md" style={{ gridArea: 'header' }}>
-          <h1 className="text-2xl font-bold text-center">Hello {name}</h1>
-          <p className="text-gray-200 text-center">You can update and manage your personal information here.</p>
-        </div>
-        
-       
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ gridArea: 'body' }}>
-         
-          <div className="flex-grow">
-            
-            <div className="mb-4">
-              <label className="block text-gray-700">Name</label>
-              {isEditingName ? (
-                <input 
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  onBlur={() => setIsEditingName(false)}
-                  className="w-full p-2 border rounded-md"
-                />
-              ) : (
-                <div 
-                  className="w-full p-2 border rounded-md bg-white cursor-pointer"
-                  onClick={() => setIsEditingName(true)}
-                >
-                  {name}
-                </div>
-              )}
-            </div>
+      {message && <p className="mb-4 text-green-600">{message}</p>}
 
-            <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
-              <div className="w-full p-2 border rounded-md bg-gray-200 cursor-not-allowed">
-                email.address@example.com
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-gray-700">Password</label>
-              {isEditingPassword ? (
-                <input 
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onBlur={() => setIsEditingPassword(false)}
-                  className="w-full p-2 border rounded-md"
-                />
-              ) : (
-                <div 
-                  className="w-full p-2 border rounded-md bg-white cursor-pointer"
-                  onClick={() => setIsEditingPassword(true)}
-                >
-                  {password ? '••••••••' : 'Click to set password'}
-                </div>
-              )}
-            </div>
-
-            <div className="flex space-x-4">
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Save</button>
-              <button className="px-4 py-2 bg-gray-400 text-white rounded-md">Reset</button>
-            </div>
-          </div>
-
-
-          <div className="flex-shrink-0 flex flex-col items-center justify-center">
-            <div className="w-40 h-40 bg-gray-300 rounded-full mb-4"></div>
-            <button className="px-4 py-2 bg-gray-500 text-white rounded-md">
-              Change Image
-            </button>
-          </div>
-        </div>
+      <div className="mb-4">
+        <img
+          src={
+            user?.profilePicture
+              ? `http://localhost:3001/uploads/${user.profilePicture}`
+              : "default-profile.png"
+          }
+          alt="Profile"
+          className="w-24 h-24 rounded-full mb-4"
+        />
+        <p>
+          <strong>Name:</strong> {user?.name || "Name not available"}
+        </p>
+        <p>
+          <strong>Email:</strong> {user?.email || "Email not available"}
+        </p>
       </div>
+
+      {!isEditing && (
+        <button
+          className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+          onClick={() => {
+            setIsEditing(true);
+            setUpdatedUser({
+              name: user?.name || "",
+              email: user?.email || "",
+              password: "",
+              profilePicture: user?.profilePicture || null,
+            });
+          }}
+        >
+          Update Details
+        </button>
+      )}
+
+      {isEditing && (
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 mt-4"
+          encType="multipart/form-data"
+        >
+          <div>
+            <label className="block text-lg mb-1">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={updatedUser.name}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+
+          <div>
+            <label className="block text-lg mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={updatedUser.email}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+
+          <div>
+            <label className="block text-lg mb-1">Password</label>
+            <input
+              type="password"
+              name="password"
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+              placeholder="Enter new password if you want to change it"
+            />
+          </div>
+
+          <div>
+            <label className="block text-lg mb-1">Profile Picture</label>
+            <input
+              type="file"
+              name="profilePicture"
+              onChange={handleFileChange}
+              className="w-full p-2 border border-gray-300 rounded-md"
+            />
+            {updatedUser.profilePicture && (
+              <button
+                type="button"
+                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 mt-2"
+                onClick={handleRemoveProfilePicture}
+              >
+                Remove Profile Picture
+              </button>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+          >
+            Save Changes
+          </button>
+
+          <button
+            type="button"
+            className="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600 ml-2"
+            onClick={() => {
+              setIsEditing(false);
+              setUpdatedUser({
+                name: user.name,
+                email: user.email,
+                password: "",
+                profilePicture: user.profilePicture,
+              });
+            }}
+          >
+            Cancel
+          </button>
+        </form>
+      )}
     </div>
   );
-}
+};
 
 export default Profile;
