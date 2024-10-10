@@ -7,6 +7,8 @@ import Layout from './pagesLayout';
 import SignIn from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
 import Footer from './Pages/HomePage/Footer';
+import ManageTasks from './Pages/Task/manageTasks';
+import CreateTaskForm from './Pages/Task/createTask';
 
 const App = () => {
   return (
@@ -18,7 +20,9 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/new-task" element={<CreateTaskForm />} />{" "}
             <Route path="/dashboard" element={<Layout />} />{" "}
+            <Route path="/tasks" element={<ManageTasks />} />
             {/*The other sections need to be added here */}
             <Route path="/profile" element={<Profile />} />{" "}
             {/* This needs to be wrapped with the navbar so that it doesn't show on its own*/}

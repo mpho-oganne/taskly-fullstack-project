@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function Dashboard() {
+export default function ManageTasks() {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('');
   const [editTask, setEditTask] = useState(null);
@@ -11,22 +10,72 @@ export default function Dashboard() {
   // Fetch tasks from the API
   useEffect(() => {
     async function fetchTasks() {
-      const response = await axios.get('http://localhost:3001/task/tasks');
-      setTasks(response.data);
+      try {
+        const response = await fetch('http://localhost:3001/task/tasks', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // include credentials for session-based auth
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setTasks(data);
+        } else {
+          console.error('Failed to fetch tasks');
+        }
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
     }
+
     fetchTasks();
   }, []);
 
   // Update task function
   const handleUpdateTask = async (updatedTask) => {
-    await axios.put(`http://localhost:3001/task/${updatedTask._id}`, updatedTask);
-    setTasks(tasks.map(task => (task._id === updatedTask._id ? updatedTask : task)));
+    try {
+      const response = await fetch(`http://localhost:3001/task/update/${updatedTask._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (response.ok) {
+        const updatedTasks = tasks.map(task => (task._id === updatedTask._id ? updatedTask : task));
+        setTasks(updatedTasks);
+        setEditTask(null);
+      } else {
+        console.error('Failed to update task');
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
   // Delete task function
   const handleDeleteTask = async (taskId) => {
-    await axios.delete(`http://localhost:3001/task/delete/${taskId}`);
-    setTasks(tasks.filter(task => task._id !== taskId));
+    try {
+      const response = await fetch(`http://localhost:3001/task/delete/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setTasks(tasks.filter(task => task._id !== taskId));
+      } else {
+        console.error('Failed to delete task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   // Filter tasks based on the selected filter criteria
@@ -79,11 +128,12 @@ export default function Dashboard() {
 
       {/* Edit Task Form (if a task is selected for editing) */}
       {editTask && (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          handleUpdateTask(editTask);
-          setEditTask(null);
-        }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleUpdateTask(editTask);
+          }}
+        >
           <h3>Edit Task</h3>
           <input
             type="text"
