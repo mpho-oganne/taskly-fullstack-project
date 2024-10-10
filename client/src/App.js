@@ -12,10 +12,11 @@ import Layout from "./pagesLayout";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import Footer from "./Pages/HomePage/Footer";
-import ManageTasks from './Pages/Task/manageTasks';
-import CreateTaskForm from './Pages/Task/createTask';
+import ManageTasks from "./Pages/Task/manageTasks";
+import CreateTaskForm from "./Pages/Task/createTask";
 
-import UserProvider, { UserContext } from "./UserContext"; // Import UserProvider as default and UserContext as named
+import UserProvider, { UserContext } from "./UserContext";
+import Calendar from "./components/Calender/calender";
 
 // RequireAuth component
 const RequireAuth = ({ children }) => {
@@ -55,6 +56,14 @@ const App = () => {
                 element={
                   <RequireAuth>
                     <Profile />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/calendar"
+                element={
+                  <RequireAuth>
+                    <Calendar />
                   </RequireAuth>
                 }
               />
