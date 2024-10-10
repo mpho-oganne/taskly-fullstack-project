@@ -9,7 +9,7 @@ function Sidebar() {
   const { user } = useContext(UserContext);
 
   return (
-    <nav className="bg-gray-800 h-screen w-64 p-6 flex flex-col items-center">
+    <nav className="bg-gray-800 h-screen w-60 p-4 flex flex-col items-center">
       <div className="mb-4 flex flex-col items-center text-center">
         <div className="flex items-center mb-2">
           {user?.profilePicture ? (
@@ -41,7 +41,7 @@ function Sidebar() {
           </a>
         </li>
         <li className="w-full">
-          <Link to="/tasks" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link to="/new-task" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
             <i className="fas fa-user text-xl"></i>
             <span>Tasks</span>
           </Link>
