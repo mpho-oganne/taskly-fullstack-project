@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// code looks good, suggestion made
-export default function UpdateTaskForm({ taskId }) {
+import { useParams, useNavigate } from 'react-router-dom';
+
+export default function UpdateTaskForm() {
+  const { taskId } = useParams(); // Extract taskId from URL
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -9,14 +11,19 @@ export default function UpdateTaskForm({ taskId }) {
     description: '',
     dueDate: '',
     priorityLevel: 'medium',
-    status: 'pending'
+    status: 'pending',
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the task data to pre-fill the form
     const fetchTask = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/task/update/${taskId}`);
+        const response = await fetch(`http://localhost:3001/task/getTask/${taskId}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch task data');
         }
@@ -67,6 +74,11 @@ export default function UpdateTaskForm({ taskId }) {
       }
 
       setSuccess(true);
+
+      // Optionally navigate back to task list after successful update
+      setTimeout(() => {
+        navigate('/task-list');
+      }, 2000); // Redirect after 2 seconds
     } catch (err) {
       setError(err.message);
     } finally {
@@ -79,7 +91,6 @@ export default function UpdateTaskForm({ taskId }) {
       <div className="bg-white rounded-lg shadow-md">
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-6">Update Task</h2>
-          
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 text-red-900 p-4 rounded-md border border-red-200">
@@ -87,7 +98,6 @@ export default function UpdateTaskForm({ taskId }) {
                 <p>{error}</p>
               </div>
             )}
-            
             {success && (
               <div className="bg-green-50 text-green-900 p-4 rounded-md border border-green-200">
                 <h3 className="font-semibold">Success</h3>
@@ -95,6 +105,7 @@ export default function UpdateTaskForm({ taskId }) {
               </div>
             )}
 
+            {/* Form Fields */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Title
@@ -174,8 +185,8 @@ export default function UpdateTaskForm({ taskId }) {
               </label>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className={`w-full py-2 px-4 rounded-md text-white font-medium
                 ${loading 
