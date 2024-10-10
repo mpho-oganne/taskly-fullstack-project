@@ -52,90 +52,51 @@ function Sidebar() {
           </div>
         </div>
 
-        <ul className="text-white space-y-4 w-full">
-          <li className="w-full">
-            <a
-              href="#dashboard"
-              className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-            >
-              <i className="fas fa-home text-xl"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li className="w-full">
-            <a
-              href="#task-list"
-              className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-            >
-              <i className="fas fa-tasks text-xl"></i>
-              <span>Tasks</span>
-            </a>
-          </li>
-          <li className="w-full">
-            <a
-              href="#calendar"
-              className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-            >
-              <i className="fas fa-calendar-alt text-xl"></i>
-              <span>Calendar</span>
-            </a>
-          </li>
-          <li className="w-full">
-            <a
-              href="#reports"
-              className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-            >
-              <i className="fas fa-chart-line text-xl"></i>
-              <span>Reports</span>
-            </a>
-          </li>
-          <li className="w-full">
-            <Link
-              to="/profile"
-              className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-            >
-              <i className="fas fa-user text-xl"></i>
-              <span>Profile</span>
-            </Link>
-          </li>
-          <li className="w-full">
-            {/* Logout Option */}
-            <button
-              onClick={() => setModalOpen(true)} // Open the modal when logout is clicked
-              className="w-full flex items-center space-x-2 p-2 hover:bg-red-600 rounded-md text-left"
-            >
-              <i className="fas fa-sign-out-alt text-xl"></i>
-              <span>Logout</span>
-            </button>
-          </li>
-        </ul>
-
-        {/* Modal for Logout Confirmation */}
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-md text-center">
-              <h2 className="text-lg font-semibold mb-4">
-                Are you sure you want to log out?
-              </h2>
-              <div className="flex justify-center space-x-4">
-                <button
-                  onClick={handleLogout} // Log out the user when confirmed
-                  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-                >
-                  Yes, log out
-                </button>
-                <button
-                  onClick={() => setModalOpen(false)} // Close the modal if canceled
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </nav>
-    </>
+      <ul className="text-white space-y-4 w-full">
+        <li className="w-full">
+          <a
+            href="#dashboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-home text-xl"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li className="w-full">
+          <Link to="/tasks" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+            <i className="fas fa-user text-xl"></i>
+            <span>Tasks</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <a
+            href="#calendar"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-calendar-alt text-xl"></i>
+            <span>Calendar</span>
+          </a>
+        </li>
+        <li className="w-full">
+          <a
+            href="#reports"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-chart-line text-xl"></i>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-user text-xl"></i>
+            <span>Profile</span>
+          </Link>
+        </li>
+      </ul>
+    </nav>
   );
 }
 
