@@ -1,12 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../UserContext";
 import Avatar from "react-avatar";
+import { toast } from "react-toastify";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function Sidebar() {
-  const { user } = useContext(UserContext);
+  const { user, signout } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false); // State for logout modal
+
+  // Function to handle logout
+  const handleLogout = () => {
+    signout(); // Call the signout function
+
+    // Navigate to the home page first
+    navigate("/");
+
+    // Then show a toast notification after redirecting to home
+    toast.success("You have successfully logged out!", {
+      position: "top-right",
+      autoClose: 3000,
+      className: "bg-purple-600 text-white font-bold rounded-lg shadow-lg p-4", // Tailwind classes for toast
+      progressClassName: "bg-pink-500", // Tailwind classes for progress bar
+    });
+
+    setModalOpen(false); // Close the modal immediately
+  };
 
   return (
     <nav className="bg-gray-800 h-screen w-64 p-6 flex flex-col items-center">
@@ -42,7 +63,7 @@ function Sidebar() {
         </li>
         <li className="w-full">
           <Link
-            to="/tasks"
+            to="/new-task"
             className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
           >
             <i className="fas fa-user text-xl"></i>

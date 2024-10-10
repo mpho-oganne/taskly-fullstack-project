@@ -8,9 +8,10 @@ import {
 import HomePage from "./Pages/HomePage/HomePage";
 import Navbar from "./Pages/HomePage/NavBar";
 import Profile from "./Pages/Profile/profile";
-import Layout from "./pagesLayout";
+import Layout from "./Layout/dashboardLayout";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
+import UpdateTaskForm from "./Pages/Task/updateTask";
 import Footer from "./Pages/HomePage/Footer";
 import ManageTasks from "./Pages/Task/manageTasks";
 import CreateTaskForm from "./Pages/Task/createTask";
@@ -43,6 +44,7 @@ const App = () => {
               <Route path="/new-task" element={<CreateTaskForm />} />
               <Route path="/dashboard" element={<Layout />} />
               <Route path="/tasks" element={<ManageTasks />} />
+              <Route path="/update-task/:taskId" element={<UpdateTaskForm />} />
               <Route
                 path="/dashboard"
                 element={
