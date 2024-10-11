@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Calendar as ReactCalendar } from "react-calendar";
-import axios from "axios";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import "react-calendar/dist/Calendar.css";
+import axios from "axios"; // Import axios
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Import icons from lucide-react
+import "react-calendar/dist/Calendar.css"; // Import calendar CSS
 
 const Calendar = () => {
   const [value, onChange] = useState(new Date());
@@ -21,18 +21,17 @@ const Calendar = () => {
 
         const tasksWithReminders = response.data.map((task) => {
           const taskDueDate = new Date(task.dueDate);
-          taskDueDate.setHours(0, 0, 0, 0);
 
           const taskEvent = {
             title: task.title,
             date: taskDueDate,
             type: "Task",
-            isMissed: taskDueDate < now,
+            isMissed:
+              taskDueDate < now && taskDueDate.getDate() !== today.getDate(),
           };
 
           const reminderEvents = task.reminders.map((reminder) => {
             const reminderDate = new Date(reminder.reminderTime);
-            reminderDate.setHours(0, 0, 0, 0);
 
             return {
               title: `Reminder for ${task.title}`,
@@ -47,15 +46,16 @@ const Calendar = () => {
         const allEvents = tasksWithReminders.flat();
 
         setEvents(allEvents);
-
-        const upcomingEventsList = allEvents.filter(
-          (event) => new Date(event.date) > now
-        );
+        const upcomingEventsList = allEvents.filter((event) => {
+          const todayStart = new Date(today);
+          todayStart.setHours(23, 59, 59, 999);
+          return event.date > todayStart;
+        });
         const missedDeadlinesList = allEvents.filter(
-          (event) => event.type === "Task" && new Date(event.date) < now
+          (event) => event.type === "Task" && event.isMissed
         );
         const todaysEventsList = allEvents.filter(
-          (event) => event.date.getTime() === today.getTime()
+          (event) => event.date.toDateString() === today.toDateString()
         );
 
         setUpcomingEvents(upcomingEventsList);
