@@ -6,10 +6,19 @@ const mongoose = require('mongoose');
 const createTask = async (req, res) => {
   try {
     const { title, description, dueDate, priorityLevel, status } = req.body;
+
+    // Check if the dueDate is in the past
+    const currentDate = new Date();
+    const taskDueDate = new Date(dueDate);
+
+    if (taskDueDate < currentDate) {
+      return res.status(400).send({ error: 'Due date cannot be in the past' });
+    }
+
     const task = new Task({
       title,
       description,
-      dueDate,
+      dueDate: taskDueDate,
       priorityLevel,
       status,
       userId: req.session.userId, // UserId from session

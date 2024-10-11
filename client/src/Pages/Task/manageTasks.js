@@ -6,11 +6,11 @@ export default function ManageTasks() {
   const navigate = useNavigate();
 
   const handleCreateTask = () => {
-    navigate('/new-task'); // Adjust the route if necessary
+    navigate('/new-task');
   };
 
   return (
-    <div className="p-3 grid grid-cols-1 gap-1 h-full">
+    <div className="p-4 grid grid-cols-1 gap-4 h-full">
       {/* New Task Box */}
       <div className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
         <h2 className="text-lg font-bold">New Task</h2>
@@ -23,7 +23,7 @@ export default function ManageTasks() {
       </div>
 
       {/* Task List Section */}
-      <div className="bg-white p-4 rounded-lg shadow-md flex-grow overflow-y-auto">
+      <div className="bg-white p-4 rounded-lg shadow-md h-[350px] overflow-y-auto">
         <TaskList />
       </div>
     </div>
