@@ -63,7 +63,7 @@ function Sidebar() {
         </li>
         <li className="w-full">
           <Link
-            to="/new-task"
+            to="/tasks"
             className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
           >
             <i className="fas fa-user text-xl"></i>
