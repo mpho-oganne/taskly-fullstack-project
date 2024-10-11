@@ -18,6 +18,7 @@ import CreateTaskForm from "./Pages/Task/createTask";
 
 import UserProvider, { UserContext } from "./UserContext";
 import Calendar from "./components/Calender/calender";
+import Leaderboard from "./components/Leaderboard/leaderboard";
 
 // RequireAuth component
 const RequireAuth = ({ children }) => {
@@ -66,6 +67,14 @@ const App = () => {
                 element={
                   <RequireAuth>
                     <Calendar />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/leaderboard"
+                element={
+                  <RequireAuth>
+                    <Leaderboard />
                   </RequireAuth>
                 }
               />
