@@ -255,7 +255,7 @@ const suggestTasks = async (req, res) => {
 
     const existingTasks = await Task.find({ userId });
 
-    const prompt = `Based on the following existing tasks, suggest 3 new tasks for the user:
+    const prompt = `Based on the following existing tasks, suggest 3 new tasks for the user and add small one sentence explain why you suggested them each:
       ${existingTasks.map(task => `- ${task.title}`).join('\n')}
       
       Please provide the suggestions in a numbered list format.`;
