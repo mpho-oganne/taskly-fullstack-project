@@ -52,16 +52,20 @@ function Sidebar() {
           </a>
         </li>
         <li className="w-full">
-          <Link to="/new-task" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-            <i className="fas fa-tasks text-xl"></i>
+          <Link
+            to="/tasks"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+            <i className="fas fa-user text-xl"></i>
             <span>Tasks</span>
           </Link>
         </li>
         <li className="w-full">
-          <a href="#calendar" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link
+            to="/calendar"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
             <i className="fas fa-calendar-alt text-xl"></i>
             <span>Calendar</span>
-          </a>
+          </Link>
         </li>
         <li className="w-full">
           <a href="#reports" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
