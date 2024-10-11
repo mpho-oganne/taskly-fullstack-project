@@ -9,19 +9,19 @@ import "react-toastify/dist/ReactToastify.css";
 function Sidebar() {
   const { user, signout } = useContext(UserContext);
   const navigate = useNavigate();
-  const [isModalOpen, setModalOpen] = useState(false); 
+  const [isModalOpen, setModalOpen] = useState(false);
 
   // Function to handle logout
   const handleLogout = () => {
-    signout(); 
-    navigate("/"); 
+    signout();
+    navigate("/");
     toast.success("You have successfully logged out!", {
       position: "top-right",
       autoClose: 3000,
       className: "bg-purple-600 text-white font-bold rounded-lg shadow-lg p-4",
       progressClassName: "bg-pink-500",
     });
-    setModalOpen(false); 
+    setModalOpen(false);
   };
 
   return (
@@ -38,7 +38,9 @@ function Sidebar() {
             <Avatar name={user?.name} size={40} round={true} />
           )}
           <div>
-            <h2 className="text-white text-lg">{user?.name} {user?.surname}</h2>
+            <h2 className="text-white text-lg">
+              {user?.name} {user?.surname}
+            </h2>
             <p className="text-gray-400 text-sm">{user?.email}</p>
           </div>
         </div>
@@ -46,7 +48,10 @@ function Sidebar() {
 
       <ul className="text-white space-y-4 w-full">
         <li className="w-full">
-          <a href="#dashboard" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <a
+            href="#dashboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-home text-xl"></i>
             <span>Dashboard</span>
           </a>
@@ -54,29 +59,46 @@ function Sidebar() {
         <li className="w-full">
           <Link
             to="/tasks"
-            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-            <i className="fas fa-user text-xl"></i>
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-tasks text-xl"></i>
             <span>Tasks</span>
           </Link>
         </li>
         <li className="w-full">
           <Link
             to="/calendar"
-            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-calendar-alt text-xl"></i>
             <span>Calendar</span>
           </Link>
         </li>
         <li className="w-full">
-          <a href="#reports" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <a
+            href="#reports"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-chart-line text-xl"></i>
             <span>Reports</span>
           </a>
         </li>
         <li className="w-full">
-          <Link to="/profile" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-user text-xl"></i>
             <span>Profile</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/leaderboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-medal text-xl"></i>
+            <span>Leaderboard</span>
           </Link>
         </li>
       </ul>
