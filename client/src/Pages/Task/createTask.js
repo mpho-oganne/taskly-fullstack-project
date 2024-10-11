@@ -106,21 +106,20 @@ export default function CreateTaskForm() {
                 />
               </label>
             </div>
-
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Due Date
                 <input
-                  type="date"
-                  name="dueDate"
-                  value={formData.dueDate}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 
-                           focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                />
-              </label>
-            </div>
+                type="date"
+                name="dueDate"
+                value={formData.dueDate}
+                onChange={handleChange}
+                min={new Date().toISOString().split('T')[0]}  // Restrict past dates
+                required
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"/>
+    </label>
+  </div>
+
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
