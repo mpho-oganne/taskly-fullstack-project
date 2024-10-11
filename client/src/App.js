@@ -18,6 +18,7 @@ import CreateTaskForm from "./Pages/Task/createTask";
 
 import UserProvider, { UserContext } from "./UserContext";
 import Calendar from "./components/Calender/calender";
+import Overview from "./components/Overview/overview";
 
 // RequireAuth component
 const RequireAuth = ({ children }) => {
@@ -45,6 +46,8 @@ const App = () => {
               <Route path="/dashboard" element={<Layout />} />
               <Route path="/tasks" element={<ManageTasks />} />
               <Route path="/update-task/:taskId" element={<UpdateTaskForm />} />
+              <Route path="/overview" element={<Overview />} />
+
               <Route
                 path="/dashboard"
                 element={
