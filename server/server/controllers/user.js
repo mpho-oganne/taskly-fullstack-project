@@ -3,13 +3,12 @@ const User = require("../models/user");
 const multer = require("multer");
 const path = require("path");
 
-// Configure multer storage for profile picture uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads")); // Move up one directory to 'server' and then into 'uploads'
+    cb(null, path.join(__dirname, "../uploads"));
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Ensure a unique filename
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
@@ -117,6 +116,51 @@ const getUser = async (req, res) => {
   }
 };
 
+const getLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await Task.aggregate([
+      { $match: { status: "completed" } },
+      { $group: { _id: "$userId", completedTasks: { $sum: 1 } } },
+      { $sort: { completedTasks: -1 } },
+      { $limit: 6 },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          completedTasks: 1,
+          userInfo: { $arrayElemAt: ["$userInfo", 0] },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          userId: "$_id",
+          name: "$userInfo.name",
+          completedTasks: 1,
+        },
+      },
+    ]);
+
+    if (leaderboard.length === 0) {
+      return res
+        .status(404)
+        .send({ message: "No users found for the leaderboard." });
+    }
+
+    res.status(200).send(leaderboard);
+  } catch (error) {
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).send({ message: "Error fetching leaderboard." });
+  }
+};
+
 // Update signed-in user data/profile including profile picture
 const updateUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -184,7 +228,8 @@ module.exports = {
   signin,
   signout,
   getUser,
-  updateUser: [upload.single("profilePicture"), updateUser], // Add multer middleware to handle file uploads
+  updateUser: [upload.single("profilePicture"), updateUser],
   generateReport,
   getAISuggestions,
+  getLeaderboard,
 };
