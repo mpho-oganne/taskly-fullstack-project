@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('');
-
+  const [rewards, setRewards] = useState([]); // State to track rewards
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +56,20 @@ const TaskList = () => {
       console.error('Error deleting task:', error);
     }
   };
+
+  // Function to handle rewards when a task is completed
+  const handleTaskCompletion = (task) => {
+    if (task.status === 'completed') {
+      const newReward = `Badge for completing task: ${task.title}`;
+      setRewards([...rewards, newReward]);
+      alert(`Congratulations! You've earned a reward: ${newReward}`);
+    }
+  };
+
+  useEffect(() => {
+    // Check for completed tasks and assign rewards
+    tasks.forEach(task => handleTaskCompletion(task));
+  }, [tasks]);
 
   const filteredTasks = tasks.filter(task => {
     return filter ? task.status === filter || task.priorityLevel === filter : true;
@@ -125,6 +140,20 @@ const TaskList = () => {
           </div>
         </div>
       )}
+
+      {/* Display earned rewards */}
+      <div className="mt-4">
+        <h3 className="text-lg font-bold">Rewards</h3>
+        {rewards.length === 0 ? (
+          <p>No rewards yet</p>
+        ) : (
+          <ul>
+            {rewards.map((reward, index) => (
+              <li key={index}>{reward}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
