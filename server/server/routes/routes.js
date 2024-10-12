@@ -21,6 +21,7 @@ const {
   getUser,
   updateUser,
   signout,
+  getLeaderboard,
 } = require("../controllers/user");
 
 // Signup routes
@@ -41,5 +42,7 @@ router.get("/filter", auth, filterTasks);
 router.get("/search", auth, searchTasks);
 router.get('/suggest', auth, suggestTasks);
 router.get('/pendingTasks', auth, readPendingTasks);
+
+router.get("/leaderboard", auth, getLeaderboard);
 
 module.exports = router;

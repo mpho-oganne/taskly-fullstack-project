@@ -41,13 +41,19 @@ function Sidebar() {
 
       <ul className="text-white space-y-4 w-full">
         <li className="w-full">
-          <a href="#dashboard" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <a
+            href="#dashboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-home text-xl"></i>
             <span>Dashboard</span>
           </a>
         </li>
         <li className="w-full">
-          <Link to="/tasks" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link
+            to="/tasks"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-user text-xl"></i>
             <span>Tasks</span>
           </Link>
@@ -55,27 +61,46 @@ function Sidebar() {
         <li className="w-full">
           <Link
             to="/calendar"
-            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-calendar-alt text-xl"></i>
             <span>Calendar</span>
           </Link>
         </li>
         <li className="w-full">
-          <a href="#reports" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <a
+            href="#reports"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-chart-line text-xl"></i>
             <span>Reports</span>
           </a>
         </li>
         <li className="w-full">
-          <Link to="/rewards" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link
+            to="/rewards"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-trophy text-xl"></i>
             <span>Tasks Rewards</span>
           </Link>
         </li>
         <li className="w-full">
-          <Link to="/profile" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
             <i className="fas fa-user text-xl"></i>
             <span>Profile</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/leaderboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-medal text-xl"></i>
+            <span>Leaderboard</span>
           </Link>
         </li>
       </ul>
@@ -84,7 +109,8 @@ function Sidebar() {
       <div className="mt-auto flex justify-center">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center space-x-4 p-2 text-white hover:bg-gray-700 rounded-md">
+          className="w-full flex items-center space-x-4 p-2 text-white hover:bg-gray-700 rounded-md"
+        >
           <i className="fas fa-sign-out-alt text-xl"></i>
           <span>Sign Out</span>
         </button>

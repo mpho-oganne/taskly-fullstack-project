@@ -12,10 +12,11 @@ import ManageTasks from './Pages/Task/manageTasks';
 import CreateTaskForm from './Pages/Task/createTask';
 import Calendar from "./components/Calender/calender";
 import Overview from "./components/Overview/overview";
+import HomepageLayout from "./Layout/HomePageLayout";
+import Leaderboard from "./components/Leaderboard/leaderboard";
 
 // Context
 import UserProvider from "./UserContext"; 
-import HomepageLayout from './Layout/HomePageLayout';
 import RequireAuth from "./requireAuth";
 
 const App = () => {
@@ -62,6 +63,11 @@ const App = () => {
           <Route path="/overview" element={
             <RequireAuth>
               <Overview />
+            </RequireAuth>
+          } />
+          <Route path="/leaderboard" element={
+            <RequireAuth>
+              <Leaderboard />
             </RequireAuth>
           } />
           
