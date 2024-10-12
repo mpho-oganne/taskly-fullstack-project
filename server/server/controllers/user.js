@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const multer = require("multer");
 const path = require("path");
+const Task = require("../models/task");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
