@@ -4,6 +4,8 @@ import ManageTasks from '../Pages/Task/manageTasks';
 import Calendar from '../components/Calender/calender';
 import Overview from '../components/Overview/overview';
 
+import VirtualAssistant from '../components/VirtualAssistant/virtual-assistant'; 
+
 function Layout() {
   return (
     <div className="flex h-screen min-h-screen">
@@ -38,6 +40,9 @@ function Layout() {
           </div>
         </div>
       </div>
+
+
+      <VirtualAssistant />{/* This triggers audio when layout is loaded */}
     </div>
   );
 }
