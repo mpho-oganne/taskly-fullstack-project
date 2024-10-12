@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar/sidebar';
 import ManageTasks from '../Pages/Task/manageTasks';
+import VirtualAssistant from '../components/VirtualAssistant/virtual-assistant'; 
 
 function Layout() {
   return (
@@ -36,6 +37,9 @@ function Layout() {
           </div>
         </div>
       </div>
+
+
+      <VirtualAssistant />{/* This triggers audio when layout is loaded */}
     </div>
   );
 }
