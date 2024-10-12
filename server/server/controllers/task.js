@@ -255,7 +255,7 @@ const suggestTasks = async (req, res) => {
 
     const existingTasks = await Task.find({ userId });
 
-    const prompt = `Based on the following existing tasks, suggest 3 new tasks for the user:
+    const prompt = `Based on the following existing tasks, suggest 3 new tasks for the user and add small one sentence explain why you suggested them each:
       ${existingTasks.map(task => `- ${task.title}`).join('\n')}
       
       Please provide the suggestions in a numbered list format.`;
@@ -279,6 +279,8 @@ const suggestTasks = async (req, res) => {
 };
 
 // Function to read out pending tasks
+const axios = require('axios');
+
 const readPendingTasks = async (req, res) => {
   try {
     const userId = req.session.userId;
@@ -286,55 +288,54 @@ const readPendingTasks = async (req, res) => {
       return res.status(401).json({ message: "User not logged in" });
     }
 
-    // Fetch user information
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const pendingTasks = await Task.find({ userId, status: 'pending' })
-      .sort({ dueDate: 1 });
+    const pendingTasks = await Task.find({ userId, status: 'pending' }).sort({ dueDate: 1 });
 
-   
-    let speechText = `Hello ${user.name}. `;
-    speechText += `You have ${pendingTasks.length} pending tasks. `;
+    let speechText = `Hello ${user.name}. You have ${pendingTasks.length} pending tasks.`;
 
     if (pendingTasks.length > 0) {
-      speechText += "I will list them in order of the nearest due date. ";
+      speechText += " I will list them in order of the nearest due date. ";
       speechText += pendingTasks.map((task, index) => {
         const dueDate = new Date(task.dueDate);
-        const formattedDate = dueDate.toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        const formattedDate = dueDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         });
         return `Task ${index + 1}: ${task.title}, due on ${formattedDate}.`;
       }).join(" ");
-
-      // Add an ending message
       speechText += " That concludes your list of pending tasks.";
     } else {
-      speechText += "You have no pending tasks at the moment. Great job staying on top of your responsibilities!";
+      speechText += " You have no pending tasks at the moment.";
     }
 
-    // Generate TTS URL
-    const url = await googleTTS.getAudioUrl(speechText, {
-      lang: 'en',
-      slow: false,
-      host: 'https://translate.google.com',
+    console.log("Generated speech text:", speechText);
+
+    // Make a request to Google TTS from the backend
+    const googleTTSUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(speechText)}&tl=en&client=tw-ob&ttsspeed=1`;
+
+    const response = await axios.get(googleTTSUrl, {
+      responseType: 'arraybuffer',
     });
 
-    res.status(200).json({ 
-      message: "TTS URL generated successfully", 
-      speechText,
-      audioUrl: url
+    // Send the audio data as a buffer to the client
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': response.data.length,
     });
+
+    res.send(response.data);
 
   } catch (error) {
     console.error('Error generating TTS for pending tasks:', error);
     res.status(500).json({ message: 'Error generating TTS for pending tasks' });
   }
 };
+
 
 
 module.exports = {

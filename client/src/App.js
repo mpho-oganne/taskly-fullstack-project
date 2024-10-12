@@ -1,22 +1,15 @@
-import React, { useContext } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Pages
 import HomePage from "./Pages/HomePage/HomePage";
-import Navbar from "./Pages/HomePage/NavBar";
 import Profile from "./Pages/Profile/profile";
 import Layout from "./Layout/dashboardLayout";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import UpdateTaskForm from "./Pages/Task/updateTask";
-import Footer from "./Pages/HomePage/Footer";
 import ManageTasks from "./Pages/Task/manageTasks";
 import CreateTaskForm from "./Pages/Task/createTask";
-
-import UserProvider, { UserContext } from "./UserContext";
 import Calendar from "./components/Calender/calender";
 import Leaderboard from "./components/Leaderboard/leaderboard";
 

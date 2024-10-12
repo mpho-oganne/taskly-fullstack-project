@@ -39,7 +39,6 @@ app.use(
 
 // Apply routes
 app.use("/user", routes);
-app.use("/task", routes);
 
 // Connect to the database and start the server
 connectToDb((err) => {
