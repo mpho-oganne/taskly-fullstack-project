@@ -158,7 +158,7 @@ const getLeaderboard = async (req, res) => {
     res.status(200).send(leaderboard);
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
-    res.status(500).send({ message: "Error fetching leaderboard." });
+    res.status(500).send({ message: "Error fetching leaderboard." + error });
   }
 };
 
