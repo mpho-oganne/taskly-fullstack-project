@@ -2,6 +2,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const multer = require("multer");
 const path = require("path");
+const Task = require("../models/task");
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -157,7 +159,7 @@ const getLeaderboard = async (req, res) => {
     res.status(200).send(leaderboard);
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
-    res.status(500).send({ message: "Error fetching leaderboard." });
+    res.status(500).send({ message: "Error fetching leaderboard." + error });
   }
 };
 
