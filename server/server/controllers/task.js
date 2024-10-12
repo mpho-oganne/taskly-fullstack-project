@@ -1,6 +1,18 @@
 const Task = require('../models/task');
+const User = require('../models/user');
 const cron = require('node-cron');
 const mongoose = require('mongoose');
+require('dotenv').config();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const fetch = require('node-fetch');
+const googleTTS = require('google-tts-api');
+
+global.fetch = fetch;
+global.Headers = fetch.Headers;
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+
 
 // Create a task
 const createTask = async (req, res) => {
@@ -232,6 +244,99 @@ const searchTasks = async (req, res) => {
   }
 };
 
+
+// Suggest tasks using Gemini API
+const suggestTasks = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    if (!userId) {
+      return res.status(401).send({ message: "User not logged in" });
+    }
+
+    const existingTasks = await Task.find({ userId });
+
+    const prompt = `Based on the following existing tasks, suggest 3 new tasks for the user and add small one sentence explain why you suggested them each:
+      ${existingTasks.map(task => `- ${task.title}`).join('\n')}
+      
+      Please provide the suggestions in a numbered list format.`;
+
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    // Extract suggested tasks from the Gemini API response
+    const suggestedTasks = text
+      .split('\n')
+      .filter(line => /^\d+\./.test(line))
+      .map(line => line.replace(/^\d+\.\s*/, '').trim());
+
+    res.status(200).send({ suggestedTasks });
+  } catch (error) {
+    console.error('Error suggesting tasks:', error);
+    res.status(500).send({ message: 'Error suggesting tasks' });
+  }
+};
+
+// Function to read out pending tasks
+const readPendingTasks = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "User not logged in" });
+    }
+
+    // Fetch user information
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const pendingTasks = await Task.find({ userId, status: 'pending' })
+      .sort({ dueDate: 1 });
+
+   
+    let speechText = `Hello ${user.name}. `;
+    speechText += `You have ${pendingTasks.length} pending tasks. `;
+
+    if (pendingTasks.length > 0) {
+      speechText += "I will list them in order of the nearest due date. ";
+      speechText += pendingTasks.map((task, index) => {
+        const dueDate = new Date(task.dueDate);
+        const formattedDate = dueDate.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        return `Task ${index + 1}: ${task.title}, due on ${formattedDate}.`;
+      }).join(" ");
+
+      // Add an ending message
+      speechText += " That concludes your list of pending tasks.";
+    } else {
+      speechText += "You have no pending tasks at the moment. Great job staying on top of your responsibilities!";
+    }
+
+    // Generate TTS URL
+    const url = await googleTTS.getAudioUrl(speechText, {
+      lang: 'en',
+      slow: false,
+      host: 'https://translate.google.com',
+    });
+
+    res.status(200).json({ 
+      message: "TTS URL generated successfully", 
+      speechText,
+      audioUrl: url
+    });
+
+  } catch (error) {
+    console.error('Error generating TTS for pending tasks:', error);
+    res.status(500).json({ message: 'Error generating TTS for pending tasks' });
+  }
+};
+
+
 module.exports = {
   createTask,
   updateTask,
@@ -241,4 +346,6 @@ module.exports = {
   setReminder,
   filterTasks,
   searchTasks,
+  suggestTasks,
+  readPendingTasks
 };

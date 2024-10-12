@@ -53,7 +53,9 @@ function Sidebar() {
           </Link>
         </li>
         <li className="w-full">
-          <Link to="/calendar" className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+          <Link
+            to="/calendar"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
             <i className="fas fa-calendar-alt text-xl"></i>
             <span>Calendar</span>
           </Link>
