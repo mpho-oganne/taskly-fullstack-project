@@ -319,7 +319,7 @@ const readPendingTasks = async (req, res) => {
     const googleTTSUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(speechText)}&tl=en&client=tw-ob&ttsspeed=1`;
 
     const response = await axios.get(googleTTSUrl, {
-      responseType: 'arraybuffer', // Get the audio as binary data
+      responseType: 'arraybuffer',
     });
 
     // Send the audio data as a buffer to the client
