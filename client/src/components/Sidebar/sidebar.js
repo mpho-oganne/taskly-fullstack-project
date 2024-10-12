@@ -88,20 +88,20 @@ function Sidebar() {
         </li>
         <li className="w-full">
           <Link
-            to="/profile"
-            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-          >
-            <i className="fas fa-user text-xl"></i>
-            <span>Profile</span>
-          </Link>
-        </li>
-        <li className="w-full">
-          <Link
             to="/leaderboard"
             className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
           >
             <i className="fas fa-medal text-xl"></i>
             <span>Leaderboard</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-user text-xl"></i>
+            <span>Profile</span>
           </Link>
         </li>
       </ul>
