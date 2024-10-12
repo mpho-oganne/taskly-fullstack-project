@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar/sidebar';
 import ManageTasks from '../Pages/Task/manageTasks';
+import VirtualAssistant from '../components/VirtualAssistant/virtual-assistant'; 
 
 function Layout() {
   return (
@@ -29,11 +30,14 @@ function Layout() {
           </div>
 
           {/* Bottom Right Box - Manage Tasks */}
-          <div className="col-span-3 bg-white p-4 rounded-lg shadow-md">
+          {/* <div className="col-span-3 bg-white p-4 rounded-lg shadow-md">
             <ManageTasks />
-          </div>
+          </div> */}
         </div>
       </div>
+
+
+      <VirtualAssistant />{/* This triggers audio when layout is loaded */}
     </div>
   );
 }
