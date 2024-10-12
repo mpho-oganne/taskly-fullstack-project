@@ -12,6 +12,8 @@ const {
   filterTasks,
   searchTasks,
   getTaskById,
+  suggestTasks,
+  readPendingTasks
 } = require("../controllers/task");
 const {
   signup,
@@ -37,5 +39,7 @@ router.delete("/delete/:id", auth, deleteTask);
 router.post("/setReminder", auth, setReminder);
 router.get("/filter", auth, filterTasks);
 router.get("/search", auth, searchTasks);
+router.get('/suggest', auth, suggestTasks);
+router.get('/pendingTasks', auth, readPendingTasks);
 
 module.exports = router;
