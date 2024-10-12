@@ -38,7 +38,7 @@ const Overview = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:3001/task/tasks", {
+        const response = await fetch("http://localhost:3001/user/tasks", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

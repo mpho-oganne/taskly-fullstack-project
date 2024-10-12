@@ -13,7 +13,7 @@ const Calendar = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/task/tasks", { withCredentials: true })
+      .get("http://localhost:3001/user/tasks", { withCredentials: true })
       .then((response) => {
         const now = new Date();
         const today = new Date();

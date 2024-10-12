@@ -9,7 +9,7 @@ const TaskList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch('http://localhost:3001/task/tasks', {
+        const response = await fetch('http://localhost:3001/user/tasks', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -34,7 +34,7 @@ const TaskList = () => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      const response = await fetch(`http://localhost:3001/task/delete/${taskId}`, {
+      const response = await fetch(`http://localhost:3001/user/delete/${taskId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
