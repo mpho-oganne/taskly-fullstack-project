@@ -1,69 +1,69 @@
-import React, { useContext } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
-import Navbar from "./Pages/HomePage/NavBar";
 import Profile from "./Pages/Profile/profile";
 import Layout from "./Layout/dashboardLayout";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import UpdateTaskForm from "./Pages/Task/updateTask";
-import Footer from "./Pages/HomePage/Footer";
 import ManageTasks from './Pages/Task/manageTasks';
 import CreateTaskForm from './Pages/Task/createTask';
-
-import UserProvider, { UserContext } from "./UserContext"; // Import UserProvider as default and UserContext as named
-
-// RequireAuth component
-const RequireAuth = ({ children }) => {
-  const { isAuthenticated } = useContext(UserContext);
-
-  if (!isAuthenticated) {
-    return <Navigate to="/signin" />;
-  }
-
-  return children;
-};
+import UserProvider from "./UserContext"; 
+import HomepageLayout from './Layout/HomePageLayout';
+import RequireAuth from "./requireAuth";
 
 const App = () => {
   return (
     <UserProvider>
       <Router>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/new-task" element={<CreateTaskForm />} />
-              <Route path="/dashboard" element={<Layout />} />
-              <Route path="/tasks" element={<ManageTasks />} />
-              <Route path="/update-task/:taskId" element={<UpdateTaskForm />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <RequireAuth>
-                    <Layout />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <RequireAuth>
-                    <Profile />
-                  </RequireAuth>
-                }
-              />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <Routes>
+          {/* Public pages */}
+          <Route path="/" element={<HomepageLayout><HomePage /></HomepageLayout>} />
+          <Route path="/signup" element={<HomepageLayout><SignUp /></HomepageLayout>} />
+          <Route path="/signin" element={<HomepageLayout><SignIn /></HomepageLayout>} />
+
+          {/* Protected routes */}
+          <Route
+            path="/new-task"
+            element={
+              <RequireAuth>
+                <CreateTaskForm />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Layout />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <RequireAuth>
+                <ManageTasks />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/update-task/:taskId"
+            element={
+              <RequireAuth>
+                <UpdateTaskForm />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
+        </Routes>
       </Router>
     </UserProvider>
   );
