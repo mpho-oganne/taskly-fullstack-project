@@ -20,7 +20,7 @@ export default function UpdateTaskForm() {
     // Fetch the task data to pre-fill the form
     const fetchTask = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/task/getTask/${taskId}`, {
+        const response = await fetch(`http://localhost:3001/user/getTask/${taskId}`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -60,7 +60,7 @@ export default function UpdateTaskForm() {
     setSuccess(false);
 
     try {
-      const response = await fetch(`http://localhost:3001/task/update/${taskId}`, {
+      const response = await fetch(`http://localhost:3001/user/update/${taskId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

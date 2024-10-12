@@ -8,7 +8,11 @@ const TaskList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch('http://localhost:3001/task/tasks');
+        const response = await fetch('http://localhost:3001/user/tasks', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        });
         const data = await response.json();
 
         if (Array.isArray(data)) {
@@ -28,9 +32,26 @@ const TaskList = () => {
     fetchTasks();
   }, []);
 
-  if (loading) {
-    return <p className="text-gray-500">Loading tasks...</p>;
-  }
+  const handleEditTask = (taskId) => {
+    navigate(`/update-task/${taskId}`);
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/delete/${taskId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      });
+      if (response.ok) {
+        setTasks(tasks.filter(task => task._id !== taskId));
+      } else {
+        console.error('Failed to delete task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
 
   if (error) {
     return <p className="text-red-500">{error}</p>;

@@ -1,0 +1,11 @@
+# Ignore JSON files
+*.json
+
+# Ignore environment variable files
+.env
+
+# Ignore YAML files
+*.yml
+
+# Ignore lock files
+*.lock
