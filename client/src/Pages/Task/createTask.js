@@ -19,7 +19,7 @@ export default function CreateTaskForm() {
   const fetchSuggestions = async () => {
     setLoadingSuggestions(true);
     try {
-      const response = await axios.get('http://localhost:3001/task/suggest', { withCredentials: true });
+      const response = await axios.get('http://localhost:3001/user/suggest', { withCredentials: true });
       setSuggestions(response.data.suggestedTasks);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
