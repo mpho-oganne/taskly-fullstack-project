@@ -12,6 +12,7 @@ function Sidebar() {
 
   // Function to handle logout
   const handleLogout = () => {
+    sessionStorage.removeItem('audioPlayed');
     signout();
     navigate("/");
     toast.success("You have successfully logged out!", {
