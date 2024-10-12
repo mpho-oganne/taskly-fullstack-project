@@ -47,7 +47,7 @@ export default function CreateTaskForm() {
     setSuccess(false);
 
     try {
-      const response = await fetch('http://localhost:3001/task/create', {
+      const response = await fetch('http://localhost:3001/user/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

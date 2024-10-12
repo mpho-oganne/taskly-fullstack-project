@@ -6,6 +6,7 @@ require('dotenv').config();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fetch = require('node-fetch');
 const googleTTS = require('google-tts-api');
+const axios = require('axios');
 
 global.fetch = fetch;
 global.Headers = fetch.Headers;
@@ -279,7 +280,7 @@ const suggestTasks = async (req, res) => {
 };
 
 // Function to read out pending tasks
-const axios = require('axios');
+
 
 const readPendingTasks = async (req, res) => {
   try {
@@ -293,24 +294,22 @@ const readPendingTasks = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Fetch all pending tasks to count them
     const pendingTasks = await Task.find({ userId, status: 'pending' }).sort({ dueDate: 1 });
 
     let speechText = `Hello ${user.name}. You have ${pendingTasks.length} pending tasks.`;
 
     if (pendingTasks.length > 0) {
-      speechText += " I will list them in order of the nearest due date. ";
-      speechText += pendingTasks.map((task, index) => {
-        const dueDate = new Date(task.dueDate);
-        const formattedDate = dueDate.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-        return `Task ${index + 1}: ${task.title}, due on ${formattedDate}.`;
-      }).join(" ");
-      speechText += " That concludes your list of pending tasks.";
+      const nearestTask = pendingTasks[0];
+      const dueDate = new Date(nearestTask.dueDate);
+      const formattedDate = dueDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      speechText += ` The nearest due date task is: ${nearestTask.title}, due on ${formattedDate}.`;
     } else {
-      speechText += " You have no pending tasks at the moment.";
+      speechText += " Great news! You have no pending tasks at the moment. Enjoy your free time!";
     }
 
     console.log("Generated speech text:", speechText);
@@ -335,6 +334,7 @@ const readPendingTasks = async (req, res) => {
     res.status(500).json({ message: 'Error generating TTS for pending tasks' });
   }
 };
+
 
 
 
