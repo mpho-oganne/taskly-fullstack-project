@@ -62,7 +62,7 @@ function AudioPlayer() {
   return (
     <>
       {isPlaying && (
-        <div className="fixed bottom-4 right-4 animate-bounce">
+        <div className="fixed bottom-4 right-4">
           {/* Animated Virtual Assistant Image */}
           <img
             src="assets/virtual_assistant.gif" // Replace with your assistant image
