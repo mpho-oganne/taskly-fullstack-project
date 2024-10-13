@@ -112,6 +112,30 @@ const Profile = () => {
     }
   };
 
+  const handleUpdateProfilePicture = async () => {
+    const formData = new FormData();
+    if (updatedUser.profilePicture) {
+      formData.append("profilePicture", updatedUser.profilePicture);
+    }
+
+    try {
+      const response = await axios.put(
+        "http://localhost:3001/user/update-profile-picture",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setMessage(response.data.message);
+      setUser(response.data.user);
+    } catch (error) {
+      setMessage(error.response.data.error);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -243,6 +267,13 @@ const Profile = () => {
           </button>
         </form>
       )}
+
+      <button
+        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 mt-4"
+        onClick={handleUpdateProfilePicture}
+      >
+        Change Profile Picture
+      </button>
     </div>
   );
 };
