@@ -13,7 +13,8 @@ const {
   searchTasks,
   getTaskById,
   suggestTasks,
-  readPendingTasks
+  readPendingTasks,
+  generatereport
 } = require("../controllers/task");
 const {
   signup,
@@ -42,7 +43,7 @@ router.get("/filter", auth, filterTasks);
 router.get("/search", auth, searchTasks);
 router.get('/suggest', auth, suggestTasks);
 router.get('/pendingTasks', auth, readPendingTasks);
-
+router.get('/reports', auth, generateReport);   // router for generate report function 
 router.get("/leaderboard", auth, getLeaderboard);
 
 module.exports = router;
