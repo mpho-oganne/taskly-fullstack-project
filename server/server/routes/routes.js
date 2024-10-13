@@ -14,7 +14,7 @@ const {
   getTaskById,
   suggestTasks,
   readPendingTasks,
-  generatereport
+  generateReport
 } = require("../controllers/task");
 const {
   signup,
