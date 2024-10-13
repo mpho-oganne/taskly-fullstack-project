@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Doughnut, Line } from "react-chartjs-2";
-import axios from "axios";
-
 import {
   Chart as ChartJS,
   ArcElement,
@@ -117,7 +115,7 @@ const Overview = () => {
           inProgressTasks.length,
           pendingTasks.length,
         ],
-        backgroundColor: ["#4CAF50", "#2196F3", "#FFEB3B"],
+        backgroundColor: ["#10B981", "#3B82F6", "#F59E0B"],
         borderWidth: 1,
       },
     ],
@@ -129,8 +127,8 @@ const Overview = () => {
       {
         label: "Working Hours",
         data: Object.values(workingHours),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        borderColor: "rgba(59, 130, 246, 1)",
         borderWidth: 2,
         fill: true,
       },
@@ -138,71 +136,102 @@ const Overview = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-8 p-6">
-      {/* Top section for task stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-600">In Progress</h3>
-          <p className="text-2xl font-bold text-blue-500">
-            {inProgressTasks.length}
-          </p>
-        </div>
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-600">Completed</h3>
-          <p className="text-2xl font-bold text-green-500">
-            {completedTasks.length}
-          </p>
-        </div>
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-600">Pending</h3>
-          <p className="text-2xl font-bold text-yellow-500">
-            {pendingTasks.length}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex justify-between gap-8 w-full max-w-4xl">
-        <div className="bg-white shadow-md rounded-lg p-4 flex-1">
-          <h3 className="text-lg font-semibold text-gray-600 mb-4">Charts</h3>
-          <div className="flex gap-8">
-            <div
-              className="flex-1"
-              style={{ height: "350px", maxWidth: "300px" }}
-            >
-              <h3 className="text-sm font-semibold text-gray-600 mb-2">
-                Task Progress
-              </h3>
-              <Doughnut data={progressData} />
+    <div className="max-w-5xl mx-auto px-2 py-6">
+      {" "}
+      {/* Decreased padding (px-2), limited outer width (max-w-5xl) */}
+      <div className="max-w-2xl mx-auto px-4 py-6">
+        {" "}
+        {/* Increased content width (max-w-2xl) */}
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Task Overview</h1>
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-white rounded-lg shadow-md p-3">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xs font-medium text-gray-600">In Progress</h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-blue-600"
+              >
+                <path d="M21 12a9 9 0 11-6.219-8.56" />
+                <path d="M12 8v4l3 3" />
+              </svg>
             </div>
-
-            <div
-              className="flex-1"
-              style={{ height: "350px", maxWidth: "300px" }}
-            >
-              <h3 className="text-sm font-semibold text-gray-600 mb-2">
-                Working Hours
-              </h3>
-              <Line data={workingHoursData} />
+            <div className="text-lg font-bold text-blue-600">
+              {inProgressTasks.length}
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-3">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xs font-medium text-gray-600">Completed</h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-green-600"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+            </div>
+            <div className="text-lg font-bold text-green-600">
+              {completedTasks.length}
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-3">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xs font-medium text-gray-600">Pending</h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-yellow-600"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div className="text-lg font-bold text-yellow-600">
+              {pendingTasks.length}
             </div>
           </div>
         </div>
-
-        <div className="bg-white shadow-md rounded-lg p-4 flex-1">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            Upcoming Reminders
-          </h3>
-          <ul className="list-disc pl-5 space-y-2">
-            {upcomingReminders.length > 0 ? (
-              upcomingReminders.map((task, idx) => (
-                <li key={idx} className="text-sm text-gray-600">
-                  {task.title} - Due on{" "}
-                  {new Date(task.dueDate).toLocaleDateString()}
-                </li>
-              ))
-            ) : (
-              <p className="text-sm text-gray-500">No upcoming reminders.</p>
-            )}
-          </ul>
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-white rounded-lg shadow-md p-4">
+            <h2 className="text-sm font-semibold text-gray-700 mb-3">
+              Task Progress
+            </h2>
+            <div className="h-48">
+              <Doughnut
+                data={progressData}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-4">
+            <h2 className="text-sm font-semibold text-gray-700 mb-3">
+              Working Hours
+            </h2>
+            <div className="h-48">
+              <Line
+                data={workingHoursData}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
