@@ -10,8 +10,12 @@ import {
   Quote,
 } from "lucide-react";
 
+import { FiClock, FiLayout, FiSettings } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
+
 const HomePage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -20,33 +24,33 @@ const HomePage = () => {
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"></div>
 
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-6">
-          Welcome to{" "}
+          {t("home.welcome")}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
             Taskly
           </span>
         </h1>
 
         <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl animate-fade-in-up">
-          Your all-in-one tool to stay organized, achieve more, and unlock your
-          full potential.
+        {t("home.description")}
           <br />
-          Ready to take control of your tasks? Start now!
+          {t("home.takeControl")}
         </p>
 
         <button
           onClick={() => navigate("/signup")}
           className="relative text-lg px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-200 ease-in-out transform hover:scale-110"
         >
-          Get Started Now
+          {t("home.getStarted")}
         </button>
 
         <p className="mt-4 text-sm text-gray-500">
-          Already have an account?{" "}
+        {t("home.alreadyHaveAccount")}
           <span
             onClick={() => navigate("/signin")}
             className="text-purple-500 underline cursor-pointer"
           >
-            Sign in
+            {t("home.signIn")}
+            
           </span>
         </p>
 
@@ -55,24 +59,15 @@ const HomePage = () => {
 
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-12">
-            About <span className="text-purple-600">Taskly</span>
-          </h2>
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-              Taskly is your intelligent companion in the world of personal task
-              management. We've combined cutting-edge AI technology with
-              intuitive design to create a platform that not only organizes your
-              tasks but actively helps you accomplish them.
+        <h2 className="text-4xl font-bold text-center mb-12">
+          {t("home.about.title")} <span className="text-purple-600">Taskly</span>
+        </h2>
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-gray-600 mb-6">
+              {t("home.about.text1")}
             </p>
             <p className="text-lg text-gray-700 leading-relaxed">
-              Whether you're a busy professional juggling multiple projects, a
-              student balancing coursework and extracurriculars, or anyone
-              looking to bring order to their daily life, Taskly adapts to your
-              unique needs and work style. Our AI-powered features, including
-              task suggestions and upcoming chatbot support, are designed to
-              make your task management experience smoother and more efficient
-              than ever before.
+            {t("home.about.text2")}
             </p>
           </div>
         </div>
@@ -81,7 +76,7 @@ const HomePage = () => {
       <section className="py-20 bg-gray-100">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Why Choose <span className="text-purple-600">Taskly</span>?
+            {t("home.whyChoose.title")} <span className="text-purple-600">Taskly</span>?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="bg-white rounded-xl shadow-lg p-8 text-center transform transition duration-500 hover:scale-105">
@@ -89,11 +84,10 @@ const HomePage = () => {
                 <Clock className="w-12 h-12 text-purple-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Manage Time Efficiently
+              {t("home.whyChoose.features.0.title")}
               </h3>
               <p className="text-gray-600">
-                Keep track of all your tasks and manage your time effectively
-                with Taskly's productivity tools.
+              {t("home.whyChoose.features.0.text")}
               </p>
             </div>
 
@@ -102,12 +96,10 @@ const HomePage = () => {
                 <Layout className="w-12 h-12 text-purple-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Multiple Views
+              {t("home.whyChoose.features.1.title")}
               </h3>
               <p className="text-gray-600">
-                Switch between list, board, and calendar views to organize your
-                tasks in a way that fits your style.
-              </p>
+              {t("home.whyChoose.features.1.text")}              </p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-8 text-center transform transition duration-500 hover:scale-105">
@@ -115,12 +107,10 @@ const HomePage = () => {
                 <Settings className="w-12 h-12 text-purple-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Customizable Workflow
+              {t("home.whyChoose.features.2.title")}
               </h3>
               <p className="text-gray-600">
-                Customize fields and layouts to personalize your task management
-                and boost productivity.
-              </p>
+              {t("home.whyChoose.features.2.text")}              </p>
             </div>
           </div>
         </div>
@@ -129,7 +119,7 @@ const HomePage = () => {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Powerful <span className="text-purple-600">Features</span>
+          {t("home.powerfulFeatures.title")} <span className="text-purple-600">Features</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {/* AI-powered productivity */}
@@ -139,29 +129,27 @@ const HomePage = () => {
                   <CheckCircle className="w-12 h-12 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">
-                  AI-Powered Assistance
+                  {t("home.powerfulFeatures.feature1.title")}
                 </h3>
                 <p className="mb-6">
-                  Taskly's AI integration helps you stay on top of your tasks by
-                  suggesting tasks and reading them out loud, keeping you
-                  organized and efficient.
+                {t("home.powerfulFeatures.feature1.text")}
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center">
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    AI-powered task suggestions
+                    {t("home.powerfulFeatures.feature1.points.0")}
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    Text-to-Speech for reading tasks out loud
+                    {t("home.powerfulFeatures.feature1.points.1")}
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    Upcoming AI chatbot
+                    {t("home.powerfulFeatures.feature1.points.2")}
                   </li>
                 </ul>
                 <button className="bg-white text-purple-600 font-bold py-2 px-6 rounded-full hover:bg-purple-100 transition duration-300">
-                  Learn More
+                {t("home.powerfulFeatures.feature1.button")}
                 </button>
               </div>
             </div>
@@ -172,16 +160,14 @@ const HomePage = () => {
                   <Users className="w-12 h-12 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">
-                  Track Progress & Compete
+                  {t("home.powerfulFeatures.feature2.title")}
                 </h3>
                 <p className="mb-6">
-                  Monitor your tasks, track your working hours, and compete with
-                  others on the leaderboard as you complete tasks and achieve
-                  more.
+                  {t("home.powerfulFeatures.feature2.text")}
                 </p>
                 <div className="bg-white bg-opacity-10 p-4 rounded-lg">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="font-medium">Task Progress</span>
+                    <span className="font-medium">{t("home.powerfulFeatures.feature2.headers.0")}</span>
                     <span className="font-medium">75%</span>
                   </div>
                   <div className="w-full bg-blue-200 rounded-full h-2.5">
@@ -203,16 +189,15 @@ const HomePage = () => {
                   <BarChart2 className="w-12 h-12 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">
-                  Earn Rewards & Get Reports
+                  {t("home.powerfulFeatures.feature3.title")}
                 </h3>
                 <p className="mb-6">
-                  Earn rewards for task completion, and receive full reports
-                  with insightful graphics on your productivity and performance.
+                  {t("home.powerfulFeatures.feature3.text")}
                 </p>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="flex items-center">
-                      <Clock className="mr-2" /> Time Tracking
+                      <Clock className="mr-2" /> {t("home.powerfulFeatures.feature3.points.0")}
                     </span>
                     <div className="w-12 h-6 bg-green-400 rounded-full p-1">
                       <div className="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-6"></div>
@@ -220,7 +205,7 @@ const HomePage = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="flex items-center">
-                      <Layout className="mr-2" /> Sprints
+                      <Layout className="mr-2" /> {t("home.powerfulFeatures.feature3.points.1")}
                     </span>
                     <div className="w-12 h-6 bg-green-400 rounded-full p-1">
                       <div className="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-6"></div>
@@ -228,7 +213,7 @@ const HomePage = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="flex items-center">
-                      <Settings className="mr-2" /> Custom Fields
+                      <Settings className="mr-2" /> {t("home.powerfulFeatures.feature3.points.2")}
                     </span>
                     <div className="w-12 h-6 bg-green-400 rounded-full p-1">
                       <div className="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-6"></div>
