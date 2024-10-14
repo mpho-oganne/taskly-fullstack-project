@@ -1,0 +1,71 @@
+{
+  "home": {
+    "welcome": "Welcome to ",
+    "description": "Your all-in-one tool to stay organized, achieve more, and unlock your full potential.",
+    "getStarted": "Get Started Now",
+    "takeControl": "Ready to take control of your tasks? Start now!",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "about": {
+      "title": "About Taskly",
+      "text1": "Taskly is your intelligent companion in the world of personal task management. We've combined cutting-edge AI technology with intuitive design to create a platform that not only organizes your tasks but actively helps you accomplish them.",
+      "text2": "Whether you're a busy professional juggling multiple projects, a student balancing coursework and extracurriculars, or anyone looking to bring order to their daily life, Taskly adapts to your unique needs and work style."
+    },
+    "whyChoose": {
+      "title": "Why Choose Taskly?",
+      "features": [
+        {
+          "title": "Manage Time Efficiently",
+          "text": "Keep track of all your tasks and manage your time effectively with Taskly’s productivity tools."
+        },
+        {
+          "title": "Multiple Views",
+          "text": "Switch between list, board, and calendar views to organize your tasks in a way that fits your style."
+        },
+        {
+          "title": "Customizable Workflow",
+          "text": "Customize fields and layouts to personalize your task management and boost productivity."
+        }
+      ]
+    },
+    "powerfulFeatures": {
+      "title": "Powerful Features",
+      "feature1": {
+        "title": "AI-Powered Assistance",
+        "text": "Taskly's AI integration helps you stay on top of your tasks by suggesting tasks and reading them out loud, keeping you organized and efficient.",
+        "points": [
+          "AI-powered task suggestions",
+          "Text-to-Speech for reading tasks out loud",
+          "Upcoming AI chatbot"
+        ],
+        "button": "Summarize"
+      },
+      "feature2": {
+        "title": "Track Progress & Compete",
+        "text": "Monitor your tasks, track your working hours, and compete with others on the leaderboard as you complete tasks and achieve more.",
+        "points": [
+          "Track daily tasks and progress",
+          "Analyze productivity and insights",
+          "Work on advanced project management"
+        ],
+        "headers": [
+          "Task List",
+          "Board View",
+          "Calendar View",
+          "Add View"
+        ],
+        "todoText": "To Do",
+        "status": "In Progress"
+      },
+      "feature3": {
+        "title": "Earn Rewards & Get Reports",
+        "text": "Earn rewards for task completion, and receive full reports with insightful graphics on your productivity and performance.",
+        "points": [
+          "Time Tracking",
+          "Sprints",
+          "Custom Fields"
+        ]
+      }
+    }
+  }
+}

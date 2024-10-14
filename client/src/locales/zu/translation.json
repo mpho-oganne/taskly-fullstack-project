@@ -1,0 +1,71 @@
+{
+  "home": {
+    "welcome": "Wamkelekile ku-",
+    "description": "Ithuluzi lakho elilodwa lokuhlola, ukufezekisa okungakuhle, nokuvula amandla akho aphelele.",
+    "getStarted": "Qala Ngalesi Sikhathi",
+    "takeControl": "Ulungele ukuthatha kontrola yemisebenzi yakho? Qala manje!",
+    "alreadyHaveAccount": "Unenqubo yokungena?",
+    "signIn": "Ngena",
+    "about": {
+      "title": "Mayelana ne-Taskly",
+      "text1": "I-Taskly iyinsiza yakho eqondile emhlabeni wokuphathwa kwemisebenzi. Sihlanganisile ubuchwepheshe be-AI obuthuthukile nokwakhiwa okulula ukuze sakhe ipulatifomu ehlela imisebenzi yakho kodwa ikusize ngempela ukuthi uphumelele.",
+      "text2": "Noma ngabe ungumsebenzi ophithizelayo okhulisa imiklamo eminingi, umfundi ophakathi kwezemfundo nezemidlalo, noma othile ofuna ukuhlela impilo yakhe yansuku zonke, i-Taskly ilungele izidingo zakho ezikhethekile."
+    },
+    "whyChoose": {
+      "title": "Kungani Ukhetha i-Taskly?",
+      "features": [
+        {
+          "title": "Phatha Isikhathi Ngempumelelo",
+          "text": "Gada zonke imisebenzi yakho futhi uphathe isikhathi sakho kahle ngemisebenzi ye-Taskly."
+        },
+        {
+          "title": "Imibono Eminingi",
+          "text": "Shintsha phakathi kwezinhlu, ibhodi, nezinsuku ukuze uhlele imisebenzi yakho ngendlela efanele."
+        },
+        {
+          "title": "Ukusebenza Okuzikhethela",
+          "text": "Lungisa izinkambu nezinhlelo ukuze uthuthukise ukuphathwa kwemisebenzi yakho."
+        }
+      ]
+    },
+    "powerfulFeatures": {
+      "title": "Izici Ezinqwabelanayo",
+      "feature1": {
+        "title": "Usizo Oluhlosiwe lwe-AI",
+        "text": "Ukuhlanganiswa kwe-AI ye-Taskly kukusiza ukuba ube phezulu kumisebenzi yakho ngokusikisela imisebenzi futhi uyifunde phansi, ikugcina uphephile futhi uhlelekile.",
+        "points": [
+          "Iziphakamiso zomsebenzi ezisekelwe kwi-AI",
+          "Umbhalo u-Phendula ukuze ufunde imisebenzi ngokukhuluma",
+          "Uchwepheshe we-AI ozayo"
+        ],
+        "button": "Fingqa"
+      },
+      "feature2": {
+        "title": "Gada Inqubekelaphambili & Ngena",
+        "text": "Gada imisebenzi yakho, gade amahora akho okusebenza, bese uphumelela nabanye kubhodi ye-leaderboard uma uqeda imisebenzi.",
+        "points": [
+          "Landela imisebenzi yansuku zonke nenqubekelaphambili",
+          "Hlaziya ukukhiqiza nokuhlola",
+          "Sebenza ekuphathweni kwephrojekthi ethuthukisiwe"
+        ],
+        "headers": [
+          "Uhlu Lwemisebenzi",
+          "Umbono Wethafeni",
+          "Umbono Wesikhumbuzo",
+          "Engeza Umbono"
+        ],
+        "todoText": "Kufanele Kwenziwe",
+        "status": "Kwenziwa"
+      },
+      "feature3": {
+        "title": "Thola Imiklomelo & Thola Imibiko",
+        "text": "Thola imiklomelo yokuphothula imisebenzi, bese uthola imibiko ephelele enezithombe ezihlanganisiwe kumsebenzi wakho.",
+        "points": [
+          "Ukulandela Isikhathi",
+          "I-Sprint",
+          "Amaphuzu Ngokwezifiso"
+        ]
+      }
+    }
+  }
+}
