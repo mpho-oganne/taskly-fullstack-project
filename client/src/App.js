@@ -14,6 +14,7 @@ import Calendar from "./components/Calender/calender";
 import Overview from "./components/Overview/overview";
 import HomepageLayout from "./Layout/HomePageLayout";
 import Leaderboard from "./components/Leaderboard/leaderboard";
+import ReportComponent from "./components/WeeklyReport/report";
 
 // Context
 import UserProvider from "./UserContext"; 
