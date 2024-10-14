@@ -9,6 +9,7 @@ import Calendar from "../components/Calender/calender";
 import EventsAndDeadlines from "../components/Events/events";
 import Graphs from "../components/Graphs/graphs";
 import DashboardHeader from "../components/DashboardHeader/dashboardheader";
+import VirtualAssistant from '../components/VirtualAssistant/virtual-assistant'
 
 const Button = ({ children, onClick, className }) => (
   <button
@@ -187,6 +188,7 @@ export default function DashboardLayout() {
           </div>
         </div>
       </div>
+      <VirtualAssistant/>
     </div>
   );
 }

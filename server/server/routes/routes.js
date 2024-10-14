@@ -39,8 +39,8 @@ router.get("/", auth, getUser);
 router.put("/update", auth, updateUser);
 
 //Profile routes
-router.put('/updatePicture', upload.single('profilePicture'), updateProfilePicture);
-router.put('/removePicture', removeProfilePicture);
+// router.put('/updatePicture', upload.single('profilePicture'), updateProfilePicture);
+// router.put('/removePicture', removeProfilePicture);
 
 // Task routes
 router.post("/create", auth, createTask);
