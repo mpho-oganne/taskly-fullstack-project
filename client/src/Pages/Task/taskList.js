@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  Plus,
+  Pencil,
+  Trash,
+} from "lucide-react";
 
-const TaskList = () => {
+export default function TaskList() {
   const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/user/tasks', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-        });
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          setTasks(data);
-        } else {
-          console.error("API returned non-array data:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
     fetchTasks();
   }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/user/tasks", {
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      } else {
+        console.error("Failed to fetch tasks");
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
 
   const handleEditTask = (taskId) => {
     navigate(`/update-task/${taskId}`);
@@ -34,79 +39,115 @@ const TaskList = () => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      const response = await fetch(`http://localhost:3001/user/delete/${taskId}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `http://localhost:3001/user/delete/${taskId}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
       if (response.ok) {
-        setTasks(tasks.filter(task => task._id !== taskId));
+        setTasks(tasks.filter((task) => task._id !== taskId));
       } else {
-        console.error('Failed to delete task');
+        console.error("Failed to delete task");
       }
     } catch (error) {
-      console.error('Error deleting task:', error);
+      console.error("Error deleting task:", error);
     }
   };
 
-  const filteredTasks = tasks.filter(task => filter ? task.status === filter || task.priorityLevel === filter : true);
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "completed":
+        return <CheckCircle className="text-green-500" />;
+      case "in-progress":
+        return <Clock className="text-blue-500" />;
+      default:
+        return <AlertCircle className="text-yellow-500" />;
+    }
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "high":
+        return "bg-red-100 text-red-800";
+      case "medium":
+        return "bg-yellow-100 text-yellow-800";
+      case "low":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
 
   return (
-    <div className="h-full flex flex-col">
-      <h2 className="text-lg font-bold mb-2">Tasks List</h2>
-
-      {/* Filter Section */}
-      <div className="mb-2">
-        <select onChange={(e) => setFilter(e.target.value)} value={filter} className="border rounded-md p-1 text-sm">
-          <option value="">All</option>
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
-          <option value="low">Low Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="high">High Priority</option>
-        </select>
-      </div>
-
-      {/* Task List */}
-      <div className="flex-grow overflow-y-auto">
-        {filteredTasks.length === 0 ? (
-          <p className="text-gray-500">No tasks found</p>
-        ) : (
-          <div className="space-y-2">
-            {filteredTasks.map((task) => (
-              <div key={task._id} className="bg-white shadow-md rounded-lg p-4 border-l-4 border-blue-500">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="text-sm text-gray-600">{new Date(task.dueDate).toLocaleDateString()}</div>
-                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${task.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                    {task.status}
-                  </span>
-                </div>
-
-                <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
-                <p className="text-gray-700 mt-1">{task.description}</p>
-
-                <div className="flex justify-end mt-2">
-                  <button
-                    className="text-blue-500 hover:underline mr-4"
-                    onClick={() => handleEditTask(task._id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="text-red-500 hover:underline"
-                    onClick={() => handleDeleteTask(task._id)}
-                  >
-                    Delete
-                  </button>
+    <div className="bg-gray-100 min-h-screen p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">My Tasks</h1>
+          <button
+            onClick={() => navigate("/new-task")}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center"
+          >
+            <Plus className="mr-2" />
+            Create New Task
+          </button>
+        </div>
+        <div className="space-y-4">
+          {tasks.length === 0 ? (
+            <p className="text-center text-gray-500 py-8">
+              No tasks found. Create a new task to get started!
+            </p>
+          ) : (
+            tasks.map((task) => (
+              <div
+                key={task._id}
+                className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-200 hover:shadow-lg"
+              >
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center">
+                      {getStatusIcon(task.status)}
+                      <h3 className="text-xl font-semibold text-gray-800 ml-2">
+                        {task.title}
+                      </h3>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor(
+                          task.priorityLevel
+                        )}`}
+                      >
+                        {task.priorityLevel}
+                      </span>
+                      <button
+                        onClick={() => handleEditTask(task._id)}
+                        className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                      >
+                        <Pencil size={16} className="text-gray-500" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTask(task._id)}
+                        className="p-1 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                      >
+                        <Trash size={16} className="text-red-500" />
+                      </button>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mb-4">{task.description}</p>
+                  <div className="flex justify-between items-center text-sm text-gray-500">
+                    <span>
+                      Due: {new Date(task.dueDate).toLocaleDateString()}
+                    </span>
+                    <span>Status: {task.status}</span>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
-};
-
-export default TaskList;
+}
