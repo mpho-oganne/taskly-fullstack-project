@@ -70,6 +70,12 @@ const App = () => {
               <Leaderboard />
             </RequireAuth>
           } />
+
+          <Route path="/report" element={    // Added  the report route 
+          <RequireAuth>
+             <ReportComponent />
+            </RequireAuth>
+          } />
           
           {/* Fallback for unmatched routes */}
           <Route path="*" element={<h1>404 - Not Found</h1>} />

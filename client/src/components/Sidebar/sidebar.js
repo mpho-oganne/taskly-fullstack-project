@@ -68,15 +68,17 @@ function Sidebar() {
             <span>Calendar</span>
           </Link>
         </li>
+        
         <li className="w-full">
-          <a
-            href="#reports"
+          <Link
+            to="/report"
             className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
           >
             <i className="fas fa-chart-line text-xl"></i>
             <span>Reports</span>
-          </a>
+          </Link>
         </li>
+
         <li className="w-full">
           <Link
             to="/rewards"
