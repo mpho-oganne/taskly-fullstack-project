@@ -46,25 +46,73 @@ export default function Sidebar({ user, signout }) {
         </span>
         <span className="text-sm text-gray-600">Dashboard</span>
       </div>
-      <ul className="space-y-2 w-full">
-        {[
-          { icon: Home, label: "Dashboard", path: "/dashboard" },
-          { icon: User, label: "Task List", path: "/tasks" },
-          { icon: Calendar, label: "Calendar", path: "/calendar" },
-          { icon: ChartLine, label: "Reports", path: "/reports" },
-          { icon: Trophy, label: "Task Rewards", path: "/rewards" },
-          { icon: Medal, label: "Leaderboard", path: "/leaderboard" },
-        ].map(({ icon: Icon, label, path }) => (
-          <li key={path} className="w-full">
-            <Link
-              to={path}
-              className="flex items-center space-x-3 p-3 rounded-lg transition-colors duration-200 hover:bg-gray-200 text-gray-700"
-            >
-              <Icon size={20} />
-              <span>{label}</span>
-            </Link>
-          </li>
-        ))}
+
+      <ul className="text-white space-y-4 w-full">
+        <li className="w-full">
+          <a
+            href="#dashboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-home text-xl"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/tasks"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-user text-xl"></i>
+            <span>Tasks</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/calendar"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-calendar-alt text-xl"></i>
+            <span>Calendar</span>
+          </Link>
+        </li>
+
+        <li className="w-full">
+          <Link
+            to="/report"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-chart-line text-xl"></i>
+            <span>Reports</span>
+          </Link>
+        </li>
+
+        <li className="w-full">
+          <Link
+            to="/rewards"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-trophy text-xl"></i>
+            <span>Tasks Rewards</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/leaderboard"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-medal text-xl"></i>
+            <span>Leaderboard</span>
+          </Link>
+        </li>
+        <li className="w-full">
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
+          >
+            <i className="fas fa-user text-xl"></i>
+            <span>Profile</span>
+          </Link>
+        </li>
       </ul>
       <div className="mt-auto">
         <button
