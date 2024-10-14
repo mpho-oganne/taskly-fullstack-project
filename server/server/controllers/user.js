@@ -3,17 +3,66 @@ const User = require("../models/user");
 const multer = require("multer");
 const path = require("path");
 const Task = require("../models/task");
+const fs = require('fs');
 
+//Setting up multer for file storage
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads"));
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); 
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
+
+exports.updateProfilePicture = (req, res) => {
+  const userId = req.user.id; // Get the user ID from the request
+  
+  if (!req.file) {
+    return res.status(400).json({ error: 'Please upload a file.' });
+  }
+
+  User.findByIdAndUpdate(
+    userId,
+    { profilePicture: req.file.filename },
+    { new: true }
+  )
+    .then((user) => {
+      if (!user) return res.status(404).json({ error: 'User not found.' });
+      res.json({ message: 'Profile picture updated successfully.', user });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Failed to update profile picture.', details: error.message });
+    });
+};
+
+exports.removeProfilePicture = (req, res) => {
+  const userId = req.user.id; // Get the user ID from the request (assuming you have authentication middleware)
+
+  User.findById(userId)
+    .then((user) => {
+      if (!user) return res.status(404).json({ error: 'User not found.' });
+      
+      // Remove the picture file from the uploads directory if it exists
+      const filePath = path.join(__dirname, '../uploads', user.profilePicture);
+      if (user.profilePicture && fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+
+      // Update user profile picture field to null
+      user.profilePicture = null;
+      return user.save();
+    })
+    .then((user) => {
+      res.json({ message: 'Profile picture removed successfully.', user });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Failed to remove profile picture.', details: error.message });
+    });
+};
+
 
 //code for signing up the user
 const signup = async (req, res) => {

@@ -1,6 +1,12 @@
 const express = require("express");
 const auth = require("../middleware/auth");
 const { validateSignUp } = require("../validation/signup");
+const { updateProfilePicture, removeProfilePicture } = require('../controllers/user');
+const multer = require('multer');
+
+// Configure multer using memory storage for file handling
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const router = express.Router();
 const {
@@ -25,12 +31,16 @@ const {
   getLeaderboard,
 } = require("../controllers/user");
 
-// Signup routes
+// Signin & Signup routes
 router.post("/signup", validateSignUp, signup);
 router.post("/signin", signin);
 router.post("/signout", auth, signout);
 router.get("/", auth, getUser);
 router.put("/update", auth, updateUser);
+
+//Profile routes
+router.put('/updatePicture', upload.single('profilePicture'), updateProfilePicture);
+router.put('/removePicture', removeProfilePicture);
 
 // Task routes
 router.post("/create", auth, createTask);
@@ -39,7 +49,7 @@ router.get("/getTask/:id", auth, getTaskById);
 router.get("/tasks", auth, getAllTasks);
 router.delete("/delete/:id", auth, deleteTask);
 router.post("/setReminder", auth, setReminder);
-router.get("/filter", auth, filterTasks);
+router.get("/cd filter", auth, filterTasks);
 router.get("/search", auth, searchTasks);
 router.get('/suggest', auth, suggestTasks);
 router.get('/pendingTasks', auth, readPendingTasks);
