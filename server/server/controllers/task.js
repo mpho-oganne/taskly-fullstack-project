@@ -335,6 +335,34 @@ const readPendingTasks = async (req, res) => {
   }
 };
 
+const generateReport = async (req, res) => 
+  {
+  const userId = req.session.userId; // Get the user ID from the session
+  try {
+    // Fetch all tasks for the logged-in user
+    const tasks = await Task.find({ userId });
+
+    // Generate report data
+    const totalTasks = tasks.length;  
+    const completedTasks = tasks.filter(task => task.status === 'completed').length;
+    const pendingTasks = tasks.filter(task => task.status === 'pending').length;
+    const unfinishedTasks = tasks.filter(task => task.status === 'unfinished').length;
+
+    // Send the report back to the user
+    res.status(200).json({
+      totalTasks,
+      completedTasks,
+      pendingTasks,
+      unfinishedTasks,
+    });
+  } catch (error) 
+  {
+    console.error("Error generating report:", error);
+    res.status(500).send({ message: "Error generating report." });
+  }
+};
+
+
 
 
 
@@ -348,5 +376,6 @@ module.exports = {
   filterTasks,
   searchTasks,
   suggestTasks,
-  readPendingTasks
+  readPendingTasks,
+  generateReport
 };
