@@ -335,18 +335,61 @@ const readPendingTasks = async (req, res) => {
   }
 };
 
-const generateReport = async (req, res) => 
-  {
+
+// updated generated task report function 
+
+const generateReport = async (req, res) => {
   const userId = req.session.userId; // Get the user ID from the session
   try {
     // Fetch all tasks for the logged-in user
     const tasks = await Task.find({ userId });
 
-    // Generate report data
+    // Generate base report data
     const totalTasks = tasks.length;  
     const completedTasks = tasks.filter(task => task.status === 'completed').length;
     const pendingTasks = tasks.filter(task => task.status === 'pending').length;
     const unfinishedTasks = tasks.filter(task => task.status === 'unfinished').length;
+    
+    // Calculate additional metrics
+    const overdueTasks = tasks.filter(task => new Date(task.dueDate) < new Date() && task.status !== 'completed').length;
+    
+    const taskCompletionTimes = tasks
+      .filter(task => task.status === 'completed')
+      .map(task => new Date(task.updatedAt) - new Date(task.createdAt));
+    const avgCompletionTime = taskCompletionTimes.length ? (taskCompletionTimes.reduce((a, b) => a + b) / taskCompletionTimes.length) : 0;
+    
+    const priorityBreakdown = tasks.reduce((acc, task) => {
+      acc[task.priorityLevel] = (acc[task.priorityLevel] || 0) + 1;
+      return acc;
+    }, {});
+
+    const highPriorityTasks = tasks.filter(task => task.priorityLevel === 'high').length;
+    
+    const completionRate = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
+
+    // Task creation trend (number of tasks created in the last 7 days)
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    const recentTasks = tasks.filter(task => new Date(task.createdAt) >= oneWeekAgo).length;
+
+    // Due date proximity
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    const nextWeek = new Date();
+    nextWeek.setDate(today.getDate() + 7);
+
+    const dueToday = tasks.filter(task => new Date(task.dueDate).toDateString() === today.toDateString()).length;
+    const dueTomorrow = tasks.filter(task => new Date(task.dueDate).toDateString() === tomorrow.toDateString()).length;
+    const dueNextWeek = tasks.filter(task => new Date(task.dueDate) > tomorrow && new Date(task.dueDate) <= nextWeek).length;
+
+    // Longest unfinished task duration
+    const oldestUnfinishedTask = tasks
+      .filter(task => task.status !== 'completed')
+      .reduce((oldest, task) => {
+        const taskAge = new Date() - new Date(task.createdAt);
+        return taskAge > oldest ? taskAge : oldest;
+      }, 0);
 
     // Send the report back to the user
     res.status(200).json({
@@ -354,15 +397,22 @@ const generateReport = async (req, res) =>
       completedTasks,
       pendingTasks,
       unfinishedTasks,
+      overdueTasks,
+      avgCompletionTime: avgCompletionTime / (1000 * 60 * 60), // in hours
+      priorityBreakdown,
+      highPriorityTasks,
+      completionRate,
+      recentTasks, // Tasks created in the last week
+      dueToday,
+      dueTomorrow,
+      dueNextWeek,
+      longestUnfinishedTaskDuration: oldestUnfinishedTask / (1000 * 60 * 60 * 24), // in days
     });
-  } catch (error) 
-  {
+  } catch (error) {
     console.error("Error generating report:", error);
     res.status(500).send({ message: "Error generating report." });
   }
 };
-
-
 
 
 
