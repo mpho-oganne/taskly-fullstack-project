@@ -8,7 +8,7 @@ import Layout from "./Layout/dashboardLayout";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import UpdateTaskForm from "./Pages/Task/updateTask";
-import ManageTasks from "./Pages/Task/manageTasks";
+import Tasks from "./Pages/Task/taskList";
 import CreateTaskForm from "./Pages/Task/createTask";
 import Calendar from "./components/Calender/calender";
 import Overview from "./components/Overview/overview";
@@ -53,72 +53,29 @@ const App = () => {
 
           {/* Protected routes */}
           <Route
-            path="/new-task"
-            element={
-              <RequireAuth>
-                <CreateTaskForm />
-              </RequireAuth>
-            }
-          />
-          <Route
             path="/dashboard"
             element={
               <RequireAuth>
                 <Layout />
               </RequireAuth>
             }
-          />
-          <Route
-            path="/tasks"
-            element={
-              <RequireAuth>
-                <ManageTasks />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/update-task/:taskId"
-            element={
-              <RequireAuth>
-                <UpdateTaskForm />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <Profile />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/calendar"
-            element={
-              <RequireAuth>
-                <Calendar />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/overview"
-            element={
-              <RequireAuth>
-                <Overview />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/leaderboard"
-            element={
-              <RequireAuth>
-                <Leaderboard />
-              </RequireAuth>
-            }
-          />
+          >
+            <Route path="/dashboard/new-task" element={<CreateTaskForm />} />
+            <Route path="/dashboard/tasks" element={<Tasks />}/>
+            <Route path="/dashboard/update-task/:taskId" element={<UpdateTaskForm />}/>
+            <Route path="/dashboard/profile" element={<Profile />} />
+            <Route path="/dashboard/calendar" element={<Calendar />}/>
+            <Route path="/dashboard/overview" element={ <Overview /> } />
+            <Route path="/dashboard/leaderboard" element={<Leaderboard />}/>
+            <Route path="/dashboard/report" element={<ReportComponent />}/>
 
-          {/* Fallback for unmatched routes */}
+
+            {/* Fallback for unmatched routes */}
           <Route path="*" element={<h1>404 - Not Found</h1>} />
+          </Route>
+          
+
+          
         </Routes>
       </Router>
     </UserProvider>
@@ -126,3 +83,25 @@ const App = () => {
 };
 
 export default App;
+           
+            
+              
+                
+             
+            
+          
+           
+             
+               
+            
+           
+         
+            
+              
+                
+             
+            
+          
+          
+          
+            

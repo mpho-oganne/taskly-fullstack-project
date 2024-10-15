@@ -52,59 +52,111 @@ const TaskList = () => {
   const filteredTasks = tasks.filter(task => filter ? task.status === filter || task.priorityLevel === filter : true);
 
   return (
-    <div className="h-full flex flex-col">
-      <h2 className="text-lg font-bold mb-2">Tasks List</h2>
+    <div className="min-h-screen flex bg-gray-100">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-md p-4">
+        <h2 className="text-2xl font-bold text-gray-700 mb-6">My Tasks</h2>
+        <ul className="space-y-4">
+          <li className="text-blue-600 font-semibold">Dashboard</li>
+          <li>Tasks</li>
+          <li>Projects</li>
+          <li>Team</li>
+          <li>Settings</li>
+        </ul>
+      </aside>
 
-      {/* Filter Section */}
-      <div className="mb-2">
-        <select onChange={(e) => setFilter(e.target.value)} value={filter} className="border rounded-md p-1 text-sm">
-          <option value="">All</option>
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
-          <option value="low">Low Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="high">High Priority</option>
-        </select>
-      </div>
-
-      {/* Task List */}
-      <div className="flex-grow overflow-y-auto">
-        {filteredTasks.length === 0 ? (
-          <p className="text-gray-500">No tasks found</p>
-        ) : (
-          <div className="space-y-2">
-            {filteredTasks.map((task) => (
-              <div key={task._id} className="bg-white shadow-md rounded-lg p-4 border-l-4 border-blue-500">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="text-sm text-gray-600">{new Date(task.dueDate).toLocaleDateString()}</div>
-                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${task.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                    {task.status}
-                  </span>
-                </div>
-
-                <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
-                <p className="text-gray-700 mt-1">{task.description}</p>
-
-                <div className="flex justify-end mt-2">
-                  <button
-                    className="text-blue-500 hover:underline mr-4"
-                    onClick={() => handleEditTask(task._id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="text-red-500 hover:underline"
-                    onClick={() => handleDeleteTask(task._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
+      {/* Main Content */}
+      <main className="flex-grow p-8">
+        {/* Header */}
+        <header className="flex justify-between items-center mb-6">
+          <h2 className="text-3xl font-semibold text-gray-800">All Tasks</h2>
+          <div className="flex space-x-4">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">New Task</button>
+            <select
+              onChange={(e) => setFilter(e.target.value)}
+              value={filter}
+              className="border-gray-300 rounded-lg px-4 py-2 text-gray-600 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All Tasks</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+            </select>
           </div>
-        )}
-      </div>
+        </header>
+
+        {/* Task List */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          {filteredTasks.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">
+              No tasks found.
+            </div>
+          ) : (
+            <table className="w-full text-left table-auto">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2 text-gray-500">Task</th>
+                  <th className="px-4 py-2 text-gray-500">Due Date</th>
+                  <th className="px-4 py-2 text-gray-500">Status</th>
+                  <th className="px-4 py-2 text-gray-500">Priority</th>
+                  <th className="px-4 py-2 text-gray-500 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTasks.map((task) => (
+                  <tr key={task._id} className="border-b">
+                    <td className="px-4 py-2 text-gray-800">{task.title}</td>
+                    <td className="px-4 py-2 text-gray-600">
+                      {new Date(task.dueDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${task.status === 'completed'
+                          ? 'bg-green-100 text-green-700'
+                          : task.status === 'in-progress'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-red-100 text-red-700'
+                        }`}
+                      >
+                        {task.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${task.priorityLevel === 'high'
+                          ? 'bg-red-100 text-red-700'
+                          : task.priorityLevel === 'medium'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-green-100 text-green-700'
+                        }`}
+                      >
+                        {task.priorityLevel}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      <button
+                        onClick={() => handleEditTask(task._id)}
+                        className="text-blue-600 hover:underline mr-4"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTask(task._id)}
+                        className="text-red-600 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </main>
     </div>
   );
 };

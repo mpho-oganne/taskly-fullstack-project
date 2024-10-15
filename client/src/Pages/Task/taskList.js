@@ -34,7 +34,7 @@ export default function TaskList() {
   };
 
   const handleEditTask = (taskId) => {
-    navigate(`/update-task/${taskId}`);
+    navigate(`/dashboard/update-task/${taskId}`);
   };
 
   const handleDeleteTask = async (taskId) => {
@@ -87,7 +87,7 @@ export default function TaskList() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">My Tasks</h1>
           <button
-            onClick={() => navigate("/new-task")}
+            onClick={() => navigate("/dashboard/new-task")}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center"
           >
             <Plus className="mr-2" />

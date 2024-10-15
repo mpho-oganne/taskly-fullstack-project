@@ -48,18 +48,19 @@ export default function Sidebar({ user, signout }) {
       </div>
 
       <ul className="text-gray-700 space-y-4 w-full">
-        <li className="w-full">
-          <a
-            href="#dashboard"
+      <li className="w-full">
+          <Link
+            to="/dashboard"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
-            <i className="fas fa-home text-xl"></i>
+            <i className="fas fa-user text-xl"></i>
             <span>Dashboard</span>
-          </a>
+          </Link>
         </li>
+
         <li className="w-full">
           <Link
-            to="/tasks"
+            to="/dashboard/tasks"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-user text-xl"></i>
@@ -69,7 +70,7 @@ export default function Sidebar({ user, signout }) {
 
         <li className="w-full">
           <Link
-            to="/report"
+            to="/dashboard/report"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-chart-line text-xl"></i>
@@ -79,7 +80,7 @@ export default function Sidebar({ user, signout }) {
 
         <li className="w-full">
           <Link
-            to="/rewards"
+            to="/dashboard/rewards"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-trophy text-xl"></i>
@@ -88,7 +89,7 @@ export default function Sidebar({ user, signout }) {
         </li>
         <li className="w-full">
           <Link
-            to="/leaderboard"
+            to="/dashboard/leaderboard"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-medal text-xl"></i>
@@ -97,7 +98,7 @@ export default function Sidebar({ user, signout }) {
         </li>
         <li className="w-full">
           <Link
-            to="/profile"
+            to="/dashboard/profile"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-user text-xl"></i>
