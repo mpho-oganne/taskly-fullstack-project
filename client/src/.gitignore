@@ -1,5 +1,5 @@
 # Ignore JSON files
-*.json
+# *.json
 
 # Ignore environment variable files
 .env
