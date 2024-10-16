@@ -217,7 +217,7 @@ const getLeaderboard = async (req, res) => {
 
 // Update signed-in user data/profile including profile picture
 const updateUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, profilePicture } = req.body;
 
   try {
     const userId = req.session.userId;
@@ -237,15 +237,14 @@ const updateUser = async (req, res) => {
     if (email) {
       user.email = email;
     }
+    if (profilePicture) {
+      user.profilePicture = profilePicture;
+    }
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
     }
 
-    // If profile picture is uploaded, update the field
-    if (req.file) {
-      user.profilePicture = req.file.filename;
-    }
 
     await user.save();
 
