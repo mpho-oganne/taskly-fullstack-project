@@ -7,12 +7,14 @@
     "alreadyHaveAccount": "Unenqubo yokungena?",
     "signIn": "Ngena",
     "about": {
-      "title": "Mayelana ne-Taskly",
+      "title": "Mayelana",
+      "taskly": "ne-Taskly",
       "text1": "I-Taskly iyinsiza yakho eqondile emhlabeni wokuphathwa kwemisebenzi. Sihlanganisile ubuchwepheshe be-AI obuthuthukile nokwakhiwa okulula ukuze sakhe ipulatifomu ehlela imisebenzi yakho kodwa ikusize ngempela ukuthi uphumelele.",
       "text2": "Noma ngabe ungumsebenzi ophithizelayo okhulisa imiklamo eminingi, umfundi ophakathi kwezemfundo nezemidlalo, noma othile ofuna ukuhlela impilo yakhe yansuku zonke, i-Taskly ilungele izidingo zakho ezikhethekile."
     },
     "whyChoose": {
-      "title": "Kungani Ukhetha i-Taskly?",
+      "title": "Kungani Ukhetha",
+      "taskly": "i-Taskly?",
       "features": [
         {
           "title": "Phatha Isikhathi Ngempumelelo",
@@ -29,7 +31,8 @@
       ]
     },
     "powerfulFeatures": {
-      "title": "Izici Ezinqwabelanayo",
+      "title": "Izici",
+      "title2": "Ezinqwabelanayo",
       "feature1": {
         "title": "Usizo Oluhlosiwe lwe-AI",
         "text": "Ukuhlanganiswa kwe-AI ye-Taskly kukusiza ukuba ube phezulu kumisebenzi yakho ngokusikisela imisebenzi futhi uyifunde phansi, ikugcina uphephile futhi uhlelekile.",
@@ -55,7 +58,8 @@
           "Engeza Umbono"
         ],
         "todoText": "Kufanele Kwenziwe",
-        "status": "Kwenziwa"
+        "status": "Kwenziwa",
+        "button": "Buka Uhlu Lwezikhundla"
       },
       "feature3": {
         "title": "Thola Imiklomelo & Thola Imibiko",
@@ -64,8 +68,59 @@
           "Ukulandela Isikhathi",
           "I-Sprint",
           "Amaphuzu Ngokwezifiso"
-        ]
+        ],
+        "button": "Dala Umbiko"
       }
+    },
+    "sectionTitle": "Lokhu Okushiwo Ngabasebenzisi",
+    "sectionTitle2": "Bethu",
+    "testimonials": [
+      {
+        "quote": "ITaskly isishintshe ngokuphelele indlela engilawula ngayo amaphrojekthi eqembu lami!",
+        "name": "USarah J.",
+        "role": "Umphathi Wezokumaketha"
+      },
+      {
+        "quote": "Njengomuntu ozimele, ukulandela amaklayenti amaningi sekungumoya opholile.",
+        "name": "UMichael C.",
+        "role": "Umklami Osebenzela Yedwa"
+      },
+      {
+        "quote": "Isikhombimsebenzisi esintu seTaskly singisiza ukuthi ngihlale ngiphezu kocwaningo lwami.",
+        "name": "UEmily R.",
+        "role": "Umfundi Osezingeni Eliphakeme"
+      }
+    ],
+    "footer": {
+      "sections": {
+        "taskly": {
+          "description": "Umlingani wakho wokusebenza kahle onamandla e-AI"
+        },
+        "features": {
+          "title": "Izici",
+          "items": [
+            "Umeluleki we-AI",
+            "Ukuphathwa Kwezibopho",
+            "Ukwenza Ngokwezifiso"
+          ]
+        },
+        "company": {
+          "title": "Inkampani",
+          "items": [
+            "Mayelana Nathi",
+            "Imisebenzi",
+            "Xhumana Nathi"
+          ]
+        },
+        "legal": {
+          "title": "Okusemthethweni",
+          "items": [
+            "Inqubomgomo Yobumfihlo",
+            "Imigomo Yesevisi"
+          ]
+        }
+      },
+      "copyright": "Wonke amalungelo agodliwe."
     }
   }
 }

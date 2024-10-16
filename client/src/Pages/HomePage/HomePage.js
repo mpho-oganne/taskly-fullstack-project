@@ -60,7 +60,7 @@ const HomePage = () => {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12">
-          {t("home.about.title")} <span className="text-purple-600">Taskly</span>
+          {t("home.about.title")} <span className="text-purple-600">{t("home.about.taskly")}</span>
         </h2>
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-gray-600 mb-6">
@@ -76,7 +76,7 @@ const HomePage = () => {
       <section className="py-20 bg-gray-100">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-16">
-            {t("home.whyChoose.title")} <span className="text-purple-600">Taskly</span>?
+            {t("home.whyChoose.title")} <span className="text-purple-600">{t("home.whyChoose.taskly")}</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="bg-white rounded-xl shadow-lg p-8 text-center transform transition duration-500 hover:scale-105">
@@ -119,7 +119,7 @@ const HomePage = () => {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-16">
-          {t("home.powerfulFeatures.title")} <span className="text-purple-600">Features</span>
+          {t("home.powerfulFeatures.title")} <span className="text-purple-600">{t("home.powerfulFeatures.title2")}</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {/* AI-powered productivity */}
@@ -178,7 +178,7 @@ const HomePage = () => {
                   </div>
                 </div>
                 <button className="mt-6 bg-white text-blue-600 font-bold py-2 px-6 rounded-full hover:bg-blue-100 transition duration-300">
-                  View Leaderboard
+                  {t("home.powerfulFeatures.feature2.button")}
                 </button>
               </div>
             </div>
@@ -221,7 +221,7 @@ const HomePage = () => {
                   </div>
                 </div>
                 <button className="mt-6 bg-white text-green-600 font-bold py-2 px-6 rounded-full hover:bg-green-100 transition duration-300">
-                  Generate Report
+                  {t("home.powerfulFeatures.feature3.button")}
                 </button>
               </div>
             </div>
@@ -233,28 +233,29 @@ const HomePage = () => {
         <div className="container mx-auto px-6">
           <div className="animate-fade-in-up">
             <h2 className="text-4xl font-bold text-center mb-16">
-              What Our Users <span className="text-purple-600">Say</span>
+              {t("home.sectionTitle")} <span className="text-purple-600">{t("home.sectionTitle2")}</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
                   content:
-                    "Taskly has revolutionized the way I manage my team's projects!",
+                    t("home.testimonials.0.quote"),
                   name: "Sarah J.",
-                  role: "Marketing Manager",
+                  role: t("home.testimonials.0.role"),
                 },
                 {
                   content:
-                    "As a freelancer, keeping track of multiple clients is now a breeze.",
+                    t("home.testimonials.1.quote"),
                   name: "Michael C.",
-                  role: "Freelance Designer",
+                  role: t("home.testimonials.1.role"),
                 },
                 {
                   content:
-                    "Taskly's intuitive interface helps me stay on top of my research.",
+                  t("home.testimonials.2.quote"),
                   name: "Emily R.",
-                  role: "Graduate Student",
+                  role: t("home.testimonials.2.role"),
                 },
+               ,
               ].map((testimonial, index) => (
                 <div
                   key={index}
