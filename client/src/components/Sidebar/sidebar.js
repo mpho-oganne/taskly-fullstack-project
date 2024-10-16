@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "react-avatar";
-import {
-  LogOut,
-  Home,
-  User,
-  Calendar,
-  ChartLine,
-  Trophy,
-  Medal,
-} from "lucide-react";
+import axios from "axios";
+import { LogOut } from "lucide-react";
 import { toast } from "react-toastify";
 
-export default function Sidebar({ user, signout }) {
+export default function Sidebar({ signout }) {
+  const [user, setUser] = useState(null); 
   const navigate = useNavigate();
+
+  useEffect(() => {
+   
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/user", {
+          withCredentials: true,
+        });
+        setUser(response.data.user); 
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("audioPlayed");
@@ -33,7 +43,7 @@ export default function Sidebar({ user, signout }) {
         <div className="flex items-center mb-4">
           {user?.profilePicture ? (
             <img
-              src={`http://localhost:3001/uploads/${user.profilePicture}`}
+              src={user.profilePicture} 
               alt="Profile"
               className="w-16 h-16 rounded-full border-2 border-gray-300 shadow-sm"
             />
@@ -42,18 +52,18 @@ export default function Sidebar({ user, signout }) {
           )}
         </div>
         <span className="text-xl font-semibold text-gray-800">
-          {user?.name}
+          {user?.name || "Loading..."}
         </span>
         <span className="text-sm text-gray-600">Dashboard</span>
       </div>
 
       <ul className="text-gray-700 space-y-4 w-full">
-      <li className="w-full">
+        <li className="w-full">
           <Link
             to="/dashboard"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
-            <i className="fas fa-user text-xl"></i>
+            <i className="fas fa-home text-xl"></i>
             <span>Dashboard</span>
           </Link>
         </li>
@@ -63,7 +73,7 @@ export default function Sidebar({ user, signout }) {
             to="/dashboard/tasks"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
-            <i className="fas fa-user text-xl"></i>
+            <i className="fas fa-tasks text-xl"></i>
             <span>Tasks</span>
           </Link>
         </li>
@@ -84,9 +94,10 @@ export default function Sidebar({ user, signout }) {
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-trophy text-xl"></i>
-            <span>Tasks Rewards</span>
+            <span>Task Rewards</span>
           </Link>
         </li>
+
         <li className="w-full">
           <Link
             to="/dashboard/leaderboard"
@@ -96,6 +107,7 @@ export default function Sidebar({ user, signout }) {
             <span>Leaderboard</span>
           </Link>
         </li>
+
         <li className="w-full">
           <Link
             to="/dashboard/profile"
@@ -106,6 +118,7 @@ export default function Sidebar({ user, signout }) {
           </Link>
         </li>
       </ul>
+
       <div className="mt-auto">
         <button
           onClick={handleLogout}
