@@ -63,11 +63,11 @@ const SignIn = () => {
       className="flex h-screen items-center justify-center"
       style={{ backgroundColor: "#F3F4F6" }}
     >
-      {/* Main container */}
-      <div className="flex w-3/4 max-w-2xl shadow-lg rounded-lg overflow-hidden">
+      {/* Main container - responsive flexbox */}
+      <div className="flex flex-col sm:flex-row w-full sm:w-3/4 max-w-2xl shadow-lg rounded-lg overflow-hidden">
         {/* Left side - Login form */}
-        <div className="w-2/3 bg-white p-10">
-          <h2 className="text-3xl font-bold mb-6">Login</h2>
+        <div className="w-full sm:w-2/3 bg-white p-6 sm:p-10">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6">Login</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
@@ -119,7 +119,7 @@ const SignIn = () => {
         </div>
 
         {/* Right side - Sign Up button in a subtler grey box */}
-        <div className="w-1/3 bg-gray-200 flex items-center justify-center p-4">
+        <div className="w-full sm:w-1/3 bg-gray-200 flex items-center justify-center p-6 sm:p-4">
           <div className="w-full text-center">
             <Link to="/signup">
               <button className="py-3 px-8 bg-gradient-to-r from-blue-400 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-gradient-to-l transition duration-300">
