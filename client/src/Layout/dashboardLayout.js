@@ -8,7 +8,7 @@ import TaskList from "../Pages/Task/taskList";
 import Calendar from "../components/Calender/calender";
 import EventsAndDeadlines from "../components/Events/events";
 import Graphs from "../components/Graphs/graphs";
-import DashboardHeader from "../components/DashboardHeader/dashboardHeader";
+import DashboardHeader from "../components/DashboardHeader/dashboardheader";
 import VirtualAssistant from "../components/VirtualAssistant/virtual-assistant";
 
 const Sheet = ({ isOpen, onClose, children }) =>
