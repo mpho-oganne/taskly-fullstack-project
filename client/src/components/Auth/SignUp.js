@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 
-const SignUp = () => {
+export default function SignUp() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,10 +36,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full space-y-8">
-        <div className="text-center">
-          <h2 className="mt-6 text-4xl font-extrabold">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-6 sm:py-12">
+      <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-extrabold sm:text-4xl">
             <span className="text-gray-900">Create your </span>
             <span className="text-purple-600">account</span>
           </h2>
@@ -53,13 +53,13 @@ const SignUp = () => {
             </Link>
           </p>
         </div>
-        <div className="mt-8 bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="lg:grid lg:grid-cols-2">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-8">
-              <h3 className="text-2xl font-bold mb-6">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 lg:p-8">
+              <h3 className="text-2xl lg:text-3xl font-bold mb-4">
                 Get Started with Taskly!
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {[
                   "Manage tasks effortlessly with our intuitive interface.",
                   "Set task reminders to stay on track and hit deadlines.",
@@ -67,13 +67,13 @@ const SignUp = () => {
                 ].map((feature, index) => (
                   <li key={index} className="flex items-start">
                     <CheckCircle className="w-6 h-6 mr-2 flex-shrink-0" />
-                    <span>{feature}</span>
+                    <span className="text-base">{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="p-6 lg:p-8">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {[
                   {
                     name: "name",
@@ -103,7 +103,7 @@ const SignUp = () => {
                   <div key={field.name}>
                     <label
                       htmlFor={field.name}
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       {field.label}
                     </label>
@@ -112,7 +112,7 @@ const SignUp = () => {
                       name={field.name}
                       type={field.type}
                       required
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                       placeholder={field.placeholder}
                       onChange={handleChange}
                       value={formData[field.name]}
@@ -153,6 +153,4 @@ const SignUp = () => {
       </div>
     </div>
   );
-};
-
-export default SignUp;
+}
