@@ -8,8 +8,8 @@ import TaskList from "../Pages/Task/taskList";
 import Calendar from "../components/Calender/calender";
 import EventsAndDeadlines from "../components/Events/events";
 import Graphs from "../components/Graphs/graphs";
-import DashboardHeader from "../components/DashboardHeader/dashboardheader";
-import VirtualAssistant from "../components/VirtualAssistant/virtual-assistant"
+import DashboardHeader from "../components/DashboardHeader/dashboardHeader";
+import VirtualAssistant from "../components/VirtualAssistant/virtual-assistant";
 
 const Sheet = ({ isOpen, onClose, children }) =>
   isOpen && (
@@ -140,7 +140,7 @@ export default function DashboardLayout() {
       </div>
 
       <div className="flex flex-col flex-grow">
-        <div className="flex-grow p-6 lg:ml-2"> 
+        <div className="flex-grow p-6 lg:ml-2">
           <Outlet />
           {isRootPath && (
             <div className="lg:flex lg:space-x-6">
@@ -169,7 +169,7 @@ export default function DashboardLayout() {
           )}
         </div>
       </div>
-      <VirtualAssistant/>
+      <VirtualAssistant />
     </div>
   );
 }

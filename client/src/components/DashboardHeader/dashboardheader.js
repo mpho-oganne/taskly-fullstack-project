@@ -1,21 +1,43 @@
-import React from "react";
-import { Search } from "lucide-react";
+import React, { useState, useEffect } from "react";
 
-export default function DashboardHeader({ onSearch }) {
+export default function DashboardHeader() {
+  const [user, setUser] = useState(null);
+
+  // Fetch the logged-in user data
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/user/", {
+          credentials: "include",
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setUser(data.user);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
-    <div className="flex justify-between items-center mb-8">
-      {/* Dashboard Title */}
-      <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-
-      {/* Search Bar */}
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search..."
-          onChange={(e) => onSearch(e.target.value)} // Call onSearch when typing
-          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-        <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+    <div className="bg-gray-50 border-b border-gray-200 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          {/* Display the logged-in user's name and welcome message */}
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              {user ? `Hello, ${user.name}!` : "Dashboard"}
+            </h1>
+            <p className="text-sm text-gray-600">
+              {user ? "Welcome to your dashboard." : ""}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
