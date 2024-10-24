@@ -15,6 +15,7 @@ import Overview from "./components/Overview/overview";
 import HomepageLayout from "./Layout/HomePageLayout";
 import Leaderboard from "./components/Leaderboard/leaderboard";
 import ReportComponent from "./components/WeeklyReport/report";
+import VirtualRewards from "./components/TaskRewards/taskRewards";
 
 // Context
 import UserProvider from "./UserContext";
@@ -68,7 +69,7 @@ const App = () => {
             <Route path="/dashboard/overview" element={ <Overview /> } />
             <Route path="/dashboard/leaderboard" element={<Leaderboard />}/>
             <Route path="/dashboard/report" element={<ReportComponent />}/>
-
+            <Route path="/dashboard/taskRewards" element={<VirtualRewards />}/>
 
             {/* Fallback for unmatched routes */}
           <Route path="*" element={<h1>404 - Not Found</h1>} />

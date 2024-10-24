@@ -80,7 +80,7 @@ export default function Sidebar({ user, signout }) {
 
         <li className="w-full">
           <Link
-            to="/dashboard/rewards"
+            to="/dashboard/taskRewards"
             className="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-md"
           >
             <i className="fas fa-trophy text-xl"></i>
