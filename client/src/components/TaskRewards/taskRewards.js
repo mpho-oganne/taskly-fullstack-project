@@ -1,181 +1,190 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
-const TaskRewards = () => {
-  const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [rewards, setRewards] = useState([]); // State to track rewards
+const LightningIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6 text-yellow-400">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+  </svg>
+);
+
+const StarIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6 text-purple-400">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+  </svg>
+);
+
+const TrophyIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6 text-blue-400">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+  </svg>
+);
+
+const VirtualRewards = () => {
+  const [activeTab, setActiveTab] = useState('Badges');
   
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/task/tasks', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-        const data = await response.json();
-        
-        if (Array.isArray(data)) {
-          setTasks(data);
-        } else {
-          console.error("API returned non-array data:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
-    fetchTasks();
-  }, []);
-
-  const handleEditTask = (taskId) => {
-    navigate(`/update-task/${taskId}`);
-  };
-
-  const handleDeleteTask = async (taskId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/task/delete/${taskId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        setTasks(tasks.filter(task => task._id !== taskId));
-      } else {
-        console.error('Failed to delete task');
-      }
-    } catch (error) {
-      console.error('Error deleting task:', error);
+  const badges = [
+    {
+      icon: <LightningIcon />,
+      title: "Early Bird",
+      description: "Completed 5 tasks before 12 PM"
+    },
+    {
+      icon: <StarIcon />,
+      title: "Overachiever",
+      description: "Completed 20 tasks in a week"
+    },
+    {
+      icon: <TrophyIcon />,
+      title: "Consistency King",
+      description: "Logged in for 30 consecutive days"
     }
+  ];
+
+  const pointsData = {
+    totalPoints: 1250,
+    thisWeek: 320,
+    pointsToNext: 250,
+    nextLevel: "Gold",
+    recentActivity: [
+      { action: "Completed task", points: 50, date: "2024-03-20" },
+      { action: "Daily login", points: 10, date: "2024-03-20" },
+      { action: "Streak bonus", points: 100, date: "2024-03-19" },
+      { action: "Task completion streak", points: 75, date: "2024-03-19" }
+    ]
   };
 
-  // Function to handle task completion and reward
-  const handleCompleteTask = async (taskId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/task/complete/${taskId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Update the task list
-        setTasks(tasks.map(task => task._id === taskId ? { ...task, status: 'completed' } : task));
-
-        // Show the earned reward
-        setRewards([...rewards, data.task.reward]);
-        alert(`Congratulations! You've earned a reward: ${data.task.reward}`);
-      } else {
-        console.error('Failed to complete task');
-      }
-    } catch (error) {
-      console.error('Error completing task:', error);
+  const achievements = [
+    {
+      title: "Task Master",
+      progress: 75,
+      current: 75,
+      target: 100,
+      description: "Complete 100 tasks"
+    },
+    {
+      title: "Perfect Week",
+      progress: 40,
+      current: 2,
+      target: 5,
+      description: "Complete all daily tasks for 5 consecutive days"
+    },
+    {
+      title: "Productivity Pro",
+      progress: 90,
+      current: 45,
+      target: 50,
+      description: "Complete 50 tasks before their deadline"
     }
-  };
+  ];
 
-  const filteredTasks = tasks.filter(task => {
-    return filter ? task.status === filter || task.priorityLevel === filter : true;
-  });
+  const ProgressBar = ({ progress }) => (
+    <div className="w-full bg-gray-200 rounded-full h-2">
+      <div 
+        className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
 
   return (
-    <div className="h-full overflow-hidden flex flex-col">
-      <h2 className="text-lg font-bold mb-4">Tasks List</h2>
-
-      {/* Filter section */}
-      <div className="mb-4">
-        <label className="mr-2">Filter by: </label>
-        <select
-          onChange={(e) => setFilter(e.target.value)}
-          value={filter}
-          className="border rounded-md p-1"
-        >
-          <option value="">All</option>
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
-          <option value="low">Low Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="high">High Priority</option>
-        </select>
+    <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="p-4 space-y-1.5">
+        <h2 className="text-2xl font-bold text-gray-900">Your Virtual Rewards</h2>
+        <p className="text-gray-500">Track your progress and achievements</p>
+      </div>
+      
+      <div className="flex border-b">
+        {['Badges', 'Points', 'Achievements'].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`flex-1 py-2 px-4 text-sm font-medium transition-colors
+              ${activeTab === tab 
+                ? 'border-b-2 border-gray-900 text-gray-900' 
+                : 'text-gray-500 hover:text-gray-700'}`}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
 
-      {/* Task List */}
-      {filteredTasks.length === 0 ? (
-        <p className="text-gray-500">No tasks found</p>
-      ) : (
-        <div className="flex-grow overflow-y-auto">
-          <div className="grid grid-cols-1 gap-4">
-            {filteredTasks.map((task) => (
-              <div key={task._id} className="bg-white shadow-md rounded-lg p-2 border-l-5 border-blue-500">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="text-sm text-gray-600">
-                    {new Date(task.dueDate).toLocaleDateString()}
-                  </div>
-                  <span
-                    className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-                      task.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}
-                  >
-                    {task.status}
-                  </span>
+      <div className="p-4">
+        {activeTab === 'Badges' && (
+          <div className="space-y-4">
+            {badges.map((badge, index) => (
+              <div 
+                key={index}
+                className="p-4 rounded-lg border border-gray-100 flex flex-col items-center text-center"
+              >
+                <div className="mb-2">
+                  {badge.icon}
                 </div>
-
-                <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
-                <p className="text-gray-700 mt-1">{task.description}</p>
-
-                <div className="flex justify-end mt-2">
-                  <button
-                    className="text-blue-500 hover:underline mr-4"
-                    onClick={() => handleEditTask(task._id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="text-red-500 hover:underline"
-                    onClick={() => handleDeleteTask(task._id)}
-                  >
-                    Delete
-                  </button>
-                  {task.status !== 'completed' && (
-                    <button
-                      className="text-green-500 hover:underline ml-4"
-                      onClick={() => handleCompleteTask(task._id)}
-                    >
-                      Complete Task
-                    </button>
-                  )}
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  {badge.title}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {badge.description}
+                </p>
               </div>
             ))}
           </div>
-        </div>
-      )}
+        )}
+        
+        {activeTab === 'Points' && (
+          <div className="space-y-6">
+            {/* Points Overview */}
+            <div className="bg-blue-50 p-4 rounded-lg text-center">
+              <h3 className="text-3xl font-bold text-blue-600 mb-1">
+                {pointsData.totalPoints}
+              </h3>
+              <p className="text-sm text-blue-600">Total Points</p>
+            </div>
 
-      {/* Display earned rewards */}
-      {rewards.length > 0 && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold text-green-600">Rewards Earned:</h3>
-          <ul>
-            {rewards.map((reward, index) => (
-              <li key={index}>{reward}</li>
+            {/* Progress to Next Level */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Progress to {pointsData.nextLevel}</span>
+                <span className="text-gray-600">{pointsData.pointsToNext} points needed</span>
+              </div>
+              <ProgressBar progress={70} />
+            </div>
+
+            {/* Recent Activity */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-3">Recent Activity</h4>
+              <div className="space-y-3">
+                {pointsData.recentActivity.map((activity, index) => (
+                  <div key={index} className="flex justify-between items-center text-sm">
+                    <div>
+                      <p className="text-gray-900">{activity.action}</p>
+                      <p className="text-gray-500 text-xs">{activity.date}</p>
+                    </div>
+                    <span className="text-green-600">+{activity.points}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'Achievements' && (
+          <div className="space-y-6">
+            {achievements.map((achievement, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex justify-between items-baseline">
+                  <h4 className="font-semibold text-gray-900">{achievement.title}</h4>
+                  <span className="text-sm text-gray-600">
+                    {achievement.current}/{achievement.target}
+                  </span>
+                </div>
+                <ProgressBar progress={achievement.progress} />
+                <p className="text-sm text-gray-500">{achievement.description}</p>
+              </div>
             ))}
-          </ul>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default TaskRewards;
+export default VirtualRewards;

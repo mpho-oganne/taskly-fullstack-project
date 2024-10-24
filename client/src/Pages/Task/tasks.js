@@ -55,7 +55,7 @@ const TaskList = () => {
     <div className="min-h-screen flex bg-gray-100">
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md p-4">
-        <h2 className="text-2xl font-bold text-gray-700 mb-6">My Tasks</h2>
+        <h2 className="text-2xl font-bold text-gray-700 mb-6">My Task List</h2>
         <ul className="space-y-4">
           <li className="text-blue-600 font-semibold">Dashboard</li>
           <li>Tasks</li>
