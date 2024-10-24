@@ -3,12 +3,13 @@ const User = require("../models/user");
 const multer = require("multer");
 const path = require("path");
 const Task = require("../models/task");
-const fs = require('fs');
+const fs = require("fs");
+const Message = require("../models/message");
 
 //Setting up multer for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); 
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -19,9 +20,9 @@ const upload = multer({ storage });
 
 exports.updateProfilePicture = (req, res) => {
   const userId = req.user.id; // Get the user ID from the request
-  
+
   if (!req.file) {
-    return res.status(400).json({ error: 'Please upload a file.' });
+    return res.status(400).json({ error: "Please upload a file." });
   }
 
   User.findByIdAndUpdate(
@@ -30,39 +31,42 @@ exports.updateProfilePicture = (req, res) => {
     { new: true }
   )
     .then((user) => {
-      if (!user) return res.status(404).json({ error: 'User not found.' });
-      res.json({ message: 'Profile picture updated successfully.', user });
+      if (!user) return res.status(404).json({ error: "User not found." });
+      res.json({ message: "Profile picture updated successfully.", user });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Failed to update profile picture.', details: error.message });
+      res.status(500).json({
+        error: "Failed to update profile picture.",
+        details: error.message,
+      });
     });
 };
 
 exports.removeProfilePicture = (req, res) => {
-  const userId = req.user.id; // Get the user ID from the request (assuming you have authentication middleware)
+  const userId = req.user.id;
 
   User.findById(userId)
     .then((user) => {
-      if (!user) return res.status(404).json({ error: 'User not found.' });
-      
-      // Remove the picture file from the uploads directory if it exists
-      const filePath = path.join(__dirname, '../uploads', user.profilePicture);
+      if (!user) return res.status(404).json({ error: "User not found." });
+
+      const filePath = path.join(__dirname, "../uploads", user.profilePicture);
       if (user.profilePicture && fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       }
 
-      // Update user profile picture field to null
       user.profilePicture = null;
       return user.save();
     })
     .then((user) => {
-      res.json({ message: 'Profile picture removed successfully.', user });
+      res.json({ message: "Profile picture removed successfully.", user });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Failed to remove profile picture.', details: error.message });
+      res.status(500).json({
+        error: "Failed to remove profile picture.",
+        details: error.message,
+      });
     });
 };
-
 
 //code for signing up the user
 const signup = async (req, res) => {
@@ -213,7 +217,7 @@ const getLeaderboard = async (req, res) => {
 
 // Update signed-in user data/profile including profile picture
 const updateUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, profilePicture } = req.body;
 
   try {
     const userId = req.session.userId;
@@ -233,15 +237,14 @@ const updateUser = async (req, res) => {
     if (email) {
       user.email = email;
     }
+    if (profilePicture) {
+      user.profilePicture = profilePicture;
+    }
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;
     }
 
-    // If profile picture is uploaded, update the field
-    if (req.file) {
-      user.profilePicture = req.file.filename;
-    }
 
     await user.save();
 
@@ -267,6 +270,30 @@ const updateUser = async (req, res) => {
     return res.status(500).send({ error: "Server error" });
   }
 };
+
+const submitMessage = async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    const newMessage = new Message({
+      name,
+      email,
+      message,
+    });
+
+    await newMessage.save();
+
+    return res.status(200).json({ message: "Message sent successfully!" });
+  } catch (error) {
+    console.error("Error submitting message:", error);
+    return res.status(500).json({ error: "Error submitting message." });
+  }
+};
+
 // Generate report based off user's tasks
 const generateReport = async (req, res) => {};
 
@@ -282,4 +309,5 @@ module.exports = {
   generateReport,
   getAISuggestions,
   getLeaderboard,
+  submitMessage,
 };

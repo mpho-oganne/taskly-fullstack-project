@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { FaUser, FaCamera, FaSpinner } from 'react-icons/fa'
+import { FaUser, FaSpinner } from 'react-icons/fa'
 import { MdEmail, MdLock, MdRefresh, MdEdit, MdInfo } from 'react-icons/md'
 
 export default function Profile() {
@@ -12,7 +12,7 @@ export default function Profile() {
     name: '',
     email: '',
     password: '',
-    profilePicture: null,
+    profilePicture: '',
   })
   const [message, setMessage] = useState({ type: '', content: '' })
 
@@ -31,7 +31,7 @@ export default function Profile() {
         name: userData.name,
         email: userData.email,
         password: '',
-        profilePicture: null,
+        profilePicture: userData.profilePicture || '',
       })
     } catch (error) {
       showMessage('Error', 'Failed to load user data')
@@ -47,38 +47,16 @@ export default function Profile() {
     })
   }
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setUpdatedUser({
-        ...updatedUser,
-        profilePicture: e.target.files[0],
-      })
-    }
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setUpdating(true)
 
-    const formData = new FormData()
-    formData.append('name', updatedUser.name)
-    formData.append('email', updatedUser.email)
-    if (updatedUser.password) {
-      formData.append('password', updatedUser.password)
-    }
-    if (updatedUser.profilePicture) {
-      formData.append('profilePicture', updatedUser.profilePicture)
-    }
-
     try {
       const response = await axios.put(
         'http://localhost:3001/user/update',
-        formData,
+        updatedUser,
         {
           withCredentials: true,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
         }
       )
       setUser(response.data.user)
@@ -87,26 +65,6 @@ export default function Profile() {
       showMessage('Error', 'Failed to update profile')
     } finally {
       setUpdating(false)
-    }
-  }
-
-  const handleRemoveProfilePicture = async () => {
-    try {
-      const response = await axios.put(
-        'http://localhost:3001/user/remove-profile-picture',
-        null,
-        {
-          withCredentials: true,
-        }
-      )
-      setUser(response.data.user)
-      setUpdatedUser({
-        ...updatedUser,
-        profilePicture: null,
-      })
-      showMessage('Success', 'Profile picture removed successfully')
-    } catch (error) {
-      showMessage('Error', 'Failed to remove profile picture')
     }
   }
 
@@ -161,7 +119,7 @@ export default function Profile() {
             <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
               {user?.profilePicture ? (
                 <img
-                  src={`http://localhost:3001/uploads/${user.profilePicture}`}
+                  src={user.profilePicture}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -211,6 +169,22 @@ export default function Profile() {
               </div>
             </div>
             <div>
+              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">
+                Profile Picture URL
+              </label>
+              <div className="relative">
+                <input
+                  id="profilePicture"
+                  name="profilePicture"
+                  type="text"
+                  value={updatedUser.profilePicture}
+                  onChange={handleChange}
+                  placeholder="Paste image URL"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 New Password
               </label>
@@ -224,37 +198,6 @@ export default function Profile() {
                   placeholder="Leave blank to keep current password"
                   className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700 mb-1">
-                Profile Picture
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  id="profilePicture"
-                  name="profilePicture"
-                  type="file"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => document.getElementById('profilePicture').click()}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                >
-                  <FaCamera className="inline-block mr-2" />
-                  Choose File
-                </button>
-                {user?.profilePicture && (
-                  <button
-                    type="button"
-                    onClick={handleRemoveProfilePicture}
-                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    Remove Picture
-                  </button>
-                )}
               </div>
             </div>
             <button

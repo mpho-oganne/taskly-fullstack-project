@@ -15,6 +15,7 @@ import Overview from "./components/Overview/overview";
 import HomepageLayout from "./Layout/HomePageLayout";
 import Leaderboard from "./components/Leaderboard/leaderboard";
 import ReportComponent from "./components/WeeklyReport/report";
+import Contact from "./Pages/ContactUs/contactUs";
 import VirtualRewards from "./components/TaskRewards/taskRewards";
 
 // Context
@@ -52,6 +53,15 @@ const App = () => {
             }
           />
 
+          <Route
+            path="/contact"
+            element={
+              <HomepageLayout>
+                <Contact />
+              </HomepageLayout>
+            }
+          />
+
           {/* Protected routes */}
           <Route
             path="/dashboard"
@@ -62,21 +72,21 @@ const App = () => {
             }
           >
             <Route path="/dashboard/new-task" element={<CreateTaskForm />} />
-            <Route path="/dashboard/tasks" element={<Tasks />}/>
-            <Route path="/dashboard/update-task/:taskId" element={<UpdateTaskForm />}/>
+            <Route path="/dashboard/tasks" element={<Tasks />} />
+            <Route
+              path="/dashboard/update-task/:taskId"
+              element={<UpdateTaskForm />}
+            />
             <Route path="/dashboard/profile" element={<Profile />} />
-            <Route path="/dashboard/calendar" element={<Calendar />}/>
-            <Route path="/dashboard/overview" element={ <Overview /> } />
-            <Route path="/dashboard/leaderboard" element={<Leaderboard />}/>
-            <Route path="/dashboard/report" element={<ReportComponent />}/>
+            <Route path="/dashboard/calendar" element={<Calendar />} />
+            <Route path="/dashboard/overview" element={<Overview />} />
+            <Route path="/dashboard/leaderboard" element={<Leaderboard />} />
+            <Route path="/dashboard/report" element={<ReportComponent />} />
             <Route path="/dashboard/taskRewards" element={<VirtualRewards />}/>
 
             {/* Fallback for unmatched routes */}
-          <Route path="*" element={<h1>404 - Not Found</h1>} />
+            <Route path="*" element={<h1>404 - Not Found</h1>} />
           </Route>
-          
-
-          
         </Routes>
       </Router>
     </UserProvider>
@@ -84,25 +94,3 @@ const App = () => {
 };
 
 export default App;
-           
-            
-              
-                
-             
-            
-          
-           
-             
-               
-            
-           
-         
-            
-              
-                
-             
-            
-          
-          
-          
-            

@@ -7,12 +7,14 @@
     "alreadyHaveAccount": "Already have an account?",
     "signIn": "Sign in",
     "about": {
-      "title": "About Taskly",
+      "title": "About",
+      "taskly": "Taskly",
       "text1": "Taskly is your intelligent companion in the world of personal task management. We've combined cutting-edge AI technology with intuitive design to create a platform that not only organizes your tasks but actively helps you accomplish them.",
       "text2": "Whether you're a busy professional juggling multiple projects, a student balancing coursework and extracurriculars, or anyone looking to bring order to their daily life, Taskly adapts to your unique needs and work style."
     },
     "whyChoose": {
-      "title": "Why Choose Taskly?",
+      "title": "Why Choose",
+      "taskly": "Taskly?",
       "features": [
         {
           "title": "Manage Time Efficiently",
@@ -29,7 +31,8 @@
       ]
     },
     "powerfulFeatures": {
-      "title": "Powerful Features",
+      "title": "Powerful",
+      "title2": "Features",
       "feature1": {
         "title": "AI-Powered Assistance",
         "text": "Taskly's AI integration helps you stay on top of your tasks by suggesting tasks and reading them out loud, keeping you organized and efficient.",
@@ -55,7 +58,8 @@
           "Add View"
         ],
         "todoText": "To Do",
-        "status": "In Progress"
+        "status": "In Progress",
+        "button": "View Leaderbaord"
       },
       "feature3": {
         "title": "Earn Rewards & Get Reports",
@@ -64,8 +68,57 @@
           "Time Tracking",
           "Sprints",
           "Custom Fields"
-        ]
+        ],
+        "button": "Generate Report"
       }
+    },
+    "sectionTitle": "What Our Users",
+    "sectionTitle2": "Say",
+    "testimonials": [
+      {
+        "quote": "Taskly has revolutionized the way I manage my team's projects!",
+        "role": "Marketing Manager"
+      },
+      {
+        "quote": "As a freelancer, keeping track of multiple clients is now a breeze.",
+        "role": "Freelance Designer"
+      },
+      {
+        "quote": "Taskly's intuitive interface helps me stay on top of my research.",
+        "role": "Graduate Student"
+      }
+    ],
+    "footer": {
+      "sections": {
+        "taskly": {
+          "description": "Your AI-powered productivity companion"
+        },
+        "features": {
+          "title": "Features",
+          "items": [
+            "AI Assistant",
+            "Task Management",
+            "Customization"
+          ]
+        },
+        "company": {
+          "title": "Company",
+          "items": [
+            "About Us",
+            "Careers",
+            "Contact"
+          ]
+        },
+        "legal": {
+          "title": "Legal",
+          "items": [
+            "Privacy Policy",
+            "Terms of Service"
+          ]
+        }
+      },
+      "copyright": "All rights reserved."
+      
     }
   }
 }
