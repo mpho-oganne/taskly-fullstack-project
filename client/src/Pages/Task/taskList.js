@@ -7,10 +7,12 @@ import {
   Plus,
   Pencil,
   Trash,
+  Search,
 } from "lucide-react";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,6 +32,31 @@ export default function TaskList() {
       }
     } catch (error) {
       console.error("Error fetching tasks:", error);
+    }
+  };
+
+  
+  const handleSearchTasks = async () => {
+    if (!searchKeyword) {
+      fetchTasks();
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/user/search?keyword=${searchKeyword}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data);
+      } else {
+        console.error("No tasks found matching your search criteria");
+      }
+    } catch (error) {
+      console.error("Error searching for tasks:", error);
     }
   };
 
@@ -54,6 +81,27 @@ export default function TaskList() {
       }
     } catch (error) {
       console.error("Error deleting task:", error);
+    }
+  };
+
+  const handleStatusUpdate = async (taskId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/user/update/${taskId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ status: "completed" }),
+        }
+      );
+      if (response.ok) {
+        fetchTasks();
+      } else {
+        console.error("Failed to update status");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
     }
   };
 
@@ -94,6 +142,23 @@ export default function TaskList() {
             Create New Task
           </button>
         </div>
+
+        <div className="flex mb-8">
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            className="p-2 border border-gray-300 rounded-l-lg w-full"
+          />
+          <button
+            onClick={handleSearchTasks}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-lg transition-colors duration-200 flex items-center"
+          >
+            <Search className="mr-2" />
+          </button>
+        </div>
+
         <div className="space-y-4">
           {tasks.length === 0 ? (
             <p className="text-center text-gray-500 py-8">
@@ -108,6 +173,12 @@ export default function TaskList() {
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={task.status === "completed"}
+                        onChange={() => handleStatusUpdate(task._id)}
+                        className="mr-2"
+                      />
                       {getStatusIcon(task.status)}
                       <h3 className="text-xl font-semibold text-gray-800 ml-2">
                         {task.title}
