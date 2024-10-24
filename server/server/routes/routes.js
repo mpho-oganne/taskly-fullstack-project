@@ -22,6 +22,9 @@ const {
   readPendingTasks,
   generateReport
 } = require("../controllers/task");
+
+// User routes
+
 const {
   signup,
   signin,
@@ -30,6 +33,8 @@ const {
   signout,
   getLeaderboard,
 } = require("../controllers/user");
+const { default: RewardsCard } = require("../../../client/src/components/TaskRewards/taskRewards");
+
 
 // Signin & Signup routes
 router.post("/signup", validateSignUp, signup);
@@ -55,5 +60,5 @@ router.get('/suggest', auth, suggestTasks);
 router.get('/pendingTasks', auth, readPendingTasks);
 router.get('/reports', auth, generateReport);   // router for generate report function 
 router.get("/leaderboard", auth, getLeaderboard);
-
+router.get("/tasks/rewards", auth, RewardsCard);
 module.exports = router;
