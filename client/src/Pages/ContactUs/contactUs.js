@@ -38,7 +38,9 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="relative flex min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8 items-center justify-center overflow-hidden">
+  <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"></div>
+  <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"></div>
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="p-10 bg-gray-100 flex flex-col justify-between">
