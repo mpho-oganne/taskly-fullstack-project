@@ -59,7 +59,9 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 items-center justify-center">
+    <div className="relative flex min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8 items-center justify-center overflow-hidden">
+  <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"></div>
+  <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-pulse"></div>
       {/* Main container - reduce the width a bit */}
       <div className="max-w-3xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2">
@@ -119,7 +121,7 @@ const SignIn = () => {
           </div>
 
           {/* Right side - Sign Up button */}
-          <div className="p-10 bg-gray-200 flex items-center justify-center">
+  <div className="p-10 flex items-center justify-center" style={{ backgroundImage: `url('/form2.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <div className="text-center">
               <Link to="/signup">
                 <button className="py-3 px-8 bg-gradient-to-r from-blue-400 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-gradient-to-l transition duration-300">

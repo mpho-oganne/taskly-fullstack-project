@@ -115,7 +115,7 @@ export default function Sidebar({ user, signout }) {
 
           <li>
             <Link
-              to="/dashboard/rewards"
+              to="/dashboard/taskRewards"
               className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
             >
               <Trophy className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
