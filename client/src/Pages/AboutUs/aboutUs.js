@@ -39,37 +39,55 @@ export default function AboutUs() {
       name: "Pumlani Kewana",
       role: "Full-stack Developer",
       image: "/assets/Pumlani.jpg",
-      social: { linkedin: "alex-johnson", github: "alexj-dev" },
+      social: {
+        linkedin: "https://www.linkedin.com/in/pumlani-kewana-58047515b",
+        github: "https://github.com/alexj-dev",
+      },
     },
     {
       name: "Konanani Nemauluma",
       role: "Full-stack Developer",
       image: "/assets/Konie.jpg",
-      social: { linkedin: "sam-lee", github: "samlee-dev" },
+      social: {
+        linkedin: "https://www.linkedin.com/in/konanani-charity-nemauluma/",
+        github: "https://github.com/Mukoni-Nemauluma",
+      },
     },
     {
       name: "Simphiwe Ndlovu",
       role: "Full-stack Developer",
       image: "/assets/Simphiwe.jpg",
-      social: { linkedin: "taylor-swift-dev", github: "swifty-dev" },
+      social: {
+        linkedin: "https://linkedin.com/in/taylor-swift-dev",
+        github: "https://github.com/swifty-dev",
+      },
     },
     {
       name: "Mpho",
       role: "Full-stack Developer",
       image: "/assets/Mpho.jpg",
-      social: { linkedin: "jordan-patel", github: "jordanp-dev" },
+      social: {
+        linkedin: "https://linkedin.com/in/jordan-patel",
+        github: "https://github.com/jordanp-dev",
+      },
     },
     {
       name: "Nonhlanhla Mazibuko",
       role: "Full-stack Developer",
       image: "/assets/Nonhlanhla.jpg",
-      social: { linkedin: "chris-wong", github: "chrisw-dev" },
+      social: {
+        linkedin: "https://www.linkedin.com/in/nonhlanhla-mazibuko-879636214/",
+        github: "https://github.com/NonhlanhlaMazibuko",
+      },
     },
     {
       name: "Thitevhelwi Masuvhe",
       role: "Full-stack Developer",
       image: "/assets/Thitevhelwi.jpg",
-      social: { linkedin: "emma-garcia", github: "emmag-dev" },
+      social: {
+        linkedin: "https://www.linkedin.com/in/thitevhelwimasuvhe",
+        github: "https://github.com/samuelthis",
+      },
     },
   ];
 
@@ -172,9 +190,10 @@ export default function AboutUs() {
                   <div className="flex justify-center space-x-4">
                     {member.social.linkedin && (
                       <a
-                        href={`https://linkedin.com/in/${member.social.linkedin}`}
+                        href={member.social.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
                         className="text-blue-700 hover:text-blue-900"
                       >
                         <svg
@@ -189,9 +208,10 @@ export default function AboutUs() {
                     )}
                     {member.social.github && (
                       <a
-                        href={`https://github.com/${member.social.github}`}
+                        href={member.social.github}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
                         className="text-gray-800 hover:text-gray-600"
                       >
                         <svg
@@ -241,9 +261,10 @@ export default function AboutUs() {
               <div className="flex justify-center space-x-4 mb-4">
                 {selectedMember.social.linkedin && (
                   <a
-                    href={`https://linkedin.com/in/${selectedMember.social.linkedin}`}
+                    href={selectedMember.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="text-blue-700 hover:text-blue-900"
                   >
                     <svg
@@ -258,9 +279,10 @@ export default function AboutUs() {
                 )}
                 {selectedMember.social.github && (
                   <a
-                    href={`https://github.com/${selectedMember.social.github}`}
+                    href={selectedMember.social.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                     className="text-gray-800 hover:text-gray-600"
                   >
                     <svg
