@@ -17,6 +17,7 @@ import Leaderboard from "./components/Leaderboard/leaderboard";
 import ReportComponent from "./components/WeeklyReport/report";
 import Contact from "./Pages/ContactUs/contactUs";
 import VirtualRewards from "./components/TaskRewards/taskRewards";
+import AboutUs from "./Pages/AboutUs/aboutUs"; // Adjust the path as needed
 
 // Context
 import UserProvider from "./UserContext";
@@ -61,6 +62,14 @@ const App = () => {
               </HomepageLayout>
             }
           />
+          <Route
+            path="/about"
+            element={
+              <HomepageLayout>
+                <AboutUs />
+              </HomepageLayout>
+            }
+          />
 
           {/* Protected routes */}
           <Route
@@ -82,7 +91,7 @@ const App = () => {
             <Route path="/dashboard/overview" element={<Overview />} />
             <Route path="/dashboard/leaderboard" element={<Leaderboard />} />
             <Route path="/dashboard/report" element={<ReportComponent />} />
-            <Route path="/dashboard/taskRewards" element={<VirtualRewards />}/>
+            <Route path="/dashboard/taskRewards" element={<VirtualRewards />} />
 
             {/* Fallback for unmatched routes */}
             <Route path="*" element={<h1>404 - Not Found</h1>} />
