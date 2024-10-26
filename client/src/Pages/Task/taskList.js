@@ -35,7 +35,6 @@ export default function TaskList() {
     }
   };
 
-  
   const handleSearchTasks = async () => {
     if (!searchKeyword) {
       fetchTasks();
@@ -173,12 +172,6 @@ export default function TaskList() {
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={task.status === "completed"}
-                        onChange={() => handleStatusUpdate(task._id)}
-                        className="mr-2"
-                      />
                       {getStatusIcon(task.status)}
                       <h3 className="text-xl font-semibold text-gray-800 ml-2">
                         {task.title}
@@ -211,7 +204,17 @@ export default function TaskList() {
                     <span>
                       Due: {new Date(task.dueDate).toLocaleDateString()}
                     </span>
-                    <span>Status: {task.status}</span>
+                    <span>
+                      Status: {task.status}{" "}
+                      {task.status !== "completed" && (
+                        <button
+                          onClick={() => handleStatusUpdate(task._id)}
+                          className="text-blue-500 hover:underline ml-2"
+                        >
+                          Mark Complete
+                        </button>
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
