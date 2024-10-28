@@ -186,27 +186,6 @@ export default function VirtualRewards() {
             </div>
           )}
         </motion.div>
-
-        <div className="mt-8 bg-white rounded-xl p-6 shadow-inner">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">Task Overview</h3>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-green-100 p-4 rounded-lg text-center">
-              <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-green-700">0</p>
-              <p className="text-sm text-green-600">Completed</p>
-            </div>
-            <div className="bg-yellow-100 p-4 rounded-lg text-center">
-              <Clock className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-yellow-700">0</p>
-              <p className="text-sm text-yellow-600">In Progress</p>
-            </div>
-            <div className="bg-blue-100 p-4 rounded-lg text-center">
-              <List className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-blue-700">0</p>
-              <p className="text-sm text-blue-600">Pending</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )
