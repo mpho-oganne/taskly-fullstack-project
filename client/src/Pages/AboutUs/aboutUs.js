@@ -58,8 +58,8 @@ export default function AboutUs() {
       role: "Full-stack Developer",
       image: "/assets/Simphiwe.jpg",
       social: {
-        linkedin: "https://linkedin.com/in/taylor-swift-dev",
-        github: "https://github.com/swifty-dev",
+         linkedin: "https://www.linkedin.com/in/simphiwe-ndlovu-67508122b",
+         github: "https://github.com/ndlovusimphiwe68",
       },
     },
     {
