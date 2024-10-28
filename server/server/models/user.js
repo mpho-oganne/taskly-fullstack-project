@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 // Report Schema
-
 const reportSchema = new mongoose.Schema({
   id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +21,6 @@ const reportSchema = new mongoose.Schema({
 });
 
 // AI Suggestions Schema
-
 const aiSuggestionsSchema = new mongoose.Schema({
   id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -47,7 +45,6 @@ const aiSuggestionsSchema = new mongoose.Schema({
 });
 
 // User Schema
-
 const userSchema = new mongoose.Schema(
   {
     id: {
@@ -76,16 +73,26 @@ const userSchema = new mongoose.Schema(
     },
     reports: [reportSchema], // Embedding the Report schema
     aiSuggestions: [aiSuggestionsSchema], // Embedding the AI Suggestions schema
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
     },
-    
     updatedAt: {
       type: Date,
       default: Date.now,
     },
   },
+  {
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model("User", userSchema);

@@ -5,6 +5,9 @@ const path = require("path");
 const Task = require("../models/task");
 const fs = require("fs");
 const Message = require("../models/message");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 //Setting up multer for file storage
 const storage = multer.diskStorage({
@@ -136,6 +139,73 @@ const signin = async (req, res) => {
     res.status(500).send({ error: "Error signing in" });
   }
 };
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
+  },
+});
+
+// Forgot password - Send reset link
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Create a reset token valid for 1 hour
+    const resetToken = jwt.sign(
+      { id: user._id },
+      process.env.RESET_PASSWORD_SECRET, // Ensure this is not undefined
+      { expiresIn: "1h" }
+    );
+
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+    // Send the reset link via email
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER,
+      to: email,
+      subject: "Password Reset Request",
+      html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password. This link is valid for 1 hour.</p>`,
+    });
+
+    res
+      .status(200)
+      .json({ message: "Password reset link sent to your email." });
+  } catch (error) {
+    console.error("Error sending reset email:", error);
+    res.status(500).json({ message: "Error sending reset email." });
+  }
+};
+// Reset password
+const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    // Verify the reset token
+    const decoded = jwt.verify(token, process.env.RESET_PASSWORD_SECRET); // Ensure this matches your .env variable
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful." });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ message: "Error resetting password." });
+  }
+};
 
 // Sign out the user by destroying the session
 const signout = (req, res) => {
@@ -245,7 +315,6 @@ const updateUser = async (req, res) => {
       user.password = hashedPassword;
     }
 
-
     await user.save();
 
     req.session.userId = user._id;
@@ -310,4 +379,6 @@ module.exports = {
   getAISuggestions,
   getLeaderboard,
   submitMessage,
+  forgotPassword,
+  resetPassword,
 };

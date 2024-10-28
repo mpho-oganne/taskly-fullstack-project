@@ -17,6 +17,8 @@ import Leaderboard from "./components/Leaderboard/leaderboard";
 import ReportComponent from "./components/WeeklyReport/report";
 import Contact from "./Pages/ContactUs/contactUs";
 import VirtualRewards from "./components/TaskRewards/taskRewards";
+import ForgotPassword from "./components/ForgotPassword/forgotPassword";
+import ResetPassword from "./components/ResetPassword/resetPassword";
 import AboutUs from "./Pages/AboutUs/aboutUs"; // Adjust the path as needed
 
 // Context
@@ -82,6 +84,7 @@ const App = () => {
           >
             <Route path="/dashboard/new-task" element={<CreateTaskForm />} />
             <Route path="/dashboard/tasks" element={<Tasks />} />
+
             <Route
               path="/dashboard/update-task/:taskId"
               element={<UpdateTaskForm />}
@@ -96,6 +99,8 @@ const App = () => {
             {/* Fallback for unmatched routes */}
             <Route path="*" element={<h1>404 - Not Found</h1>} />
           </Route>
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </Router>
     </UserProvider>
