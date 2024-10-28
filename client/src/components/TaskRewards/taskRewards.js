@@ -1,190 +1,213 @@
-import React, { useState } from 'react';
+"use client"
 
-const LightningIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6 text-yellow-400">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-  </svg>
-);
+import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Zap, Star, Trophy, CheckCircle, Clock, List } from 'lucide-react'
 
-const StarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6 text-purple-400">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-  </svg>
-);
+const IconWrapper = ({ children, color }) => (
+  <div className={`p-3 rounded-full ${color} text-white`}>
+    {children}
+  </div>
+)
 
-const TrophyIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-6 h-6 text-blue-400">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-  </svg>
-);
+const BadgeCard = ({ icon, title, description, locked = false }) => (
+  <motion.div 
+    className={`p-6 rounded-xl bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 ${locked ? 'opacity-50' : ''}`}
+    whileHover={{ scale: locked ? 1 : 1.05 }}
+    whileTap={{ scale: locked ? 1 : 0.95 }}
+  >
+    <div className="flex flex-col items-center text-center space-y-4">
+      {icon}
+      <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+      {locked && <p className="text-sm text-red-500">Locked</p>}
+    </div>
+  </motion.div>
+)
 
-const VirtualRewards = () => {
-  const [activeTab, setActiveTab] = useState('Badges');
+const ProgressBar = ({ progress }) => (
+  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+    <motion.div 
+      className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+      initial={{ width: 0 }}
+      animate={{ width: `${progress}%` }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    />
+  </div>
+)
+
+export default function VirtualRewards() {
+  const [activeTab, setActiveTab] = useState('Badges')
   
   const badges = [
     {
-      icon: <LightningIcon />,
-      title: "Early Bird",
-      description: "Completed 5 tasks before 12 PM"
+      icon: <IconWrapper color="bg-yellow-400"><Zap size={24} /></IconWrapper>,
+      title: "Quick Starter",
+      description: "Complete your first task",
+      locked: false
     },
     {
-      icon: <StarIcon />,
-      title: "Overachiever",
-      description: "Completed 20 tasks in a week"
+      icon: <IconWrapper color="bg-purple-500"><Star size={24} /></IconWrapper>,
+      title: "On a Roll",
+      description: "Complete 3 tasks in a day",
+      locked: true
     },
     {
-      icon: <TrophyIcon />,
-      title: "Consistency King",
-      description: "Logged in for 30 consecutive days"
+      icon: <IconWrapper color="bg-blue-500"><Trophy size={24} /></IconWrapper>,
+      title: "Task Champion",
+      description: "Complete 10 tasks total",
+      locked: true
     }
-  ];
+  ]
 
   const pointsData = {
-    totalPoints: 1250,
-    thisWeek: 320,
-    pointsToNext: 250,
-    nextLevel: "Gold",
+    totalPoints: 10,
+    thisWeek: 10,
+    pointsToNext: 90,
+    nextLevel: "Bronze",
     recentActivity: [
-      { action: "Completed task", points: 50, date: "2024-03-20" },
-      { action: "Daily login", points: 10, date: "2024-03-20" },
-      { action: "Streak bonus", points: 100, date: "2024-03-19" },
-      { action: "Task completion streak", points: 75, date: "2024-03-19" }
+      { action: "Signed up", points: 10, date: "2024-03-20" }
     ]
-  };
+  }
 
   const achievements = [
     {
-      title: "Task Master",
-      progress: 75,
-      current: 75,
-      target: 100,
-      description: "Complete 100 tasks"
-    },
-    {
-      title: "Perfect Week",
-      progress: 40,
-      current: 2,
+      title: "Task Beginner",
+      progress: 0,
+      current: 0,
       target: 5,
-      description: "Complete all daily tasks for 5 consecutive days"
+      description: "Complete 5 tasks"
     },
     {
-      title: "Productivity Pro",
-      progress: 90,
-      current: 45,
-      target: 50,
-      description: "Complete 50 tasks before their deadline"
+      title: "Early Bird",
+      progress: 0,
+      current: 0,
+      target: 3,
+      description: "Complete 3 tasks before 9 AM"
+    },
+    {
+      title: "Consistency Starter",
+      progress: 20,
+      current: 1,
+      target: 5,
+      description: "Log in for 5 consecutive days"
     }
-  ];
-
-  const ProgressBar = ({ progress }) => (
-    <div className="w-full bg-gray-200 rounded-full h-2">
-      <div 
-        className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-        style={{ width: `${progress}%` }}
-      />
-    </div>
-  );
+  ]
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="p-4 space-y-1.5">
-        <h2 className="text-2xl font-bold text-gray-900">Your Virtual Rewards</h2>
-        <p className="text-gray-500">Track your progress and achievements</p>
-      </div>
-      
-      <div className="flex border-b">
-        {['Badges', 'Points', 'Achievements'].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2 px-4 text-sm font-medium transition-colors
-              ${activeTab === tab 
-                ? 'border-b-2 border-gray-900 text-gray-900' 
-                : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+    <div className="max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl overflow-hidden shadow-2xl">
+      <div className="p-8 space-y-6">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold text-gray-800 mb-2">Your Virtual Rewards</h2>
+          <p className="text-xl text-gray-600">Start your journey and track your progress!</p>
+        </div>
+        
+        <div className="flex justify-center space-x-4 mb-8">
+          {['Badges', 'Points', 'Achievements'].map((tab) => (
+            <motion.button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`py-2 px-6 rounded-full text-lg font-medium transition-colors ${
+                activeTab === tab 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' 
+                  : 'bg-white text-gray-600 hover:bg-gray-100'
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {tab}
+            </motion.button>
+          ))}
+        </div>
 
-      <div className="p-4">
-        {activeTab === 'Badges' && (
-          <div className="space-y-4">
-            {badges.map((badge, index) => (
-              <div 
-                key={index}
-                className="p-4 rounded-lg border border-gray-100 flex flex-col items-center text-center"
-              >
-                <div className="mb-2">
-                  {badge.icon}
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-1">
-                  {badge.title}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="bg-white rounded-xl p-6 shadow-inner"
+        >
+          {activeTab === 'Badges' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {badges.map((badge, index) => (
+                <BadgeCard key={index} {...badge} />
+              ))}
+            </div>
+          )}
+          
+          {activeTab === 'Points' && (
+            <div className="space-y-8">
+              <div className="text-center">
+                <h3 className="text-5xl font-bold text-blue-600 mb-2">
+                  {pointsData.totalPoints}
                 </h3>
-                <p className="text-sm text-gray-500">
-                  {badge.description}
-                </p>
+                <p className="text-xl text-gray-600">Total Points</p>
               </div>
-            ))}
-          </div>
-        )}
-        
-        {activeTab === 'Points' && (
-          <div className="space-y-6">
-            {/* Points Overview */}
-            <div className="bg-blue-50 p-4 rounded-lg text-center">
-              <h3 className="text-3xl font-bold text-blue-600 mb-1">
-                {pointsData.totalPoints}
-              </h3>
-              <p className="text-sm text-blue-600">Total Points</p>
-            </div>
 
-            {/* Progress to Next Level */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Progress to {pointsData.nextLevel}</span>
-                <span className="text-gray-600">{pointsData.pointsToNext} points needed</span>
-              </div>
-              <ProgressBar progress={70} />
-            </div>
-
-            {/* Recent Activity */}
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-3">Recent Activity</h4>
-              <div className="space-y-3">
-                {pointsData.recentActivity.map((activity, index) => (
-                  <div key={index} className="flex justify-between items-center text-sm">
-                    <div>
-                      <p className="text-gray-900">{activity.action}</p>
-                      <p className="text-gray-500 text-xs">{activity.date}</p>
-                    </div>
-                    <span className="text-green-600">+{activity.points}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {activeTab === 'Achievements' && (
-          <div className="space-y-6">
-            {achievements.map((achievement, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between items-baseline">
-                  <h4 className="font-semibold text-gray-900">{achievement.title}</h4>
-                  <span className="text-sm text-gray-600">
-                    {achievement.current}/{achievement.target}
-                  </span>
+              <div className="space-y-4">
+                <div className="flex justify-between text-lg">
+                  <span className="text-gray-600">Progress to {pointsData.nextLevel}</span>
+                  <span className="text-blue-600 font-semibold">{pointsData.pointsToNext} points needed</span>
                 </div>
-                <ProgressBar progress={achievement.progress} />
-                <p className="text-sm text-gray-500">{achievement.description}</p>
+                <ProgressBar progress={10} />
               </div>
-            ))}
+
+              <div>
+                <h4 className="text-2xl font-semibold text-gray-800 mb-4">Recent Activity</h4>
+                <div className="space-y-4">
+                  {pointsData.recentActivity.map((activity, index) => (
+                    <div key={index} className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                      <div>
+                        <p className="text-lg text-gray-800 font-medium">{activity.action}</p>
+                        <p className="text-gray-500">{activity.date}</p>
+                      </div>
+                      <span className="text-2xl font-bold text-green-500">+{activity.points}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {activeTab === 'Achievements' && (
+            <div className="space-y-8">
+              {achievements.map((achievement, index) => (
+                <div key={index} className="space-y-4">
+                  <div className="flex justify-between items-baseline">
+                    <h4 className="text-xl font-semibold text-gray-800">{achievement.title}</h4>
+                    <span className="text-lg text-blue-600 font-medium">
+                      {achievement.current}/{achievement.target}
+                    </span>
+                  </div>
+                  <ProgressBar progress={achievement.progress} />
+                  <p className="text-gray-600">{achievement.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        <div className="mt-8 bg-white rounded-xl p-6 shadow-inner">
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">Task Overview</h3>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-green-100 p-4 rounded-lg text-center">
+              <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-green-700">0</p>
+              <p className="text-sm text-green-600">Completed</p>
+            </div>
+            <div className="bg-yellow-100 p-4 rounded-lg text-center">
+              <Clock className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-yellow-700">0</p>
+              <p className="text-sm text-yellow-600">In Progress</p>
+            </div>
+            <div className="bg-blue-100 p-4 rounded-lg text-center">
+              <List className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-blue-700">0</p>
+              <p className="text-sm text-blue-600">Pending</p>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
-  );
-};
-
-export default VirtualRewards;
+  )
+}
