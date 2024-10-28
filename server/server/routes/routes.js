@@ -1,8 +1,11 @@
 const express = require("express");
 const auth = require("../middleware/auth");
 const { validateSignUp } = require("../validation/signup");
-const { updateProfilePicture, removeProfilePicture } = require('../controllers/user');
-const multer = require('multer');
+const {
+  updateProfilePicture,
+  removeProfilePicture,
+} = require("../controllers/user");
+const multer = require("multer");
 
 // Configure multer using memory storage for file handling
 const storage = multer.memoryStorage();
@@ -20,7 +23,7 @@ const {
   getTaskById,
   suggestTasks,
   readPendingTasks,
-  generateReport
+  generateReport,
 } = require("../controllers/task");
 
 // User routes
@@ -32,8 +35,9 @@ const {
   updateUser,
   signout,
   getLeaderboard,
+  resetPassword,
+  forgotPassword,
 } = require("../controllers/user");
-
 
 // Signin & Signup routes
 router.post("/signup", validateSignUp, signup);
@@ -42,6 +46,9 @@ router.post("/signout", auth, signout);
 router.get("/", auth, getUser);
 router.put("/update", auth, updateUser);
 
+//password reset routes
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 //Profile routes
 // router.put('/updatePicture', upload.single('profilePicture'), updateProfilePicture);
 // router.put('/removePicture', removeProfilePicture);
@@ -55,8 +62,8 @@ router.delete("/delete/:id", auth, deleteTask);
 router.post("/setReminder", auth, setReminder);
 router.get("/cd filter", auth, filterTasks);
 router.get("/search", auth, searchTasks);
-router.get('/suggest', auth, suggestTasks);
-router.get('/pendingTasks', auth, readPendingTasks);
-router.get('/reports', auth, generateReport);   // router for generate report function 
+router.get("/suggest", auth, suggestTasks);
+router.get("/pendingTasks", auth, readPendingTasks);
+router.get("/reports", auth, generateReport); // router for generate report function
 router.get("/leaderboard", auth, getLeaderboard);
 module.exports = router;
