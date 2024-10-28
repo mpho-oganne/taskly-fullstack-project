@@ -19,6 +19,7 @@ import Contact from "./Pages/ContactUs/contactUs";
 import VirtualRewards from "./components/TaskRewards/taskRewards";
 import ForgotPassword from "./components/ForgotPassword/forgotPassword";
 import ResetPassword from "./components/ResetPassword/resetPassword";
+import AboutUs from "./Pages/AboutUs/aboutUs"; // Adjust the path as needed
 
 // Context
 import UserProvider from "./UserContext";
@@ -60,6 +61,14 @@ const App = () => {
             element={
               <HomepageLayout>
                 <Contact />
+              </HomepageLayout>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <HomepageLayout>
+                <AboutUs />
               </HomepageLayout>
             }
           />

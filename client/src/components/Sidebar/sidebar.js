@@ -1,167 +1,107 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import Avatar from "react-avatar";
-import {
-  Home,
-  ClipboardList,
-  ChartLine,
-  Trophy,
-  Medal,
-  User,
-  LogOut,
-} from "lucide-react";
+"use client"
 
-// Modal Component is defined inline
-function ConfirmModal({ isOpen, onClose, onConfirm }) {
-  if (!isOpen) return null;
+import React, { useState } from 'react'
+import { Home, ClipboardList, ChartLine, Trophy, Medal, User, LogOut } from 'lucide-react'
+
+const NavItem = ({ icon: Icon, label, href, isActive = false }) => (
+  <li>
+    <a
+      href={href}
+      className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
+        isActive
+          ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white'
+          : 'text-gray-700 hover:bg-gray-100'
+      }`}
+    >
+      <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-500'}`} />
+      <span className="font-medium">{label}</span>
+    </a>
+  </li>
+)
+
+const Avatar = ({ src, alt, fallback }) => (
+  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
+    {src ? (
+      <img src={src} alt={alt} className="w-full h-full object-cover" />
+    ) : (
+      <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-500">
+        {fallback}
+      </div>
+    )}
+  </div>
+)
+
+const Modal = ({ isOpen, onClose, onConfirm }) => {
+  if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          Confirm Sign Out
-        </h2>
-        <p className="text-gray-600 mb-6">Are you sure you want to sign out?</p>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-xl">
+        <h2 className="text-xl font-bold mb-4">Are you sure you want to sign out?</h2>
+        <p className="mb-6">You will be redirected to the login page.</p>
         <div className="flex justify-end space-x-4">
           <button
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
             onClick={onClose}
+            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
           >
             Cancel
           </button>
           <button
-            className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600"
             onClick={onConfirm}
+            className="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors"
           >
             Sign Out
           </button>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default function Sidebar({ user, signout }) {
-  const navigate = useNavigate();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false)
 
   const handleLogout = () => {
-    sessionStorage.removeItem("audioPlayed");
-    signout();
-    navigate("/");
-    toast.success("You have successfully logged out!", {
-      position: "top-right",
-      autoClose: 3000,
-      className: "bg-blue-600 text-white font-bold rounded-lg shadow-lg p-4",
-      progressClassName: "bg-blue-500",
-    });
-  };
+    signout()
+    setModalOpen(false)
+  }
 
   return (
-    <>
-      <nav className="bg-gray-50 fixed h-full w-64 p-6 flex flex-col border-r border-gray-200 overflow-y-auto shadow-lg">
-        {/* Profile Section */}
-        <div className="w-full flex flex-col items-center mb-10">
-          <div className="flex items-center justify-center mb-4">
-            {user?.profilePicture ? (
-              <img
-                src={`http://localhost:3001/uploads/${user.profilePicture}`}
-                alt="Profile"
-                className="w-16 h-16 rounded-full border-2 border-gray-300 shadow-md"
-              />
-            ) : (
-              <Avatar name={user?.name} size={64} round={true} />
-            )}
-          </div>
-          <span className="text-xl font-semibold text-gray-800">
-            {user?.name}
-          </span>
-          <span className="text-sm text-gray-500">Dashboard</span>
-        </div>
+    <nav className="bg-white fixed h-full w-64 p-6 flex flex-col border-r border-gray-200 overflow-y-auto shadow-lg">
+      <div className="flex flex-col items-center mb-10">
+        <Avatar
+          src={user?.profilePicture ? `http://localhost:3001/uploads/${user.profilePicture}` : null}
+          alt={user?.name}
+          fallback={user?.name?.charAt(0)}
+        />
+        <h2 className="text-xl font-bold text-gray-800 mt-4">{user?.name}</h2>
+        <span className="text-sm text-gray-500">Dashboard</span>
+      </div>
 
-        {/* Navigation Links */}
-        <ul className="text-gray-700 space-y-4 w-full">
-          <li>
-            <Link
-              to="/dashboard"
-              className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <Home className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
-              <span>Dashboard</span>
-            </Link>
-          </li>
+      <ul className="space-y-2">
+        <NavItem icon={Home} label="Dashboard" href="/dashboard" isActive />
+        <NavItem icon={ClipboardList} label="Tasks" href="/dashboard/tasks" />
+        <NavItem icon={ChartLine} label="Reports" href="/dashboard/report" />
+        <NavItem icon={Trophy} label="Task Rewards" href="/dashboard/taskRewards" />
+        <NavItem icon={Medal} label="Leaderboard" href="/dashboard/leaderboard" />
+        <NavItem icon={User} label="Profile" href="/dashboard/profile" />
+      </ul>
 
-          <li>
-            <Link
-              to="/dashboard/tasks"
-              className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <ClipboardList className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
-              <span>Tasks</span>
-            </Link>
-          </li>
+      <div className="mt-auto pt-6">
+        <button
+          onClick={() => setModalOpen(true)}
+          className="w-full flex items-center justify-center space-x-2 p-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          <span>Sign Out</span>
+        </button>
+      </div>
 
-          <li>
-            <Link
-              to="/dashboard/report"
-              className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <ChartLine className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
-              <span>Reports</span>
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              to="/dashboard/taskRewards"
-              className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <Trophy className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
-              <span>Task Rewards</span>
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              to="/dashboard/leaderboard"
-              className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <Medal className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
-              <span>Leaderboard</span>
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              to="/dashboard/profile"
-              className="flex items-center space-x-3 p-2 text-lg hover:bg-gray-100 rounded-lg transition-colors duration-200"
-            >
-              <User className="w-6 h-6 text-gray-500 hover:text-gray-300 transition-colors duration-200" />
-              <span>Profile</span>
-            </Link>
-          </li>
-        </ul>
-
-        {/* Logout Button */}
-        <div className="mt-auto pt-6">
-          <button
-            onClick={() => setModalOpen(true)}
-            className="w-full flex items-center justify-center space-x-2 p-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-200"
-          >
-            <LogOut className="w-6 h-6 text-white" />
-            <span>Sign Out</span>
-          </button>
-        </div>
-      </nav>
-
-      {/* Confirmation Modal */}
-      <ConfirmModal
+      <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
         onConfirm={handleLogout}
       />
-    </>
-  );
+    </nav>
+  )
 }

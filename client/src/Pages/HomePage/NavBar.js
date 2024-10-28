@@ -62,6 +62,12 @@ export default function NavBar() {
             Home
           </Link>
           <Link
+            to="/about"
+            className="text-gray-600 hover:text-purple-600 text-sm font-medium transition-colors duration-200"
+          >
+            About Us
+          </Link>
+          <Link
             to="/contact"
             className="text-gray-600 hover:text-purple-600 text-sm font-medium transition-colors duration-200"
           >
@@ -134,6 +140,13 @@ export default function NavBar() {
               Home
             </Link>
             <Link
+              to="/about"
+              className="text-gray-600 hover:text-purple-600 text-sm font-medium transition-colors duration-200"
+              onClick={toggleMenu}
+            >
+              About Us
+            </Link>
+            <Link
               to="/contact"
               className="text-gray-600 hover:text-purple-600 text-sm font-medium transition-colors duration-200"
               onClick={toggleMenu}
@@ -154,45 +167,6 @@ export default function NavBar() {
             >
               Sign Up
             </Link>
-
-            {/* Mobile Language Dropdown */}
-            <div className="relative w-full">
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center justify-between w-full bg-blue-600 text-white hover:bg-blue-700 px-3 py-2 rounded-md focus:outline-none transition-colors duration-200 border border-blue-700"
-                aria-haspopup="true"
-                aria-expanded={dropdownOpen}
-              >
-                <span className="flex items-center space-x-2">
-                  {currentLang === "zu" ? (
-                    <ZA className="w-5 h-5" title="Zulu" />
-                  ) : (
-                    <GB className="w-5 h-5" title="English" />
-                  )}
-                  <span className="text-sm font-medium">
-                    {currentLang === "zu" ? "ZU" : "EN"}
-                  </span>
-                </span>
-              </button>
-              {dropdownOpen && (
-                <div className="absolute left-0 mt-2 w-full bg-white shadow-lg rounded-md z-10 border border-gray-300">
-                  <button
-                    onClick={() => changeLanguage("en")}
-                    className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100 transition-all duration-150"
-                  >
-                    <GB className="w-5 h-5 mr-2" />
-                    <span>English</span>
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("zu")}
-                    className="flex items-center w-full px-4 py-2 text-left hover:bg-gray-100 transition-all duration-150"
-                  >
-                    <ZA className="w-5 h-5 mr-2" />
-                    <span>Zulu</span>
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
         </nav>
       )}
